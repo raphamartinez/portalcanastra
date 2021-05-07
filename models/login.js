@@ -1,27 +1,27 @@
 const moment = require('moment')
-const conexao = require('../infraestrutura/connection')
+const connection = require('../infraestrutura/connection')
 const functions = require('../functions/login')
 
 class Login {
-    logar(email, senha, res) {
+    login(mail, password, res) {
 
-        const emailValido = email.lenght >= 9
-        const senhaValida = senha.lenght >= 9
+        const mailvalid = mail.lenght >= 9
+        const passwordValida = password.lenght >= 9
 
         const validacoes = [
             {
-                nome: 'email',
-                valido: emailValido,
-                mensagem: 'Digite o código de acesso e a senha corretamente'
+                name: 'mail',
+                valid: mailvalid,
+                message: 'Ingrese el código de acceso y la contraseña correctamente'
             },
             {
-                nome: 'senha',
-                valido: senhaValida,
-                mensagem: 'Digite o código de acesso e a senha corretamente'
+                name: 'password',
+                valid: passwordValida,
+                message: 'Ingrese el código de acceso y la contraseña correctamente'
             }
         ]
 
-        const erros = validacoes.filter(campo => !campo.valido)
+        const erros = validacoes.filter(campo => !campo.valid)
 
         const existemErros = erros.length
 
@@ -39,7 +39,7 @@ class Login {
                     res.status(200).json(usuario)
                 })
                 .catch(error => {
-                    res.status(400).json('Acesso e/ou Senha inválido(s)')
+                    res.status(400).json('Acceso y / o contraseña (s) no válidos')
                 })
         }
     }
@@ -50,22 +50,22 @@ class Login {
         const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS')
         const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
         const dataValida = moment(data).isSameOrAfter(dataCriacao)
-        const clienteValido = atendimento.cliente.lenght >= 5
+        const clientevalid = atendimento.cliente.lenght >= 5
 
         const validacoes = [
             {
-                nome: 'data',
-                valido: dataValida,
-                mensagem: ' Data deve ser maior ou igual a data atual'
+                name: 'data',
+                valid: dataValida,
+                message: 'La fecha debe ser mayor o igual que la fecha actual'
             },
             {
-                nome: 'cliente',
-                valido: clienteValido,
-                mensagem: ' Cliente deve ter pelo menos cinco caracteres'
+                name: 'cliente',
+                valid: clientevalid,
+                message: 'El cliente debe tener al menos cinco caracteres'
             }
         ]
 
-        const erros = validacoes.filter(campo => !campo.valido)
+        const erros = validacoes.filter(campo => !campo.valid)
         const existemErros = erros.length
 
         if (existemErros) {
@@ -74,7 +74,7 @@ class Login {
             const atendimentoDatado = { ...atendimento, dataCriacao, data }
             const sql = 'INSERT INTO Atendimentos set ?'
 
-            conexao.query(sql, atendimentoDatado, (erro, resultados) => {
+            connection.query(sql, atendimentoDatado, (erro, resultados) => {
                 if (erro) {
                     res.status(400).json(erro)
                 } else {
@@ -86,7 +86,7 @@ class Login {
     lista(res) {
         const sql = 'SELECT * FROM Atendimentos'
 
-        conexao.query(sql, (erro, resultados) => {
+        connection.query(sql, (erro, resultados) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {
@@ -98,7 +98,7 @@ class Login {
     buscaPorId(id, res) {
         const sql = `SELECT * FROM Atendimentos where id = ${id}`
 
-        conexao.query(sql, (erro, resultados) => {
+        connection.query(sql, (erro, resultados) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {
@@ -113,7 +113,7 @@ class Login {
             valores.data = moment(valores.data, 'DD/MM/YYYY').format
         }
 
-        conexao.query(sql, [valores, id], (erro, resultados) => {
+        connection.query(sql, [valores, id], (erro, resultados) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {
@@ -125,7 +125,7 @@ class Login {
     deletar(id, res) {
         const sql = 'DELETE from Atendimentos WHERE id=?'
 
-        conexao.query(sql, id, (erro, resultados) => {
+        connection.query(sql, id, (erro, resultados) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {
