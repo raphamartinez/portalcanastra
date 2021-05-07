@@ -5,14 +5,11 @@ const jwt = require('jsonwebtoken');
 
 exports.checkMail = (mail) => {
   return new Promise((resolve, reject) => {
-    const query = {
-      text: "SELECT senha FROM Login where email = $1",
-      values: [mail]
-    }
-    conexao.query(query)
+    const sql = `SELECT password FROM login where mail = ${mail}`
+    conexao.query(sql)
       .then(res => {
-        const senha = res.rows[0].senha;
-        resolve(senha)
+        const password = res.rows[0].password;
+        resolve(password)
       })
       .catch(e => {
         reject(null)
@@ -20,16 +17,15 @@ exports.checkMail = (mail) => {
   });
 }
 
-exports.checkPass = (pass, senhaDb, mail) => {
+exports.checkPass = (password, passwordDb, mail) => {
   return new Promise((resolve, reject) => {
-    bcrypt.compare(pass, senhaDb, (err, isMatch) => {
+    bcrypt.compare(password, passwordDb, (err, isMatch) => {
       if (err) return false
       if (isMatch) {
-        const query = {
-          text: "SELECT AG.id_agente, AG.nome, AG.foto, LO.id_login, LO.status, LO.perfil FROM Login LO, Agente AG where AG.id_login = LO.id_login and LO.email =  $1",
-          values: [mail]
-        }
-        conexao.query(query)
+
+        const sql = `SELECT AG.id_agente, AG.nome, AG.foto, LO.id_login, LO.status, LO.perfil FROM Login LO, Agente AG where AG.id_login = LO.id_login and LO.email =  ${mail}`
+
+        conexao.query(sql)
           .then(res => {
             const login = ({ 'id': res.rows[0].id_login, 'perfil': res.rows[0].perfil, 'status': res.rows[0].status })
             const user = ({ 'id': res.rows[0].id_agente, 'nome': res.rows[0].nome, 'foto': res.rows[0].foto, 'login': login })
@@ -59,17 +55,17 @@ exports.criarTokenJWT = (usuario) => {
   })
 }
 
-exports.validation = (email,senha) => {
+exports.validation = (mail,password) => {
   return new Promise((resolve,reject) => {
     
-    var senhaValida = senha.lenght >= 9
+    var passwordValid = password.lenght >= 9
 
     var variations = {
-      digits: /\d/.test(email),
-      lower: /[a-z]/.test(email),
-      upper: /[A-Z]/.test(email),
+      digits: /\d/.test(mail),
+      lower: /[a-z]/.test(mail),
+      upper: /[A-Z]/.test(mail),
     }
-    if(senhaValida && variations && email != null && senha && null){
+    if(passwordValid && variations && mail != null && password && null){
       resolve(true)
     }else{
       reject(true)

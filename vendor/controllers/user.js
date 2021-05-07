@@ -32,10 +32,4 @@ module.exports = app  => {
         User.deleteUser(id, res)
     })
 
-    app.post('/updateUser', (req,res) => {
-        const values = req.body
-        const id = req.body.id
-
-        User.updateUser(values, id, res)
-    })
 }
