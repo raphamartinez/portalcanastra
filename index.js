@@ -1,7 +1,8 @@
-const customExpress = require('./vendor/config/customExpress')
-const connection = require('./vendor/infrastructure/database/connection')
-const tables = require('./vendor/infrastructure/database/tables')
-
+const customExpress = require('./api/config/customExpress')
+const connection = require('./api/infrastructure/database/connection')
+const tables = require('./api/infrastructure/database/tables')
+const path = require('path');
+const express = require('express')
 
 connection.connect((error => {
 
@@ -11,9 +12,16 @@ connection.connect((error => {
         const app = customExpress()
 
         tables.init(connection)
-        app.listen(3000, () => console.log('servidor ejecutando'))
-    }
+        app.listen(3000, () => {
+            app.use(express.static(__dirname + '/views'))
+            app.use(express.static(__dirname + '/public'))
 
+            app.get('/', function (req, res) {
+                res.sendFile(__dirname + '/views/login.html');
+                //__dirname : It will resolve to your project folder.
+            });
+        })
+    }
 }))
 
 
