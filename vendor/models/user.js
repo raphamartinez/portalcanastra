@@ -1,72 +1,48 @@
 const moment = require('moment')
-const connection = require('../infraestrutura/connection')
+const repositorie = require('../repositories/user')
 
+class User {
+    
+    constructor() {
 
-class User{
-
-    insertUser(values,res) {
-        const sql = 'INSERT INTO user set ?'
-
-        connection.query(sql, values, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(201).json(result)
-            }
-        })
     }
 
-    deleteUser(id, res){
-        const sql = `DELETE from user WHERE id_user = ${id}`
+    insertUser(values, res) {
 
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+        return repositorie.insert(values)
+            .then(result => {
+                return result
+            })
     }
 
-    updateUser(id, values, res){
-        const sql = 'UPDATE user SET ? WHERE id_user = ?'
+    deleteUser(id, res) {
+        return repositorie.delete(id)
+            .then(result => {
+                return result
+            })
+    }
+
+    updateUser(id, values, res) {
         if (values.data) {
             values.data = moment(valores.data, 'DD/MM/YYYY').format
         }
 
-        connection.query(sql, [values, id], (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(...values, id)
-            }
-        })
+        return repositorie.update(values, id)
+            .then(result => {
+                return result
+            })
     }
 
-    listUsers(res){
-        const sql = 'SELECT * FROM user'
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
-
+    listUsers(res) {
+        return repositorie.list()
     }
 
-    viewUser(id,res){
-        const sql = `SELECT * FROM user where id_user = ${id}`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
-    }    
+    viewUser(id, res) {
+        return repositorie.view(id)
+            .then(result => {
+                return result
+            })
+    }
 }
 
 module.exports = new User
