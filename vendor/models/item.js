@@ -1,66 +1,37 @@
-const moment = require('moment')
-const connection = require('../infraestrutura/database/connection')
+const repositorie = require('../repositories/item')
 
 class Item {
 
-    createItem(values, res){
-        const sql = 'INSERT INTO Item set ?'
-
-        connection.query(sql, values, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(201).json(result)
-            }
-        })
+    createItem(item){
+        return repositorie.insert(item)
+            .then(result => {
+                return result
+            })
     }
 
-    updateItem(values, id, res){
-        const sql = 'UPDATE Item SET ? WHERE id_Item = ?'
-
-        connection.query(sql, [values, id], (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(...values, id)
-            }
-        })
+    updateItem(item, id){
+        return repositorie.update(item, id)
+            .then(result => {
+                return result
+            })
     }
 
-    deleteItem(id, res){
-        const sql = `DELETE from Item WHERE id_Item = ${id}`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    deleteItem(id){
+        return repositorie.delete(id)
+            .then(result => {
+                return result
+            })
     }
 
-    viewItem(id, res){
-        const sql = `SELECT * from Item WHERE id_Item = ${id}`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    viewItem(id){
+        return repositorie.view(id)
+            .then(result => {
+                return result
+            })
     }
 
-    listItem(res){
-        const sql = `SELECT * from Item`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    listItem(){
+        return repositorie.list()
     }
 }
 

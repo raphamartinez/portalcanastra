@@ -1,56 +1,31 @@
-const moment = require('moment')
-const connection = require('../infraestrutura/database/connection')
-
+const repositorie = require('../repositories/label')
 
 class Label {
 
-    listLabel(res){
-        const sql = 'SELECT * FROM Label'
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    listLabel(){
+        return repositorie.list()
     }
 
 
-    insertLabel(values,res){
-        const sql = 'INSERT INTO Label set ?'
-
-        connection.query(sql, [values], (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(201).json(result)
-            }
-        })
+    insertLabel(label){
+        return repositorie.insert(label)
+            .then(result => {
+                return result
+            })
     }
 
-    deleteLabel(id, res){
-        const sql = `DELETE FROM Label WHERE id_Label = ${id}`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    deleteLabel(id){
+        return repositorie.delete(id)
+            .then(result => {
+                return result
+            })
     }
 
-    updateLabel(id, values, res){
-        const sql = 'UPDATE Label SET ? WHERE id_Label = ?'
-
-        connection.query(sql, [values, id], (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(...values, id)
-            }
-        })
+    updateLabel(id, label){
+        return repositorie.update(label, id)
+            .then(result => {
+                return result
+            })
     }
 }
 

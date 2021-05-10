@@ -7,37 +7,37 @@ class User {
 
     }
 
-    insertUser(values, res) {
+    insertUser(user) {
 
-        return repositorie.insert(values)
+        return repositorie.insert(user)
             .then(result => {
                 return result
             })
     }
 
-    deleteUser(id, res) {
+    deleteUser(id) {
         return repositorie.delete(id)
             .then(result => {
                 return result
             })
     }
 
-    updateUser(id, values, res) {
-        if (values.data) {
-            values.data = moment(valores.data, 'DD/MM/YYYY').format
+    updateUser(id, user) {
+        if (user.data) {
+            user.data = moment(user.data, 'DD/MM/YYYY').format
         }
 
-        return repositorie.update(values, id)
+        return repositorie.update(user, id)
             .then(result => {
                 return result
             })
     }
 
-    listUsers(res) {
+    listUsers() {
         return repositorie.list()
     }
 
-    viewUser(id, res) {
+    viewUser(id) {
         return repositorie.view(id)
             .then(result => {
                 return result

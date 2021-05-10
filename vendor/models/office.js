@@ -1,66 +1,37 @@
-const moment = require('moment')
-const connection = require('../infraestrutura/database/connection')
+const repositorie = require('../repositories/office')
 
 class Office {
 
-    createOffice(values, res){
-        const sql = 'INSERT INTO office set ?'
-
-        connection.query(sql, values, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(201).json(result)
-            }
-        })
+    createOffice(office){
+        return repositorie.insert(office)
+            .then(result => {
+                return result
+            })
     }
 
-    updateOffice(values, id, res){
-        const sql = 'UPDATE office SET ? WHERE id_office = ?'
-
-        connection.query(sql, [values, id], (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(...values, id)
-            }
-        })
+    updateOffice(office, id){
+        return repositorie.update(office, id)
+            .then(result => {
+                return result
+            })
     }
 
-    deleteOffice(id, res){
-        const sql = `DELETE from office WHERE id_office = ${id}`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    deleteOffice(id){
+        return repositorie.delete(id)
+            .then(result => {
+                return result
+            })
     }
 
-    viewOffice(id, res){
-        const sql = `SELECT * from office WHERE id_office = ${id}`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    viewOffice(id){
+        return repositorie.view(id)
+            .then(result => {
+                return result
+            })
     }
 
-    listOffice(res){
-        const sql = `SELECT * from office`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    listOffice(){
+        return repositorie.list()
     }
 
 }

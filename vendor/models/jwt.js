@@ -1,7 +1,5 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user')
-const bearerStrategy = require('passport-http-bearer').Strategy;
 
 class Jwt {
 

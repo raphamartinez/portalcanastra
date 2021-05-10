@@ -1,10 +1,14 @@
 const express = require('express')
 const consign = require('consign')
 const passport = require('passport')
+const bearerStrategy = require('passport-http-bearer')
+const redis = require('redis')
+
 
 module.exports = () => {
     require('dotenv').config()
-    require('../infraestrutura/redis/blackList')
+  
+   // redis.createClient({ prefix: 'blacklist:' })
     
     const app = express()
 

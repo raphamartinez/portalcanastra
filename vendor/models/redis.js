@@ -1,4 +1,4 @@
-const blacklist = require('../infraestrutura/redis/blackList')
+const blacklist = require('../config/customExpress')
 const { promisify } = require('util')
 const jwt = require('jsonwebtoken')
 

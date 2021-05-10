@@ -1,54 +1,30 @@
-const moment = require('moment')
-const connection = require('../infraestrutura/database/connection')
+const repositorie = require('../repositories/itemgroup')
 
 class ItemGroup {
 
-    insertItemGroup(values, res){
-        const sql = 'INSERT INTO ItemGroup set ?'
-
-        connection.query(sql, values, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(201).json(result)
-            }
-        })
+    insertItemGroup(itemgroup){
+        return repositorie.insert(itemgroup)
+            .then(result => {
+                return result
+            })
     }
 
-    updateItemGroup(values, id, res){
-        const sql = 'UPDATE ItemGroup SET ? WHERE id_ItemGroup = ?'
-
-        connection.query(sql, [values, id], (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(...values, id)
-            }
-        })
+    updateItemGroup(itemgroup, id){
+        return repositorie.update(itemgroup, id)
+            .then(result => {
+                return result
+            })
     }
 
-    deleteItemGroup(id, res){
-        const sql = `DELETE from ItemGroup WHERE id_ItemGroup = ${id}`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    deleteItemGroup(id){
+        return repositorie.delete(id)
+            .then(result => {
+                return result
+            })
     }
 
-    listItemGroup(res){
-        const sql = `SELECT * from ItemGroup`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    listItemGroup(){
+        return repositorie.list()
     }
 }
 

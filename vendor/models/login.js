@@ -1,7 +1,5 @@
-const moment = require('moment')
-const passport = require(`passport`)
-const repositorie = require('../vendor/repositories/login')
-const localStrategy = require(`passport-local`).Strategy
+const repositorie = require('../repositories/login')
+
 
 class Login {
 

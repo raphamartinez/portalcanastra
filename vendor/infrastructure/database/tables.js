@@ -1,6 +1,9 @@
+
 class Tables {
+
   init(connection) {
     this.connection = connection
+    createTableProsegur()
     createTableAddress() 
     createTableContact() 
     createTableOffice() 
@@ -11,11 +14,51 @@ class Tables {
     createTableLabel() 
     createTableItemGroup() 
     createTableItem()
+    createTableAddressClient()
+    createTableContactClient()
+  }
+
+  createTableProsegur() {
+    const sql = `CREATE TABLE IF NOT EXISTS prosegur (id_prosegur int NOT NULL AUTO_INCREMENT, dateReg DATETIME NOT NULL, PRIMARY KEY (id_contact))`;
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('prosegur table created')
+      }
+    })
+  }
+
+  createTableAddressClient() {
+    const sql = `CREATE TABLE IF NOT EXISTS addressclient (id_addressclient int NOT NULL AUTO_INCREMENT, 
+      id_address int, id_client int, dateReg DATETIME NOT NULL, PRIMARY KEY (id_addressclient))`;
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('addressclient table created')
+      }
+    })
+  }
+
+  createTableContactClient() {
+    const sql = `CREATE TABLE IF NOT EXISTS contactclient (id_contactclient int NOT NULL AUTO_INCREMENT, 
+      id_contact int, id_client int, dateReg DATETIME NOT NULL, PRIMARY KEY (id_contactclient))`;
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('contactclient table created')
+      }
+    })
   }
 
   createTableAddress() {
     const sql = `CREATE TABLE IF NOT EXISTS address (id_address int NOT NULL AUTO_INCREMENT, road VARCHAR (50), number int, zipcode VARCHAR (10)
-        city VARCHAR (40), state VARCHAR (40), dateReg DATETIME NOT NULL, PRIMARY KEY (id_address)`;
+        city VARCHAR (40), state VARCHAR (40), dateReg DATETIME NOT NULL, PRIMARY KEY (id_address))`;
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -28,8 +71,7 @@ class Tables {
 
   createTableContact() {
     const sql = `CREATE TABLE IF NOT EXISTS contact (id_contact int NOT NULL AUTO_INCREMENT, name VARCHAR (40), 
-        phone VARCHAR (20), taxregnr VARCHAR (20), mail VARCHAR (30)
-        status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_contact)`;
+        phone VARCHAR (20), taxregnr VARCHAR (20), mail VARCHAR (30), dateReg DATETIME NOT NULL, PRIMARY KEY (id_contact))`;
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -41,8 +83,8 @@ class Tables {
   }
 
   createTableOffice() {
-    const sql = `CREATE TABLE IF NOT EXISTS office (id_office int NOT NULL AUTO_INCREMENT,name VARCHAR NOT NULL,
-        status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_office)`;
+    const sql = `CREATE TABLE IF NOT EXISTS office (id_office int NOT NULL AUTO_INCREMENT,name VARCHAR (150) NOT NULL,
+        status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_office))`;
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -55,7 +97,7 @@ class Tables {
 
   createTableClient() {
     const sql = `CREATE TABLE IF NOT EXISTS client (id_client int NOT NULL AUTO_INCREMENT,name VARCHAR (150) NOT NULL,
-        status int NOT NULL, dateReg DATETIME NOT NULL, id_group int NOT NULL, id_contact int NOT NULL, id_address int NOT NULL, PRIMARY KEY (id_client)`;
+        status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_client))`;
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -68,7 +110,7 @@ class Tables {
 
   createTableLogin() {
     const sql = `CREATE TABLE IF NOT EXISTS login (id_login int NOT NULL AUTO_INCREMENT,mail VARCHAR NOT NULL,
-        password VARCHAR NOT NULL, status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_login)`;
+        password VARCHAR NOT NULL, status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_login))`;
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -81,7 +123,7 @@ class Tables {
 
   createTableUser() {
     const sql = `CREATE TABLE IF NOT EXISTS user (id_user int NOT NULL AUTO_INCREMENT,name VARCHAR (100) NOT NULL, perfil int NOT NULL,
-        dateBirthday DATE, status int NOT NULL, dateReg DATETIME NOT NULL, id_login int NOT NULL, id_office int NOT NULL, 
+        dateBirthday DATE, status int NOT NULL, dateReg DATETIME NOT NULL, id_login int NOT NULL, id_office int, 
         PRIMARY KEY (id_user), FOREIGN KEY (id_login) REFERENCES login(id_login), FOREIGN KEY (id_office) REFERENCES office(id_office)`;
 
     this.connection.query(sql, (error) => {
@@ -95,8 +137,8 @@ class Tables {
 
   createTableHistory() {
     const sql = `CREATE TABLE IF NOT EXISTS history (id_history int NOT NULL AUTO_INCREMENT, 
-        action VARCHAR NOT NULL, status int NOT NULL, dateReg DATETIME NOT NULL, id_user int NOT NULL, PRIMARY KEY (id_history),
-        FOREIGN KEY (id_user) REFERENCES user(id_user)`;
+        description VARCHAR NOT NULL, status int NOT NULL, dateReg DATETIME NOT NULL, id_user int NOT NULL, PRIMARY KEY (id_history),
+        FOREIGN KEY (id_user) REFERENCES user(id_user))`;
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -109,7 +151,7 @@ class Tables {
 
   createTableLabel() {
     const sql = `CREATE TABLE IF NOT EXISTS label (id_label int NOT NULL AUTO_INCREMENT, code VARCHAR (20) NOT NULL,
-      name VARCHAR (30) NOT NULL, type VARCHAR (10), jerarquia VARCHAR (20) NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_label)`;
+      name VARCHAR (30) NOT NULL, type VARCHAR (10), jerarquia VARCHAR (20) NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_label))`;
 
   this.connection.query(sql, (error) => {
     if (error) {
@@ -148,3 +190,5 @@ class Tables {
   })
   }
 }
+
+module.exports = new Tables

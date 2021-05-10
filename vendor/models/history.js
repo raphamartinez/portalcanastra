@@ -1,67 +1,37 @@
-const moment = require('moment')
-const connection = require('../infraestrutura/database/connection')
-
+const repositorie = require('../repositories/history')
 
 class History {
 
-    listHistory(res){
-        const sql = 'SELECT * FROM history'
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    listHistory(){
+        return repositorie.list()
     }
 
-    viewHistory(id, res){
-        const sql = `SELECT * FROM history WHERE id_history = ${id}`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    viewHistory(id){
+        return repositorie.view(id)
+            .then(result => {
+                return result
+            })
     }
 
-    insertHistory(values,res){
-        const sql = 'INSERT INTO history set ?'
-
-        connection.query(sql, [values], (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(201).json(result)
-            }
-        })
+    insertHistory(history){
+        return repositorie.insert(history)
+            .then(result => {
+                return result
+            })
     }
 
-    deleteHistory(id, res){
-        const sql = `DELETE FROM history WHERE id_history = ${id}`
-
-        connection.query(sql, (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(result)
-            }
-        })
+    deleteHistory(id){
+        return repositorie.delete(id)
+            .then(result => {
+                return result
+            })
     }
 
-    updateHistory(id, values, res){
-        const sql = 'UPDATE history SET ? WHERE id_history = ?'
-
-        connection.query(sql, [values, id], (error, result) => {
-            if (error) {
-                res.status(400).json(error)
-            } else {
-                res.status(200).json(...values, id)
-            }
-        })
+    updateHistory(id, history){
+        return repositorie.update(history, id)
+            .then(result => {
+                return result
+            })
     }
 }
 
