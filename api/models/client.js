@@ -2,35 +2,23 @@ const repositorie = require('../repositories/client')
 
 class Client {
 
-    createClient(client){
-        return repositorie.insert(client)
-            .then(result => {
-                return result
-            })
+    async createClient(client) {
+        return result = await repositorie.insert(client)
     }
 
-    updateClient(client, id){
-        return repositorie.update(client, id)
-            .then(result => {
-                return result
-            })
+    async updateClient(client, id) {
+        return result = await repositorie.update(client, id)
     }
 
-    deleteClient(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteClient(id) {
+        return result = await repositorie.delete(id)
     }
 
-    viewClient(id){
-        return repositorie.view(id)
-            .then(result => {
-                return result
-            })
+    async viewClient(id) {
+        return result = await repositorie.view(id)
     }
 
-    listClient(){
+    listClient() {
         return repositorie.list()
     }
 }

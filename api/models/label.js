@@ -7,25 +7,16 @@ class Label {
     }
 
 
-    insertLabel(label){
-        return repositorie.insert(label)
-            .then(result => {
-                return result
-            })
+    async insertLabel(label){
+        return result = await repositorie.insert(label)
     }
 
-    deleteLabel(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteLabel(id){
+        return result = await repositorie.delete(id)
     }
 
-    updateLabel(id, label){
-        return repositorie.update(label, id)
-            .then(result => {
-                return result
-            })
+    async updateLabel(id, label){
+        return result = await repositorie.update(label, id)
     }
 }
 

@@ -31,6 +31,11 @@ class Login {
         return query(sql)
     }
 
+    verifyMail(mailVerify, id) {
+        const sql = `UPDATE login SET mailVerify = ? WHERE id_login = ?`
+        return query(sql,[mailVerify,id])
+    }
+
 }
 
 module.exports = new Login()

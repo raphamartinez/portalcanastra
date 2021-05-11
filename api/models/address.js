@@ -2,32 +2,20 @@ const repositorie = require('../repositories/address')
 
 class Address {
 
-    insertAddress(address){
-        return repositorie.insert(address)
-            .then(result => {
-                return result
-            })
+    async insertAddress(address){
+        return result = await repositorie.insert(address)
     }
 
-    updateAddress(address, id){
-        return repositorie.update(address, id)
-            .then(result => {
-                return result
-            })
+   async updateAddress(address, id){
+        return result = await repositorie.update(address, id)
     }
 
-    deleteAddress(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteAddress(id){
+        return result = await repositorie.delete(id)
     }
 
-    viewAddress(id){
-        return repositorie.view(id)
-            .then(result => {
-                return result
-            })
+    async viewAddress(id){
+        return result = await repositorie.view(id)
     }
 
     listAddress(){

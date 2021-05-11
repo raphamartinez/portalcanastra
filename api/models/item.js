@@ -2,32 +2,20 @@ const repositorie = require('../repositories/item')
 
 class Item {
 
-    createItem(item){
-        return repositorie.insert(item)
-            .then(result => {
-                return result
-            })
+    async createItem(item){
+        return result = await repositorie.insert(item)
     }
 
-    updateItem(item, id){
-        return repositorie.update(item, id)
-            .then(result => {
-                return result
-            })
+    async updateItem(item, id){
+        return result = await repositorie.update(item, id)
     }
 
-    deleteItem(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteItem(id){
+        return result = await repositorie.delete(id)
     }
 
-    viewItem(id){
-        return repositorie.view(id)
-            .then(result => {
-                return result
-            })
+    async viewItem(id){
+        return result = await repositorie.view(id)
     }
 
     listItem(){

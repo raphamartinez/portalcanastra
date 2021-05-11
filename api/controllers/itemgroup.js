@@ -23,7 +23,7 @@ module.exports = app => {
             .catch(error => res.status(400).json(error))
     })
 
-    app.patch('/itemgroup/:id', (req, res) => {
+    app.put('/itemgroup/:id', (req, res) => {
         const id = req.body.id
         const values = req.body
 

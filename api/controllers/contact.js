@@ -31,7 +31,7 @@ module.exports = app  => {
         .catch(error => res.status(400).json(error))
     })
 
-    app.patch('/contact/:id', (req,res) => {
+    app.put('/contact/:id', (req,res) => {
         const id = req.body.id
         const values = req.body
 

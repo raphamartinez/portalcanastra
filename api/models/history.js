@@ -6,32 +6,20 @@ class History {
         return repositorie.list()
     }
 
-    viewHistory(id){
-        return repositorie.view(id)
-            .then(result => {
-                return result
-            })
+    async viewHistory(id){
+        return result = await repositorie.view(id)
     }
 
-    insertHistory(history){
-        return repositorie.insert(history)
-            .then(result => {
-                return result
-            })
+    async insertHistory(history){
+        return result = await repositorie.insert(history)
     }
 
-    deleteHistory(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteHistory(id){
+        return result = await repositorie.delete(id)
     }
 
-    updateHistory(id, history){
-        return repositorie.update(history, id)
-            .then(result => {
-                return result
-            })
+    async updateHistory(id, history){
+        return result = await repositorie.update(history, id)
     }
 }
 

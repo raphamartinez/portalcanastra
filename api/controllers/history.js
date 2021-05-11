@@ -31,7 +31,7 @@ module.exports = app => {
             .catch(error => res.status(400).json(error))
     })
 
-    app.patch('/history/:id', (req, res) => {
+    app.put('/history/:id', (req, res) => {
         const id = req.body.id
 
         History.updateHistory(id, res)

@@ -2,32 +2,20 @@ const repositorie = require('../repositories/contact')
 
 class Contact {
 
-    insertContact(contact){
-        return repositorie.insert(contact)
-            .then(result => {
-                return result
-            })
+    async insertContact(contact){
+        return result = await repositorie.insert(contact)
     }
 
-    updateContact(contact, id){
-        return repositorie.update(contact, id)
-            .then(result => {
-                return result
-            })
+    async updateContact(contact, id){
+        return result = await repositorie.update(contact, id)
     }
 
-    deleteContact(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteContact(id){
+        return result = await repositorie.delete(id)
     }
 
-    viewContact(id){
-        return repositorie.view(id)
-            .then(result => {
-                return result
-            })
+    async viewContact(id){
+        return result = await repositorie.view(id)
     }
 
     listContact(){

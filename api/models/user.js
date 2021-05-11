@@ -1,47 +1,48 @@
 const moment = require('moment')
 const repositorie = require('../repositories/user')
+const { VerifyMail } = require('./mail')
+const Token = require('./token')
+
+function gererateAddress(address, token) {
+    return `${process.env.BASE_URL}${address}${token}`
+}
 
 class User {
-    
+
     constructor() {
 
     }
 
-    insertUser(user) {
+    async insertUser(user) {
 
-        return repositorie.insert(user)
-            .then(result => {
-                return result
-            })
+        const { id } = await repositorie.insert(user)
+
+        const token = Token.verifyMail.create(id)
+        const address = gererateAddress('login/mailVerify/', token)
+        const mailVerify = new VerifyMail(user, address)
+        mailVerify.sendMail().catch(console.log())
+
+        return user
     }
 
-    deleteUser(id) {
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteUser(id) {
+        return result = await repositorie.delete(id)
     }
 
-    updateUser(id, user) {
+    async updateUser(id, user) {
         if (user.data) {
             user.data = moment(user.data, 'DD/MM/YYYY').format
         }
 
-        return repositorie.update(user, id)
-            .then(result => {
-                return result
-            })
+        return result = await repositorie.update(user, id)
     }
 
     listUsers() {
         return repositorie.list()
     }
 
-    viewUser(id) {
-        return repositorie.view(id)
-            .then(result => {
-                return result
-            })
+    async viewUser(id) {
+        return result = await repositorie.view(id)
     }
 }
 

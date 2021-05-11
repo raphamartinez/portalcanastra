@@ -1,28 +1,38 @@
 const repositorie = require('../repositories/login')
-const blockList = require('../models/redis')
 
 class Login {
 
-    checkAuth(mail, password) {
-        return repositorie.viewMail(mail)
-            .then(user => {
-                return new Promise((resolve, reject) => {
-                    bcrypt.compare(password, user.password, (err, isMatch) => {
-                        if (isMatch) resolve(user) 
-                        else reject(err)
-                    })
-                })
-            })
-            .catch(error => {
-                return error;
-            })
+    async checkMail(mail) {
+        try {
+            return user = await repositorie.viewMail(mail)
+        } catch (error) {
+            return error
+        }
     }
 
-    checkToken(token){
+    checkPassword(password, passHash) {
+        return new Promise((resolve, reject) => {
+            bcrypt.compare(password, passHash, (err, isMatch) => {
+                if (isMatch) resolve(user)
+                else reject(err)
+            })
+        })
+    }
+
+    checkToken(token) {
         const tokenBlack = blockList.contains(token)
-        if(!tokenBlack){
+        if (!tokenBlack) {
             return ('Token inválido')
         }
+    }
+
+    async verifyMail(id){
+        const mailVerify = true
+        return result = await repositorie.verifyMail(mailVerify, id)
+    }
+
+    async viewLogin(id) {
+        return result = await repositorie.view(id)
     }
 }
 

@@ -1,3 +1,6 @@
+require('dotenv').config({path: __dirname + '\\.env', encoding: 'utf8'})
+
+
 const customExpress = require('./api/config/customExpress')
 const connection = require('./api/infrastructure/database/connection')
 const tables = require('./api/infrastructure/database/tables')
@@ -17,7 +20,7 @@ connection.connect((error => {
             app.use(express.static(__dirname + '/public'))
 
             app.get('/', function (req, res) {
-                res.sendFile(__dirname + '/views/login.html');
+                res.sendFile(__dirname + '/views/public/login.html');
                 //__dirname : It will resolve to your project folder.
             });
         })

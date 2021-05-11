@@ -2,25 +2,16 @@ const repositorie = require('../repositories/itemgroup')
 
 class ItemGroup {
 
-    insertItemGroup(itemgroup){
-        return repositorie.insert(itemgroup)
-            .then(result => {
-                return result
-            })
+    async insertItemGroup(itemgroup){
+        return result = await repositorie.insert(itemgroup)
     }
 
-    updateItemGroup(itemgroup, id){
-        return repositorie.update(itemgroup, id)
-            .then(result => {
-                return result
-            })
+    async updateItemGroup(itemgroup, id){
+        return result = await repositorie.update(itemgroup, id)
     }
 
-    deleteItemGroup(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteItemGroup(id){
+        return result = await repositorie.delete(id)
     }
 
     listItemGroup(){

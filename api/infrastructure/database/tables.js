@@ -16,6 +16,35 @@ class Tables {
     this.createTableItem()
     this.createTableAddressClient()
     this.createTableContactClient()
+    this.createTablePowerBI()
+    this.createTableViewPowerBI()
+  }
+
+  createTableViewPowerBI() {
+    const sql = `CREATE TABLE IF NOT EXISTS viewpowerbi (id_viewpowerbi int NOT NULL AUTO_INCREMENT, id_powerbi int NOT NULL, id_user int NOT NULL,
+     dateReg DATETIME NOT NULL, PRIMARY KEY (id_viewpowerbi),  FOREIGN KEY (id_powerbi) REFERENCES powerbi (id_powerbi), 
+     FOREIGN KEY (id_user) REFERENCES user (id_user))`;
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('viewpowerbi table created')
+      }
+    })
+  }
+
+  createTablePowerBI() {
+    const sql = `CREATE TABLE IF NOT EXISTS powerbi (id_powerbi int NOT NULL AUTO_INCREMENT, url VARCHAR (250) NOT NULL, token VARCHAR (250), 
+    idreport VARCHAR (100), dateReg DATETIME NOT NULL, PRIMARY KEY (id_powerbi))`;
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('powerbi table created')
+      }
+    })
   }
 
   createTableProsegur() {
@@ -112,7 +141,7 @@ class Tables {
 
   createTableLogin() {
     const sql = `CREATE TABLE IF NOT EXISTS login (id_login int NOT NULL AUTO_INCREMENT,mail VARCHAR (100) NOT NULL,
-        password VARCHAR (250) NOT NULL, status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_login))`;
+        password VARCHAR (250) NOT NULL, mailVerify int,  status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_login))`;
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -179,8 +208,8 @@ class Tables {
 
   createTableItem() {
     const sql = `CREATE TABLE IF NOT EXISTS item (id_item int NOT NULL AUTO_INCREMENT, code VARCHAR (100) NOT NULL,
-      name VARCHAR (100) NOT NULL, brandCode VARCHAR (50) NOT NULL, unit VARCHAR (10), vatcode VARCHAR (5), type int, cost double, price double, status int NOT NULL, dateReg DATETIME NOT NULL, 
-      id_label int NOT NULL, id_itemGroup int NOT NULL, PRIMARY KEY (id_item),
+      name VARCHAR (100) NOT NULL, brandCode VARCHAR (50) NOT NULL, unit VARCHAR (10), vatcode VARCHAR (5), type int, cost double, price double, 
+      status int NOT NULL, dateReg DATETIME NOT NULL, id_label int NOT NULL, id_itemGroup int NOT NULL, PRIMARY KEY (id_item),
       FOREIGN KEY (id_label) REFERENCES label(id_label), FOREIGN KEY (id_itemGroup) REFERENCES itemGroup(id_itemGroup))`;
 
   this.connection.query(sql, (error) => {

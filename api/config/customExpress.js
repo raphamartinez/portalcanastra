@@ -1,14 +1,11 @@
 const express = require('express')
 const consign = require('consign')
-const passport = require('passport')
-const bearerStrategy = require('passport-http-bearer')
-const redis = require('redis')
 const path = require('path');
 
 module.exports = () => {
-  require('dotenv').config()
 
-  // redis.createClient({ prefix: 'blocklist:' })
+  require('../infrastructure/redis/blocklist')
+  require('../infrastructure/redis/allowlist')
 
   const app = express()
 
@@ -30,19 +27,6 @@ module.exports = () => {
     res.set('X-Powered-By', 'PHP/7.1.7')
     next();
   });
-
-  passport.use(
-    new bearerStrategy(
-      async (token, done) => {
-        try {
-          const payload = jwt.verify(token, process.env.KEY_JWT)
-          const user = await User.viewUser(payload.id)
-          done(null, user)
-        } catch (error) {
-          done(error)
-        }
-      })
-  )
 
   consign({ cwd: path.join(__dirname, '../') })
     .include('models')

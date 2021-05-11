@@ -24,7 +24,7 @@ module.exports = app => {
             .catch(error => res.status(400).json(error))
     })
 
-    app.patch('/office/:id', (req, res) => {
+    app.put('/office/:id', (req, res) => {
         const values = req.body
         const id = req.body.id
 
