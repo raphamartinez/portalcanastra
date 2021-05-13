@@ -19,7 +19,7 @@ module.exports = app  => {
         const values = req.body
 
         Contact.insertContact(values, res)
-        .then(contact => res.status(200).json(contact))
+        .then(contact => res.status(201).json(contact))
         .catch(error => res.status(400).json(error))
     })
 

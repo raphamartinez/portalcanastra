@@ -1,44 +1,59 @@
 const User = require('../models/user')
-
+const middleware = require('../infrastructure/auth/middleware')
 
 module.exports = app => {
 
-    app.get('/users', (req, res) => {
-        User.listUsers()
-            .then(users => res.status(200).json(users))
-            .catch(error => res.status(400).json(error))
+    app.get('/users', [middleware.bearer], async (req, res, next) => {
+        try {
+            const users = await User.listUsers(req)
+            res.status(200).json(users)
+        } catch (error) {
+            next(error)
+        }
     })
 
-    app.post('/user', (req, res) => {
+    app.post('/user', async (req, res, next) => {
         const values = req.body
 
-        User.insertUser(values, res)
-            .then(user => res.status(201).json(user))
-            .catch(error => res.status(400).json(error))
+        try {
+            const user = await User.insertUser(values)
+            res.status(201).json(user)
+        } catch (error) {
+            res.status(400).json(error)
+        }
     })
 
-    app.get('/user/:id', (req, res) => {
-        const id = req.body.id
+    app.get('/user/:id', async (req, res, next) => {
+        const { id } = req.params
 
-        User.viewUser(id, res)
-            .then(user => res.status(200).json(user))
-            .catch(error => res.status(400).json(error))
+        try {
+            const user = await User.viewUser(id)
+            res.status(200).json(user)
+        } catch (error) {
+            res.status(400).json(error)
+        }
     })
 
-    app.put('/user/:id', (req, res) => {
+    app.put('/user/:id', async (req, res, next) => {
         const values = req.body
-        const id = req.body.id
+        const { id } = req.params
 
-        User.updateUser(values, id, res)
-            .then(user => res.status(200).json(user))
-            .catch(error => res.status(400).json(error))
+        try {
+            const user = await User.updateUser(values, id)
+            res.status(200).json(user)
+        } catch (error) {
+            res.status(400).json(error)
+        }
     })
 
-    app.delete('/user/:id', (req, res) => {
-        const id = req.body.id
+    app.delete('/user/:id', async (req, res, next) => {
+        const { id } = req.params
 
-        User.deleteUser(id, res)
-            .then(result => res.status(200).json(result))
-            .catch(error => res.status(400).json(error))
+        try {
+            const user = await User.deleteUser(id)
+            res.status(200).json(user)
+        } catch (error) {
+            res.status(400).json(error)
+        }
     })
 }

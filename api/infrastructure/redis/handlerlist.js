@@ -9,7 +9,7 @@ module.exports = list => {
   return {
     async add(key, value, dateExp) {
       await setAsync(key, value);
-      list.expireAt(key, dateExp);
+      list.expireat(key, dateExp);
     },
 
     async searchValue(key) {

@@ -11,7 +11,7 @@ module.exports = app => {
         const values = req.body
 
         ItemGroup.insertItemGroup(values, res)
-            .then(itemgroup => res.status(200).json(itemgroup))
+            .then(itemgroup => res.status(201).json(itemgroup))
             .catch(error => res.status(400).json(error))
     })
 
