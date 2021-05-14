@@ -1,10 +1,24 @@
 const History = require('../models/history')
 
 module.exports = app => {
-    app.get('/historys', (req, res) => {
-        History.listHistory(res)
-            .then(historys => res.status(200).json(historys))
-            .catch(error => res.status(400).json(error))
+    app.get('/historyDashboard', async (req, res, next) => {
+        try {
+            const history = await History.listHistoryDashboard()
+
+            res.status(200).json(history)
+        } catch (error) {
+            next(error)
+        }
+    })
+
+    app.get('/historys', async (req, res) => {
+        try {
+            const history = await History.listHistory()
+
+            res.status(200).json({ history: history, url: '../admin/dashboard.html' })
+        } catch (error) {
+            next(error)
+        }
     })
 
     app.get('/history/:id', (req, res) => {

@@ -1,37 +1,57 @@
-const repositorie = require('../repositories/history')
+const Repositorie = require('../repositories/history')
+const { InvalidArgumentError, NotFound, InternalServerError } = require('./error')
 
 class History {
 
-    listHistory(){
-        return repositorie.list()
+    async listHistoryDashboard() {
+        try{
+            const count = await Repositorie.countInTheTime()
+            const lastAccess = await Repositorie.lastAccess()
+
+            return { count, lastAccess }
+        }catch (error) {
+            throw new InternalServerError('Error')
+        }
     }
 
-    viewHistory(id){
-        return repositorie.view(id)
-            .then(result => {
-                return result
-            })
+    async viewHistory(id) {
+        try {
+            const history = await Repositorie.viewHistory(id)
+
+            return new History(history)
+        } catch (error) {
+            throw new NotFound('Error')
+        }
     }
 
-    insertHistory(history){
-        return repositorie.insert(history)
-            .then(result => {
-                return result
-            })
+    async insertHistory(history) {
+        try {
+            const result = await Repositorie.insert(history)
+
+            return result
+        } catch (error) {
+            throw new InvalidArgumentError('Error')
+        }
     }
 
-    deleteHistory(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteHistory(id) {
+        try {
+            const result = await Repositorie.delete(id)
+
+            return result
+        } catch (error) {
+            throw new InvalidArgumentError('Error')
+        }
     }
 
-    updateHistory(id, history){
-        return repositorie.update(history, id)
-            .then(result => {
-                return result
-            })
+    async updateHistory(id, history) {
+        try {
+            const result = await Repositorie.update(id, history)
+
+            return result
+        } catch (error) {
+            throw new InvalidArgumentError('Error')
+        }
     }
 }
 

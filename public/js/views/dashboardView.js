@@ -1,4 +1,3 @@
-
 var $ = document.querySelector.bind(document)
 var cores = ['amaraloG', 'pretoG', 'roxoG', 'azulG', 'marimG', 'verdeG', 'laranjaG', 'ouroG', 'cimentoG', 'verdeclaroG']
 
@@ -42,7 +41,7 @@ const showHeader = async () => {
                 <div id="collapseReportes" class="collapse" aria-labelledby="headingTwo"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="" data-btnSimpleBI>Painel de PowerBI</a>
+                    <a class="collapse-item" href="" id="btnSimpleBi" data-btnSimpleBI>Painel de PowerBI</a>
                     </div>
                 </div>
             </li>
@@ -272,8 +271,10 @@ const showHeader = async () => {
                     </ul>
                 </nav>
                 <div class="container-fluid">
+                <div class="row" id="cardHistory"></div>
     <div class="row">
-        <div data-powerbi></div>
+        <div id="powerbi">
+        </div>
     </div>
 </div>
 </div>`
@@ -324,7 +325,59 @@ aria-hidden="true">
 }
 
 
+const showCardHistory = (cardHistory, history) => {
+    cardHistory.innerHTML = ` <div class="col-xl-6 col-md-6 mb-4">
+<div class="card border-left-primary shadow h-100 py-2">
+    <div class="card-body">
+        <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                Historial de Acceso
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">En las ultimas 24 horas había ${history.count.count} accesos</div>
+                <div class="h8 mb-0 font-weight-bold text-gray-600">El último acceso fue ${history.lastAccess.name} a ${history.lastAccess.time}</div>
+            </div>
+            <div class="col-auto">
+                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+            </div>
+        </div>
+    </div>
+</div>
+</div>`
+
+}
+
+const showCardBd = () => {
+    let div = document.createElement('div');
+
+    div.className = "col-xl-6 col-md-6 mb-4"
+
+    div.innerHTML =` 
+    <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                    Actualizacion Ansa BD
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Última actualización de datos hace 1 hora</div>
+                    <div class="h8 mb-0 font-weight-bold text-gray-600">clic en el símbolo para actualizar de nuevo</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-sync fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>`;  
+
+    cardHistory.appendChild(div)
+
+}
+
+
 export const ViewDashboard = {
     showHeader,
-    showFooter
+    showFooter,
+    showCardHistory,
+    showCardBd
 }

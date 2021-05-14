@@ -1,30 +1,39 @@
 const Repositorie = require('../repositories/login')
-const blockList = require('../models/redis')
 const { InvalidArgumentError, NotFound } = require('./error')
 const bcrypt = require('bcrypt')
 const Token = require('./token')
 const Mail = require('./mail')
-const passport = require('passport')
-
 
 class Login {
 
     async viewLogin(id) {
-        const login = await Repositorie.view(id)
-        return login
+        try {
+            const login = await Repositorie.view(id)
+            return login
+        } catch (error) {
+            throw new NotFound('Login not found')
+        }
     }
 
     async generateTokens(id) {
-        const accessToken = Token.access.create(id)
-        const refreshToken = await Token.refresh.create(id)
-        const token = { accessToken, refreshToken }
+        try {
+            const accessToken = Token.access.create(id)
+            const refreshToken = await Token.refresh.create(id)
+            const token = { accessToken, refreshToken }
 
-        return token
+            return token
+        } catch (error) {
+            throw new InternalServerError('Error on generated Tokens')
+        }
     }
 
 
-    async logout(id) {
-
+    async logout(token) {
+        try {
+            await Token.access.invalid(token)
+        } catch (error) {
+            throw new InternalServerError('Error')
+        }
     }
 
     async searchMail(mail) {
@@ -34,11 +43,15 @@ class Login {
         } catch (error) {
             throw new NotFound('Mail not found')
         }
-
     }
 
     async listLogin() {
-        return Repositorie.list()
+        try {
+            return Repositorie.list()
+
+        } catch (error) {
+            throw new InternalServerError('Error on list')
+        }
     }
 
     async insertLogin(data) {
@@ -76,11 +89,10 @@ class Login {
 
             const id = await Token.resetPassword.verify(token)
             const login = await Login.viewLogin(id)
-            await Login.updatePassword(password,id)
-        }catch (error) {
+            await Login.updatePassword(password, id)
+        } catch (error) {
             throw new InvalidArgumentError('Error')
         }
-
     }
 
 
@@ -115,7 +127,6 @@ class Login {
         const costHash = 12
         return bcrypt.hash(password, costHash)
     }
-
 
 }
 

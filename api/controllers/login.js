@@ -1,6 +1,6 @@
 const Login = require('../models/login')
 const Middleware = require('../infrastructure/auth/middleware')
-const { InvalidArgumentError } = require('../models/error')
+const History = require('../models/history')
 const path = require('path')
 
 module.exports = app => {
@@ -11,6 +11,13 @@ module.exports = app => {
             const id_login = req.login.id_login
             const token = await Login.generateTokens(id_login)
             const login = await Login.viewLogin(id_login)
+
+            const history = {
+                description: `Acceso de usuario`,
+                id_login: id_login
+            }
+
+            History.insertHistory(history)
 
             res.status(200).json({ refreshToken: token.refreshToken, accessToken: token.accessToken, url: '../admin/dashboard.html', user: login })
         } catch (error) {

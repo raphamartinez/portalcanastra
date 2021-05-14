@@ -168,8 +168,8 @@ class Tables {
 
   createTableHistory() {
     const sql = `CREATE TABLE IF NOT EXISTS history (id_history int NOT NULL AUTO_INCREMENT, 
-        description VARCHAR (50) NOT NULL, status int NOT NULL, dateReg DATETIME NOT NULL, id_user int NOT NULL, PRIMARY KEY (id_history),
-        FOREIGN KEY (id_user) REFERENCES user(id_user))`;
+        description VARCHAR (50) NOT NULL, status int NOT NULL, dateReg DATETIME NOT NULL, id_login int NOT NULL, PRIMARY KEY (id_history),
+        FOREIGN KEY (id_login) REFERENCES login(id_login))`;
 
     this.connection.query(sql, (error) => {
       if (error) {
