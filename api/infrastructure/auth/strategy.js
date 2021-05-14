@@ -2,21 +2,23 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const BearerStrategy = require('passport-http-bearer').Strategy
 const bcrypt = require('bcrypt')
-const { InvalidArgumentError } = require('../../models/error')
 const Login = require('../../models/login')
 const Token = require('../../models/token')
 
+const { NotAuthorized, InvalidArgumentError } = require('../../models/error')
 
-function verifyUser (usuario) {
-  if (!usuario) {
-    throw new InvalidArgumentError('Não existe usuário com esse e-mail!')
+
+
+function verifyLogin(login) {
+  if (!login) {
+    throw new NotAuthorized()
   }
 }
 
-async function verifyPassword (password, passwordHash) {
+async function verifyPassword(password, passwordHash) {
   const passwordValid = await bcrypt.compare(password, passwordHash)
   if (!passwordValid) {
-    throw new InvalidArgumentError('E-mail ou senha inválidos!')
+    throw new NotAuthorized()
   }
 }
 
@@ -29,26 +31,29 @@ passport.use(
     },
     async (mail, password, done) => {
       try {
-        const user = await Login.buscaPorEmail(mail)
-        verifyUser(user)
-        await verifyPassword(password, user.passwordHash)
-
-        done(null, user)
-      } catch (erro) {
-        done(erro)
+        const login = await Login.checkMail(mail)
+        verifyLogin(login.mail)
+        await verifyPassword(password, login.password)
+        done(null, login)
+      } catch (error) {
+        done(error)
       }
     }
   )
 )
 
 passport.use(
-  new BearerStrategy(async (token, done) => {
+  new BearerStrategy(
+    async (token, done) => {
     try {
       const id = await Token.access.verify(token)
-      const user = await Login.buscaPorId(id)
-      done(null, user, { Token })
-    } catch (erro) {
-      done(erro)
+      const login = await Login.viewLogin(id)
+      done(null, login, { token })
+    } catch (error) {
+      done(error)
     }
   })
 )
+
+
+

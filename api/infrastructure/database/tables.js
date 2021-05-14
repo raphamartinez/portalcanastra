@@ -16,6 +16,7 @@ class Tables {
     this.createTableItem()
     this.createTableAddressClient()
     this.createTableContactClient()
+<<<<<<< HEAD:api/infrastructure/database/tables.js
     this.createTablePowerBI()
     this.createTableViewPowerBI()
   }
@@ -45,6 +46,8 @@ class Tables {
         console.log('powerbi table created')
       }
     })
+=======
+>>>>>>> de55bacec8263a31fbb1ca3beb14ae1bbe34b238:vendor/infrastructure/database/tables.js
   }
 
   createTableProsegur() {
@@ -141,7 +144,11 @@ class Tables {
 
   createTableLogin() {
     const sql = `CREATE TABLE IF NOT EXISTS login (id_login int NOT NULL AUTO_INCREMENT,mail VARCHAR (100) NOT NULL,
+<<<<<<< HEAD:api/infrastructure/database/tables.js
         password VARCHAR (250) NOT NULL, mailVerify int,  status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_login))`;
+=======
+        password VARCHAR (250) NOT NULL, status int NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_login))`;
+>>>>>>> de55bacec8263a31fbb1ca3beb14ae1bbe34b238:vendor/infrastructure/database/tables.js
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -208,8 +215,13 @@ class Tables {
 
   createTableItem() {
     const sql = `CREATE TABLE IF NOT EXISTS item (id_item int NOT NULL AUTO_INCREMENT, code VARCHAR (100) NOT NULL,
+<<<<<<< HEAD:api/infrastructure/database/tables.js
       name VARCHAR (100) NOT NULL, brandCode VARCHAR (50) NOT NULL, unit VARCHAR (10), vatcode VARCHAR (5), type int, cost double, price double, 
       status int NOT NULL, dateReg DATETIME NOT NULL, id_label int NOT NULL, id_itemGroup int NOT NULL, PRIMARY KEY (id_item),
+=======
+      name VARCHAR (100) NOT NULL, brandCode VARCHAR (50) NOT NULL, unit VARCHAR (10), vatcode VARCHAR (5), type int, cost double, price double, status int NOT NULL, dateReg DATETIME NOT NULL, 
+      id_label int NOT NULL, id_itemGroup int NOT NULL, PRIMARY KEY (id_item),
+>>>>>>> de55bacec8263a31fbb1ca3beb14ae1bbe34b238:vendor/infrastructure/database/tables.js
       FOREIGN KEY (id_label) REFERENCES label(id_label), FOREIGN KEY (id_itemGroup) REFERENCES itemGroup(id_itemGroup))`;
 
   this.connection.query(sql, (error) => {

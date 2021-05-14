@@ -1,31 +1,13 @@
-<!DOCTYPE html>
-<html lang="pt">
 
-<head>
+var $ = document.querySelector.bind(document)
+var cores = ['amaraloG', 'pretoG', 'roxoG', 'azulG', 'marimG', 'verdeG', 'laranjaG', 'ouroG', 'cimentoG', 'verdeclaroG']
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=chrome">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="site">
-    <meta name="author" content="raphael martinez batista">
+// let cor = cores[Math.round(Math.random() * 9)]
+let header = document.querySelector('[data-header]')
+let footer = document.querySelector('[data-footer]')
 
-    <title>Ansa Neumáticos</title>
-
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-</head>
+const showHeader = async () => {
+    header.innerHTML = `   
 
 <body id="page-top">
 
@@ -38,7 +20,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
                 <div class="sidebar-brand-icon img-fluid mb-2 mx-auto">
-                    <img src="./img/ansalogomin.png" alt="Ansa Logo">
+                    <img src="../img/ansalogomin.png" alt="Ansa Logo">
                 </div>
             </a>
 
@@ -60,8 +42,7 @@
                 <div id="collapseReportes" class="collapse" aria-labelledby="headingTwo"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Painel de Ventas</a>
-                        <a class="collapse-item" href="">Painel de KPI</a>
+                    <a class="collapse-item" href="" data-btnSimpleBI>Painel de PowerBI</a>
                     </div>
                 </div>
             </li>
@@ -261,7 +242,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray small">Paulo Viana</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray small" data-username></span>
                                 <div class="icon-circle bg-light">
                                     <i class="fas fa-user"></i>
                                 </div>
@@ -289,109 +270,61 @@
                             </div>
                         </li>
                     </ul>
-<<<<<<< HEAD:views/admin/header.html
                 </nav>
-=======
-                </nav>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <!-- Content Row -->
-                    <div class="row">
-                        <iframe width="1000" height="500.25"
-                            src="https://app.powerbi.com/reportEmbed?reportId=fbff6304-84d4-4a5f-b615-628b06d2d411&autoAuth=true&ctid=7c233ef6-b75d-4d21-8319-f199fda36ea0&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLWJyYXppbC1zb3V0aC1iLXByaW1hcnktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQvIn0%3D"
-                            frameborder="0" allowFullScreen="true"></iframe>
-                        <div id="embedContainer"></div>
-                    </div>
-
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright Raphael Martinez &copy; America Neumaticos S.A 2021</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
+    <div class="row">
+        <div data-powerbi></div>
     </div>
-    <!-- End of Page Wrapper -->
+</div>
+</div>`
+}
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cerrar sesión?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Seleccione salir si desea finalizar la sesión.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="login.html">Salir</a>
-                </div>
-            </div>
-        </div>
+const showFooter = async () => {
+    footer.innerHTML = `<footer class="sticky-footer bg-white">
+<div class="container my-auto">
+    <div class="copyright text-center my-auto">
+        <span>Copyright Raphael Martinez &copy; America Neumaticos S.A 2021</span>
     </div>
+</div>
+</footer>
+<!-- End of Footer -->
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</div>
+<!-- End of Content Wrapper -->
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+</div>
+<!-- End of Page Wrapper -->
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+<i class="fas fa-angle-up"></i>
+</a>
 
-    <script>
-
-        powerbi.bootstrap(
-            reportContainerDivElement,
-            {
-                type: 'dashboard',
-                embedUrl: "https://app.powerbi.com/reportEmbed?reportId=658b03ef-eabc-497a-8171-5ff6a105ad47&autoAuth=true&ctid=7c233ef6-b75d-4d21-8319-f199fda36ea0&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLWJyYXppbC1zb3V0aC1iLXByaW1hcnktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQvIn0%3D"
-            }
-        );
-
-        // Set up the configuration object that determines what to embed and how to embed it.
-        let embedConfiguration = {
-            accessToken: string,
-            embedUrl: string,
-            id: "powerbi",
-            permissions: 'Read',
-            tokenType: 'models.TokenType.Aad',
-            type: 'report'
-        };
-
-        // Get a reference to the HTML element that contains the embedded report.
-        let embedContainer = $('#embedContainer')[0];
-
-        // Embed the report.
-        let report = powerbi.embed(embedContainer, embedConfiguration);
-    </script>
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Cerrar sesión?</h5>
+    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">Seleccione salir si desea finalizar la sesión.</div>
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+    <a class="btn btn-primary" href="../public/login.html">Salir</a>
+</div>
+</div>
+</div>
+</div>
+`
+}
 
 
-</body>
-
-</html>
->>>>>>> de55bacec8263a31fbb1ca3beb14ae1bbe34b238:views/dashboard.html
+export const ViewDashboard = {
+    showHeader,
+    showFooter
+}

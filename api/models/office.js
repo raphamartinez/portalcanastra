@@ -2,20 +2,32 @@ const repositorie = require('../repositories/office')
 
 class Office {
 
-    async createOffice(office){
-        return result = await repositorie.insert(office)
+    createOffice(office){
+        return repositorie.insert(office)
+            .then(result => {
+                return result
+            })
     }
 
-    async updateOffice(office, id){
-        return result = await repositorie.update(office, id)
+    updateOffice(office, id){
+        return repositorie.update(office, id)
+            .then(result => {
+                return result
+            })
     }
 
-    async deleteOffice(id){
-        return result = await repositorie.delete(id)
+    deleteOffice(id){
+        return repositorie.delete(id)
+            .then(result => {
+                return result
+            })
     }
 
-    async viewOffice(id){
-        return result = await repositorie.view(id)
+    viewOffice(id){
+        return repositorie.view(id)
+            .then(result => {
+                return result
+            })
     }
 
     listOffice(){

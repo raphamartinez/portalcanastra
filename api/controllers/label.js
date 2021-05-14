@@ -11,7 +11,7 @@ module.exports = app => {
         const values = req.body
 
         Label.insertLabel(values, res)
-            .then(label => res.status(200).json(label))
+            .then(label => res.status(201).json(label))
             .catch(error => res.status(400).json(error))
     })
 

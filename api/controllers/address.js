@@ -19,7 +19,7 @@ module.exports = app  => {
         const values = req.body
 
         Address.createAddress(values, res)
-        .then(address => res.status(200).json(address))
+        .then(address => res.status(201).json(address))
         .catch(error => res.status(400).json(error))
     })
 
