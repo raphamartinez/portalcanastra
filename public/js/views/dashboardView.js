@@ -1,7 +1,3 @@
-var $ = document.querySelector.bind(document)
-var cores = ['amaraloG', 'pretoG', 'roxoG', 'azulG', 'marimG', 'verdeG', 'laranjaG', 'ouroG', 'cimentoG', 'verdeclaroG']
-
-// let cor = cores[Math.round(Math.random() * 9)]
 let header = document.querySelector('[data-header]')
 let footer = document.querySelector('[data-footer]')
 
@@ -338,7 +334,7 @@ const showCardHistory = (cardHistory, history) => {
                 <div class="h8 mb-0 font-weight-bold text-gray-600">El último acceso fue ${history.lastAccess.name} a ${history.lastAccess.time}</div>
             </div>
             <div class="col-auto">
-                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+            <a><i class="fas fa-calendar fa-2x text-gray-300"></i></a>
             </div>
         </div>
     </div>
@@ -352,7 +348,7 @@ const showCardBd = () => {
 
     div.className = "col-xl-6 col-md-6 mb-4"
 
-    div.innerHTML =` 
+    div.innerHTML = ` 
     <div class="card border-left-info shadow h-100 py-2">
         <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -364,11 +360,11 @@ const showCardBd = () => {
                     <div class="h8 mb-0 font-weight-bold text-gray-600">clic en el símbolo para actualizar de nuevo</div>
                 </div>
                 <div class="col-auto">
-                    <i class="fas fa-sync fa-2x text-gray-300"></i>
+                    <a><i class="fas fa-sync fa-2x text-gray-300"></i></a>
                 </div>
             </div>
         </div>
-    </div>`;  
+    </div>`;
 
     cardHistory.appendChild(div)
 

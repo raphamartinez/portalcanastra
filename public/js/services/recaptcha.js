@@ -1,5 +1,5 @@
 
 
 function onSubmit(token) {
-    document.getElementById("form").submit();
+    document.querySelector('[data-form]')
 }
