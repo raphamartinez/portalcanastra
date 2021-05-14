@@ -31,7 +31,7 @@ passport.use(
     },
     async (mail, password, done) => {
       try {
-        const login = await Login.checkMail(mail)
+        const login = await Login.searchMail(mail)
         verifyLogin(login.mail)
         await verifyPassword(password, login.password)
         done(null, login)

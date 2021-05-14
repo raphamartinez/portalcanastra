@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/raphamartinez/Site-Ansa.git"
+    "url": "git+https://github.com/raphamartinez/ansanode.git"
   },
   "author": "raphael martinez batista",
   "license": "MIT",
@@ -31,11 +31,8 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mysql2": "^2.2.5",
-<<<<<<< HEAD
     "node-openvpn": "^0.1.1",
     "nodemailer": "^6.6.0",
-=======
->>>>>>> de55bacec8263a31fbb1ca3beb14ae1bbe34b238
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
