@@ -19,7 +19,7 @@ module.exports = app => {
         const values = req.body
 
         History.insertHistory(values, res)
-            .then(history => res.status(201).json(history))
+            .then(history => res.status(200).json(history))
             .catch(error => res.status(400).json(error))
     })
 

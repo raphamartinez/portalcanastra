@@ -19,7 +19,7 @@ module.exports = app => {
         const values = req.body
 
         Item.createItem(values, res)
-            .then(item => res.status(201).json(item))
+            .then(item => res.status(200).json(item))
             .catch(error => res.status(400).json(error))
     })
 

@@ -42,23 +42,12 @@ class VerifyMail extends Mail {
         super()
         this.from = '"Ansa" noreply@ansa.com.br'
         this.to = login.mail
-        this.subject = 'Prosegur'
-        this.text = `Hello, placa: ${veiculo} na data ${data}`
-        this.html = `<h1>Hello<h1>, click the link below to verify: <a href="${address}">${address}</a>`
-    }
-}
-
-class ResetPasswordMail extends Mail {
-
-    constructor(user, token) {
-        super()
-        this.from = '"Ansa" noreply@ansa.com.br'
-        this.to = login.mail
-        this.subject = 'Password Reset'
-        this.text = `Hello you asked to reset your password, click the link below to reset: ${token}`
-        this.html = `<h1>Hello you asked to reset your password<h1>, click the link below to reset: <a href="${token}">${token}</a>`
+        this.subject = 'Mail Verify'
+        this.text = `Hello, verify your mail in the link in the right: ${address}`
+        this.html = `<h1>Hello<h1>, verify your mail in the link in the right: <a href="${address}">${address}</a>`
     }
 }
 
 
-module.exports = { VerifyMail, ResetPasswordMail }
+
+module.exports = { VerifyMail }

@@ -17,8 +17,7 @@ class User {
     }
 
     view(id) {
-        const sql = `SELECT US.name, US.perfil, DATE_FORMAT(US.dateBirthday, '%d/%m/%Y') as dateBirthday, DATE_FORMAT(US.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM ansa.login LO, ansa.user US WHERE 
-        US.id_login = LO.id_login and LO.id_login = ${id}`
+        const sql = `SELECT * FROM user where id_user = ${id}`
         return query(sql)
     }
 

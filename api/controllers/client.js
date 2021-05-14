@@ -19,7 +19,7 @@ module.exports = app => {
         const values = req.body
 
         Client.createClient(values, res)
-            .then(client => res.status(201).json(client))
+            .then(client => res.status(200).json(client))
             .catch(error => res.status(400).json(error))
     })
 

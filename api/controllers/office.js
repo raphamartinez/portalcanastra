@@ -20,7 +20,7 @@ module.exports = app => {
         const values = req.body
 
         Office.createOffice(values, res)
-            .then(office => res.status(201).json(office))
+            .then(office => res.status(200).json(office))
             .catch(error => res.status(400).json(error))
     })
 
