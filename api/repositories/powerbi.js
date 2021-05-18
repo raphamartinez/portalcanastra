@@ -4,15 +4,16 @@ const { InvalidArgumentError, InternalServerError, NotFound } = require('../mode
 class PowerBi {
     async insert(powerbi) {
         try {
+            console.log(powerbi)
+
             const sql = 'INSERT INTO ansa.powerbi (url, title, type, dateReg) values (?, ?, ?, now())'
             await query(sql, [powerbi.url, powerbi.title, powerbi.type])
 
             const sqlId = 'select LAST_INSERT_ID() as id_powerbi from ansa.powerbi LIMIT 1'
             const obj = await query(sqlId)
-
             const sqlView = 'INSERT INTO ansa.viewpowerbi (id_powerbi, id_login, dateReg) values ( ?, ?, now() )'
             await query(sqlView,[obj[0].id_powerbi, powerbi.id_login])
-            
+
             return true
         } catch (error) {
             throw new InvalidArgumentError(error)
