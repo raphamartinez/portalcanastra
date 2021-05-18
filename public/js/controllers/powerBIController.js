@@ -4,6 +4,14 @@ import { Service } from "../services/powerbiService.js"
 const btn = document.getElementById('btnSimpleBi')
 const cardHistory = document.querySelector('[data-card]')
 
+window.modalDeletePowerBi = modalDeletePowerBi
+window.listBiUser = listBiUser
+window.viewBi = viewBi
+window.editBi = editBi
+window.addPowerBi = addPowerBi
+window.editPowerBi = editPowerBi
+window.modalEditPowerBi = modalEditPowerBi
+window.deletePowerBi = deletePowerBi
 
 btn.addEventListener('click', async (event) => {
     event.preventDefault()
@@ -37,9 +45,6 @@ btn.addEventListener('click', async (event) => {
     }
 })
 
-window.listBiUser = listBiUser
-
-
 async function listBiUser(event) {
     event.preventDefault()
 
@@ -55,7 +60,7 @@ async function listBiUser(event) {
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
-        title.innerHTML = `Lista de PowerBI - ${name}`
+        title.innerHTML = `Lista de Informes - ${name}`
         head.innerHTML = " "
         body.innerHTML = " "
         powerbi.innerHTML = " "
@@ -77,8 +82,6 @@ async function listBiUser(event) {
 
 }
 
-window.viewBi = viewBi
-
 function viewBi(event) {
     event.preventDefault()
 
@@ -98,8 +101,6 @@ function viewBi(event) {
     <iframe width="1140" height="600" src="${url}" frameborder="0" allowFullScreen="true"></iframe>`
 }
 
-window.editBi = editBi
-
 async function editBi(event) {
     event.preventDefault()
 
@@ -117,8 +118,6 @@ async function editBi(event) {
     const modalEdit = document.getElementById('editpowerbi')
     modalEdit.show()
 }
-
-window.addPowerBi = addPowerBi
 
 async function addPowerBi(event) {
     try {
@@ -147,8 +146,6 @@ async function addPowerBi(event) {
     }
 }
 
-window.modalEditPowerBi = modalEditPowerBi
-
 async function modalEditPowerBi(event) {
     try {
         const btn = event.currentTarget
@@ -165,8 +162,6 @@ async function modalEditPowerBi(event) {
 
     }
 }
-
-window.editPowerBi = editPowerBi
 
 async function editPowerBi(event) {
     event.preventDefault()
@@ -194,9 +189,6 @@ async function editPowerBi(event) {
     }
 }
 
-
-window.modalDeletePowerBi = modalDeletePowerBi
-
 async function modalDeletePowerBi(event) {
     try {
         const btn = event.currentTarget
@@ -206,8 +198,6 @@ async function modalDeletePowerBi(event) {
     } catch (error) {
     }
 }
-
-window.deletePowerBi = deletePowerBi
 
 async function deletePowerBi(event) {
     event.preventDefault()
