@@ -1,6 +1,7 @@
 const context = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
 const url = window.location.host;
-const protocol = window.location.protocol
+const split = document.URL.split("/")
+const protocol = split[0]
 
 const insertUser =  async (user) => {
     const data = await fetch(`${protocol}//${url}/user` , {
