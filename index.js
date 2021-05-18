@@ -13,7 +13,7 @@ connection.connect((error => {
         const app = customExpress()
 
         tables.init(connection)
-        app.listen(443, () => {
+        app.listen(3000, () => {
 
             app.use(express.static(__dirname + '/public'))
             app.use(express.static(__dirname + '/views'))
