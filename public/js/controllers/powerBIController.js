@@ -190,6 +190,8 @@ async function editPowerBi(event) {
 }
 
 async function modalDeleteBi(event) {
+    event.preventDefault()
+    
     try {
         const btn = event.currentTarget
         const id = btn.getAttribute("data-id_powerbi")

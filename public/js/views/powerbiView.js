@@ -97,7 +97,7 @@ const listPowerBi = (powerbi) => {
 
     const content =
         `
-        <td><a onclick="viewBi(event)" href="#" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#cbccce;"></i></a></td>
+        <td><a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#cbccce;"></i></a></td>
         <td>${powerbi.title}</td>
         <td>${powerbi.type}</td>
         <td>${powerbi.dateReg}</td>
@@ -113,9 +113,9 @@ const listPowerBiAdmin = (powerbi) => {
     const content =
         `
         <td>
-        <a onclick="viewBi(event)" href="#" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>
-        <a onclick="modalEditBi(event)" data-toggle="modal" data-target="#editpowerbi" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32;"></i></a>
-        <a onclick="modalDeleteBi(event)" data-toggle="modal" data-target="#deletepowerbi" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
+        <a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>
+        <a data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32;"></i></a>
+        <a data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
         </td>
         <td>${powerbi.title}</td>
         <td>${powerbi.typedesc}</td>
