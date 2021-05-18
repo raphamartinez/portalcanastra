@@ -1,29 +1,55 @@
 const query = require('../infrastructure/database/queries')
+const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 class Office {
-    insert(office) {
-        const sql = 'INSERT INTO office set ?'
-        return query(sql,office)
+    
+    async insert(office) {
+        try {
+            const sql = 'INSERT INTO office (name, status, dateReg) set (?, ?, now())'
+            const result = await query(sql, [office.name, office.status])
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 
-    delete(id) {
-        const sql = `DELETE from office WHERE id_office = ${id}`
-        return query(sql)
+    async delete(id_office) {
+        try {
+            const sql = `DELETE from office WHERE id_office = ${id_office}`
+            const result = await query(sql)
+            return result[0]
+        } catch (error) {
+            throw new NotFound(error)
+        }
     }
 
-    update(office,id) {
-        const sql = 'UPDATE office SET ? WHERE id_office = ?'
-        return query(sql,[office, id])
+    async update(office) {
+        try{
+            const sql = 'UPDATE office SET name = ?  WHERE id_office = ?'
+            const result = await query(sql, [office.name, office.id_office])
+            return result[0]
+        }catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 
-    view(id) {
-        const sql = `SELECT * FROM office where id_office = ${id}`
-        return query(sql)
+    async view(id_office) {
+        try{
+            const sql = `SELECT * FROM office where id_office = ${id_office}`
+            const result = await query(sql)
+            return result[0]
+        }catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 
     list() {
-        const sql = 'SELECT * FROM office'
-        return query(sql)
+        try {
+            const sql = `SELECT FF.id_office, FF.code, FF.name, DATE_FORMAT(FF.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM ansa.office FF WHERE FF.status = 1`
+            return query(sql)
+        } catch (error) {
+            throw new InternalServerError(error)
+        }
     }
 }
 

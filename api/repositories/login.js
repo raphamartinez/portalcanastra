@@ -1,52 +1,90 @@
 const query = require('../infrastructure/database/queries')
+const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 class Login {
-    insert(login) {
-        const sql = 'INSERT INTO login set ?'
-        return query(sql, login)
+    
+    async insert(login) {
+        try{
+            const sql = 'INSERT INTO ansa.login (mail, password, mailVerify, status, dateReg ) values (?, ?, ?, ?, now())'
+            await query(sql, [login.mail, login.password, login.mailVerify, login.status])
+           
+            const sqlId = 'select LAST_INSERT_ID() as id_login from ansa.login LIMIT 1'
+            const id = await query(sqlId)
+           
+            return id[0]
+        }catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 
-    delete(id) {
-        const sql = `DELETE from login WHERE id_login = ${id}`
-        return query(sql)
+    async delete(id_login) {
+        try {
+            const sql = `DELETE from login WHERE id_login = ${id_login}`
+            const result = await query(sql)
+            return result[0]
+        }catch (error) {
+            throw new InternalServerError(error)
+        }
     }
 
-    update(login, id) {
-        const sql = 'UPDATE login SET ? WHERE id_login = ?'
-        return query(sql, [login, id])
+    async update(login) {
+        try {
+            const sql = 'UPDATE login SET mail = ? WHERE id_login = ?'
+            const result = await query(sql, [login.mail, login.id_login])
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
+
     }
 
-    updatePassword(id, password) {
-        const sql = 'UPDATE login SET password = ? WHERE id_login = ?'
-        const result = query(sql, [password, id])
-
-        return result[0]
+    async updatePassword(id_login, password) {
+        try {
+            const sql = 'UPDATE login SET password = ? WHERE id_login = ?'
+            const result = await query(sql, [password, id_login])
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 
-    async view(id) {
-        const sql = `SELECT US.name FROM ansa.login LO, ansa.user US where US.id_login = LO.id_login and LO.id_login = ${id}`
-        const result = await query(sql)
-
-        return result[0]
+    async view(id_login) {
+        try {
+            const sql = `SELECT US.name FROM ansa.login LO, ansa.user US where US.id_login = LO.id_login and LO.id_login = ${id_login}`
+            const result = await query(sql)
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 
     list() {
-        const sql = 'SELECT * FROM login'
-        return query(sql)
+        try {
+            const sql = 'SELECT * FROM login'
+            return query(sql)
+        } catch (error) {
+            throw new InternalServerError(error)
+        }
     }
 
     async viewMail(mail) {
-        const sql = `SELECT * FROM login where mail = '${mail}'`
-        const result = await query(sql)
-
-        return result[0]
+        try {
+            const sql = `SELECT * FROM login where mail = '${mail}'`
+            const result = await query(sql)
+            return result[0]
+        } catch (error) {
+            throw new NotFound(error)
+        }
     }
 
-    async verifyMail(mail,id) {
-        const sql = `UPDATE login SET mailVeify = ? WHERE id_login = ?`
-        const result = await query(sql, [mail, id])
-
-        return result[0]
+    async verifyMail(mail, id_login) {
+        try {
+            const sql = `UPDATE login SET mailVeify = ? WHERE id_login = ?`
+            const result = await query(sql, [mail, id_login])
+            return result[0]
+        } catch (error) {
+            throw new InternalServerError(error)
+        }
     }
 
 }

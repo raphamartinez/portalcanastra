@@ -1,43 +1,44 @@
 const query = require('../infrastructure/database/queries')
+const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 class History {
     async insert(history) {
-        const sql = 'INSERT INTO history (description, status, dateReg, id_login) values (?, 1, now(), ?)'
-        const result = query(sql,[history.description, history.id_login])
-
-        return result[0]
-    }
-
-    delete(id) {
-        const sql = `DELETE from history WHERE id_history = ${id}`
-        return query(sql)
-    }
-
-    update(history,id) {
-        const sql = 'UPDATE history SET ? WHERE id_history = ?'
-        return query(sql,[history, id])
-    }
-
-    view(id) {
-        const sql = `SELECT * FROM history where id_history = ${id}`
-        return query(sql)
+        try{
+            const sql = 'INSERT INTO history (description, status, dateReg, id_login) values (?, 1, now(), ?)'
+            const result = query(sql,[history.description, history.id_login])
+            return result[0]
+        }catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 
     list() {
-        const sql = `SELECT HI.id_history, HI.description, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as time, US.name FROM ansa.history HI, ansa.user US WHERE US.id_login = HI.id_login and HI.status = 1`
-        return query(sql)
+        try{
+            const sql = `SELECT HI.id_history, HI.description, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as dateReg, US.name FROM ansa.history HI, ansa.user US WHERE US.id_login = HI.id_login and HI.status = 1 ORDER BY HI.id_history DESC`
+            return query(sql)
+        }catch (error) {
+            throw new InternalServerError(error)
+        }
     }
 
     async countInTheTime() {
-        const sql = `SELECT COUNT(id_history) as count FROM ansa.history WHERE dateReg < DATE_ADD(now(), INTERVAL 1 DAY)`
-        const result = await query(sql)
-        return result[0]
+        try{
+            const sql = `SELECT COUNT(id_history) as count FROM ansa.history WHERE dateReg < DATE_ADD(now(), INTERVAL 1 DAY)`
+            const result = await query(sql)
+            return result[0]
+        }catch (error) {
+            throw new InternalServerError(error)
+        }
     }
 
     async lastAccess() {
-        const sql = `SELECT US.name, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as time  FROM ansa.user US, ansa.history HI, ansa.login LO WHERE HI.id_login = LO.id_login and LO.id_login = US.id_login ORDER BY HI.dateReg DESC LIMIT 1`
-        const result = await query(sql)
-        return result[0]
+        try{
+            const sql = `SELECT US.name, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as time  FROM ansa.user US, ansa.history HI, ansa.login LO WHERE HI.id_login = LO.id_login and LO.id_login = US.id_login ORDER BY HI.dateReg DESC LIMIT 1`
+            const result = await query(sql)
+            return result[0]
+        }catch (error) {
+            throw new InternalServerError(error)
+        }
     }
 }
 

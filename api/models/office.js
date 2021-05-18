@@ -1,39 +1,62 @@
-const repositorie = require('../repositories/office')
+const Repositorie = require('../repositories/office')
+const { InvalidArgumentError, InternalServerError, NotFound } = require('./error')
 
 class Office {
 
-    createOffice(office){
-        return repositorie.insert(office)
-            .then(result => {
-                return result
-            })
+    async createOffice(data) {
+        try {
+            const office = {
+                name: data.office,
+                status: 1
+            }
+
+            const result = await Repositorie.insert(office)
+            return result
+        } catch (error) {
+            throw new InvalidArgumentError('Error')
+        }
     }
 
-    updateOffice(office, id){
-        return repositorie.update(office, id)
-            .then(result => {
-                return result
-            })
+    async updateOffice(data, id_office) {
+        try{
+
+            const office = {
+                id_office: id_office, 
+                name: data.name,
+            }
+
+            const result = await Repositorie.update(office)
+            return result
+        }catch(error){
+            throw new InvalidArgumentError('Error')
+        }
     }
 
-    deleteOffice(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    async deleteOffice(id_office) {
+        try{
+            const result = await Repositorie.delete(id_office)
+            return result
+        }catch(error){
+            throw new NotFound('Error')
+        }
     }
 
-    viewOffice(id){
-        return repositorie.view(id)
-            .then(result => {
-                return result
-            })
+    async viewOffice(id_office) {
+        try{
+            const result = await Repositorie.view(id_office)
+            return result
+        }catch(error){
+            throw new NotFound('Error')
+        }
     }
 
-    listOffice(){
-        return repositorie.list()
+    listOffice() {
+        try {
+            return Repositorie.list()
+        } catch (error) {
+            throw new InternalServerError('Error')
+        }
     }
-
 }
 
 module.exports = new Office

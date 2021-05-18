@@ -1,35 +1,24 @@
-//==============GET SEND====================
-const GetService = (url) => {
-    return fetch(url)
-    .then(response => {
-       return response.json();
-    }).then(response => {
-        return response
-    })
-}
-
-//==============POST SEND====================
-
-const PostService = (url, dados = []) => {
-
-    let formData = new FormData();
-    
-    for(var key in dados){
-        formData.append(key, dados[key]);
+const GetService = async (url) => {
+    try {
+        const result = await fetch(url)
+        return result.json()
+    } catch (error) {
+        return error
     }
-    var res;
-    fetch(url, {
-    method: "POST",
-    body: formData
-    })
-    .then(response => {
-        return response.json(); 
-    }).then(response => {
-        return response
-    });
 }
 
-//==========EXPORT FUNCTIONS=================
+const PostService = (url, data, method) => {
+    try {
+        const result = await fetch(url, {
+            method: method,
+            body: data
+        })
+        return result.json()
+    } catch (error) {
+        return error
+    }
+}
+
 
 export const Services = {
     GetService,

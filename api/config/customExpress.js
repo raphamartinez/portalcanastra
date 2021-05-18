@@ -50,10 +50,10 @@ module.exports = () => {
   // });
 
   // Resposta Fake para o coockie X-Powered-By
-  // app.use((req, res, next) => {
-  //   res.setHeader('X-Powered-By', 'PHP/7.1.7')
-  //   next();
-  // });
+  app.use((req, res, next) => {
+    res.setHeader('X-Powered-By', 'PHP/7.1.7')
+    next();
+  });
 
   // Resposta Fake para o coockie X-Powered-By
   app.use((req, res, next) => {

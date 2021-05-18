@@ -6,9 +6,9 @@ const Mail = require('./mail')
 
 class Login {
 
-    async viewLogin(id) {
+    async viewLogin(id_login) {
         try {
-            const login = await Repositorie.view(id)
+            const login = await Repositorie.view(id_login)
             return login
         } catch (error) {
             throw new NotFound('Login not found')
@@ -58,9 +58,14 @@ class Login {
         try {
             const password = generatePasswordHash(data.password)
 
-            data.password = password
+            const login = {
+                mail: data.mail,
+                password: password,
+                mailVeify: 1,
+                status: 1
+            }
 
-            const result = await Repositorie.insert(data)
+            const result = await Repositorie.insert(login)
 
             return result
         } catch (error) {
@@ -72,23 +77,20 @@ class Login {
         try {
             const login = await Repositorie.viewMail(mail)
             const token = await Token.resetPassword.create(login.id_login)
-            const mail = Mail.ResetPasswordMail(login, token)
+            Mail.ResetPasswordMail(login, token)
         } catch (error) {
             throw new NotFound('Mail not found')
         }
     }
 
-    async changePassword(req) {
+    async changePassword(token, password) {
         try {
-            const token = req.body.token
-            const password = req.body.password
-
             if (typeof token !== 'string' || token.lenght === 0) {
                 throw new InvalidArgumentError('O token está inválido')
             }
 
             const id = await Token.resetPassword.verify(token)
-            const login = await Login.viewLogin(id)
+            await Login.viewLogin(id)
             await Login.updatePassword(password, id)
         } catch (error) {
             throw new InvalidArgumentError('Error')
@@ -96,13 +98,13 @@ class Login {
     }
 
 
-    async updatePassword(password, id) {
+    async updatePassword(password, id_login) {
         try {
             const passwordHash = generatePasswordHash(password)
 
             password = passwordHash
 
-            const result = await Repositorie.updatePassword(password, id)
+            const result = await Repositorie.updatePassword(password, id_login)
 
             return result
         } catch (error) {
@@ -111,11 +113,11 @@ class Login {
 
     }
 
-    async verifyMail(id) {
+    async verifyMail(id_login) {
         try {
             const mail = true
 
-            const result = await Repositorie.verifyMail(mail, id)
+            const result = await Repositorie.verifyMail(mail, id_login)
 
             return result
         } catch (error) {

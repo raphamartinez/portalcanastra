@@ -1,44 +1,60 @@
 const User = require('../models/user')
 
-
 module.exports = app => {
 
-    app.get('/users', (req, res) => {
-        User.listUsers()
-            .then(users => res.status(200).json(users))
-            .catch(error => res.status(400).json(error))
+    app.get('/users', async (req, res, next) => {
+
+        try {
+            const users = await User.listUsers()
+            res.status(200).json(users)
+        } catch (error) {
+            next(error)
+        }
     })
 
-    app.post('/user', (req, res) => {
-        const values = req.body
+    app.get('/user/:id', async (req, res, next) => {
+        try {
+            const id = req.params.id
 
-        User.insertUser(values, res)
-            .then(user => res.status(201).json(user))
-            .catch(error => res.status(400).json(error))
+            const user = await User.viewUser(id)
+            res.status(200).json(user)
+        } catch (error) {
+            next(error)
+        }
     })
 
-    app.get('/user/:id', (req, res) => {
-        const id = req.body.id
+    app.post('/user', async (req, res, next) => {
+        try {
+            const data = req.body
 
-        User.viewUser(id, res)
-            .then(user => res.status(200).json(user))
-            .catch(error => res.status(400).json(error))
+            const result = await User.insertUser(data)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
     })
 
-    app.patch('/user/:id', (req, res) => {
-        const values = req.body
-        const id = req.body.id
+    app.put('/user/:id', async (req, res, next) => {
 
-        User.updateUser(values, id, res)
-            .then(user => res.status(200).json(user))
-            .catch(error => res.status(400).json(error))
+        try {
+            const values = req.body
+            const id = req.params.id
+
+            const user = await User.updateUser(values, id)
+            res.status(200).json(user)
+        } catch (error) {
+            next(error)
+        }
     })
 
-    app.delete('/user/:id', (req, res) => {
-        const id = req.body.id
+    app.delete('/user/:id', async(req, res, next) => {
+        try {
+            const id = req.params.id
 
-        User.deleteUser(id, res)
-            .then(result => res.status(200).json(result))
-            .catch(error => res.status(400).json(error))
+            const result = await User.deleteUser(id)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
     })
 }

@@ -2,42 +2,57 @@ const Office = require('../models/office')
 
 module.exports = app => {
 
-    app.get('/offices', (req, res) => {
-        Office.listOffice(res)
-            .then(offices => res.status(200).json(offices))
-            .catch(error => res.status(400).json(error))
+    app.get('/offices', async (req, res, next) => {
+        try {
+            const offices = await Office.listOffice()
+            res.status(200).json(offices)
+        } catch (error) {
+            next(error)
+        }
     })
 
-    app.get('/office/:id', (req, res) => {
-        const id = req.body.id
+    app.get('/office/:id', async (req, res, next) => {
+        try {
+            const id_office = req.params.id
 
-        User.viewUser(id, res)
-            .then(office => res.status(200).json(office))
-            .catch(error => res.status(400).json(error))
+            const office = await User.viewUser(id_office)
+            res.status(200).json(office)
+        } catch (error) {
+            next(error)
+        }
     })
 
-    app.post('/office', (req, res) => {
-        const values = req.body
+    app.post('/office', async (req, res, next) => {
+        try {
+            const data = req.body
 
-        Office.createOffice(values, res)
-            .then(office => res.status(201).json(office))
-            .catch(error => res.status(400).json(error))
+            const result = await Office.createOffice(data)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
     })
 
-    app.put('/office/:id', (req, res) => {
-        const values = req.body
-        const id = req.body.id
+    app.put('/office/:id', async (req, res, next) => {
+        try {
+            const data = req.body
+            const id_office = req.params.id
 
-        Office.updateOffice(values, id, res)
-            .then(office => res.status(200).json(office))
-            .catch(error => res.status(400).json(error))
+            const result = await Office.updateOffice(data, id_office)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
     })
 
-    app.delete('/office/:id', (req, res) => {
-        const id = req.body.id
+    app.delete('/office/:id', async (req, res, next) => {
+        try {
+            const id_office = req.params.id
 
-        Office.deleteOffice(id, res)
-            .then(result => res.status(200).json(result))
-            .catch(error => res.status(400).json(error))
+            const result = await Office.deleteOffice(id_office)
+            res.status(200).json(result)
+        } catch (error) {
+            next(error)
+        }
     })
 }
