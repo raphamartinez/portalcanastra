@@ -75,38 +75,33 @@ class User {
     async listUsers() {
         try {
             let data = await Repositorie.list()
-            let count
 
-            data.forEach(user => {
+            data.forEach(async user => {
 
-                RepositorieBi.count(user.id_login)
-                    .then(obj => {
-                        count = obj[0].count
-                    }).catch(error => {
-                        throw new InternalServerError('Error')
-                    })
+                const count = await RepositorieBi.count(user.id_login)
 
+console.log(count)
                 user['count'] = count
 
                 switch (user.perfil) {
-                    case 1: user.perfil = "admin"
+                    case 1: user['perfilDesc'] = "admin"
                         break
 
-                    case 2: user.perfil = "vendedor"
+                    case 2: user['perfilDesc'] = "vendedor"
                         break
 
-                    case 3: user.perfil = "depositero"
+                    case 3: user['perfilDesc'] = "depositero"
                         break
 
-                    case 4: user.perfil = "gerente"
+                    case 4: user['perfilDesc'] = "gerente"
                         break
 
-                    case 5: user.perfil = "personal administrativo"
+                    case 5: user['perfilDesc'] = "personal administrativo"
                         break
                 }
             })
 
-
+console.log(data)
 
             return data
 

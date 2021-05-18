@@ -63,6 +63,8 @@ btn.addEventListener('click', async (event) => {
         modal.innerHTML = ""
 
         const data = await Service.listUsers()
+        const offices = await Service.listOffice()
+
 
         head.appendChild(View.header())
 
@@ -70,10 +72,23 @@ btn.addEventListener('click', async (event) => {
             body.appendChild(View.showTable(user))
         });
 
+
         modal.appendChild(View.showModalInsert())
         modal.appendChild(View.showModalDelete())
         modal.appendChild(View.showModalEdit())
         modal.appendChild(View.showModalPbiInsert())
+
+        const divofficeedit = document.getElementById('officeedit')
+        const divofficeinsert = document.getElementById('officeinsert')
+
+        offices.forEach(office => {
+            divofficeedit.appendChild(View.listOffice(office))
+        });
+
+        offices.forEach(office => {
+            divofficeinsert.appendChild(View.listOffice(office))
+        });
+
     } catch (error) {
 
     }
@@ -94,12 +109,12 @@ async function editUser(event) {
         const mail = btn.getAttribute("data-mail")
 
 
-        document.getElementById('id_editlogin') = id
-        document.getElementById('name') = name
-        document.getElementById('dateBirthday') = dateBirthday
-        document.getElementById('perfil') = perfil
-        document.getElementById('office') = office
-        document.getElementById('mail') = mail
+
+        $("#iddbtninsertuser").attr("data-id_user", id);
+        $("#nameedit").val(name);
+        $("#perfiledit").val(perfil);
+        $("#officeedit").val(office);
+        $("#mailedit").val(mail);
 
     } catch (error) {
 
@@ -114,8 +129,7 @@ async function deleteUser(event) {
     try {
         const btn = event.currentTarget
         const id = btn.getAttribute("data-id")
-
-        document.getElementById('id_deletelogin') = id
+        $("#iddbtndeleteuser").attr("data-id_user", id);
 
     } catch (error) {
 

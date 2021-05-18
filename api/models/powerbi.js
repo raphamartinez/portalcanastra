@@ -5,8 +5,6 @@ class PowerBi {
 
     async insertPowerBi(powerbi) {
         try {
-            console.log(powerbi)
-
             const result = await Repositorie.insert(powerbi)
             return result
         } catch (error) {

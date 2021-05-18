@@ -36,8 +36,6 @@ btn.addEventListener('click', async (event) => {
         //     cursorcolor: "#34495E"
         // });
         // table.scrollTop(table.get(0).scrollHeight, -1);
-
-
     } catch (error) {
 
     }

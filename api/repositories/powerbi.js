@@ -11,9 +11,10 @@ class PowerBi {
             const obj = await query(sqlId)
 
             const sqlView = 'INSERT INTO ansa.viewpowerbi (id_powerbi, id_login, dateReg) values (?, 3, now())'
-            const result = await query(sqlView, obj[0].id_powerbi)
+            await query(sqlView, obj[0].id_powerbi)
 
-            return result[0]
+
+            return true
         } catch (error) {
             throw new InvalidArgumentError(error)
         }
@@ -56,7 +57,8 @@ class PowerBi {
         try{
 
             const sql = `SELECT COUNT(id_viewpowerbi) as count FROM ansa.viewpowerbi WHERE id_login = 3`
-            return query(sql)
+            const result = await query(sql)
+            return result[0]
         }catch(error){
 
         }

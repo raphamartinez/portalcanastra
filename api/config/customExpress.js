@@ -20,13 +20,13 @@ module.exports = () => {
 
   app.use(passport.initialize())
 
-  // app.use((req, res, next) => {
-  //   if (req.headers["x-forwarded-proto"] == "http")
-  //     res.redirect(`https://${req.headers.host}${req.url}`)
-  //   else {
-  //     next();
-  //   }
-  // });
+  app.use((req, res, next) => {
+    if (req.headers["x-forwarded-proto"] == "http")
+      res.redirect(`https://${req.headers.host}${req.url}`)
+    else {
+      next();
+    }
+  });
 
   // app.use((req, res, next) => {
   //   res.set({

@@ -135,11 +135,13 @@ async function addPowerBi(event){
         type: type
     }
 
-    const result = await Service.insertBi(powerbi)
+    const ok = await Service.insertBi(powerbi)
 
-    if(result.ok){
+    if(ok === true){
+        $('#addpowerbi').modal('hide')
         alert('PowerBi agregado con éxito!')
     }else{
+        $('#addpowerbi').modal('hide')
         alert('Algo salió mal, informa al sector de TI')
     }
 }

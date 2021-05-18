@@ -39,7 +39,7 @@ module.exports = app => {
         try {
             const powerbi = req.body.powerbi
             const result = await PowerBi.insertPowerBi(powerbi)
-            res.status(200).json(result)
+            res.status(200).send(result)
         } catch (error) {
             next(error)
         }

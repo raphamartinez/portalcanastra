@@ -46,8 +46,8 @@ class User {
 
     list() {
         try {
-            const sql = `SELECT US.id_user, US.id_login, US.name, US.perfil, DATE_FORMAT(US.dateBirthday, '%d/%m/%Y') as dateBirthday, DATE_FORMAT(US.dateReg, '%H:%i %d/%m/%Y') as dateReg 
-            FROM ansa.user US WHERE US.status = 1 `
+            const sql = `SELECT US.id_user, US.id_login, US.name, US.perfil, LO.mail, US.id_office, DATE_FORMAT(US.dateBirthday, '%d/%m/%Y') as dateBirthday, DATE_FORMAT(US.dateReg, '%H:%i %d/%m/%Y') as dateReg 
+            FROM ansa.user US, ansa.login LO WHERE LO.id_login = US.id_login and US.status = 1 `
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)

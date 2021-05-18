@@ -6,7 +6,7 @@ const showTable = (user) => {
     <td>
     <a data-toggle="modal" data-target="#addpowerbi" href="" data-id="${user.id_user}" data-name="${user.name}"><i class="fas fa-plus" style="color:#32CD32;"></i></a>
     <a onclick="listBiUser(event)" href="" data-id="${user.id_user}" data-name="${user.name}"><i class="fas fa-file-powerpoint" style="color:#666600;"></i></a>
-    <a data-toggle="modal" data-target="#edituser" onclick="editUser(event)" href="" data-id="${user.id_user}" data-name="${user.name}"><i class="fas fa-edit" style="color:#3498DB;"></i></a>
+    <a data-toggle="modal" data-target="#edituser" onclick="editUser(event)" href="" data-id="${user.id_user}" data-name="${user.name}" data-dateBirthday="${user.dateBirthday}" data-perfil="${user.perfil}" data-office="${user.id_office}" data-mail="${user.mail}" data-mail="${user.password}"><i class="fas fa-edit" style="color:#3498DB;"></i></a>
     <a data-toggle="modal" data-target="#deleteuser" onclick="deleteUser(event)" href="" data-id="${user.id_user}" data-name="${user.name}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
     </td>
     <td>${user.name}</td>
@@ -99,13 +99,8 @@ const showModalInsert = () => {
                     <option value= "4" >Gerente</option>
                     <option value= "5" >Personal Administrativo</option>
                 </select>
-                <select class="selectpicker form-control col-md-6" name="office" id="office" required>
-                <option>Sucursal</option>
-                <option value="1" ></option>
-                <option value= "2" ></option>
-                <option value= "3" ></option>
-                <option value= "4" ></option>
-                <option value= "5" ></option>
+                <select class="selectpicker form-control col-md-6" name="office" id="officeinsert" required>
+                <option value="" disabled selected>Sucursal</option>
             </select>
                 <div class="form-group col-md-6">          
                 <input type="text" placeholder="E-mail" class="form-control" name="mail" id="mail" required>
@@ -147,38 +142,32 @@ const showModalEdit= () => {
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group col-md-6">          
-                        <input type="text" placeholder="Nombre" class="form-control" name="name" id="name" required>
+                        <input type="text" placeholder="Nombre" class="form-control" name="name" id="nameedit" required>
                     </div>
                     <div class="form-group col-md-6">          
-                    <input type="date" placeholder="Fecha de cumpleaños" class="form-control" name="dateBirthday" id="dateBirthday">
+                    <input type="date" placeholder="Fecha de cumpleaños" class="form-control" name="dateBirthday" id="dateBirthdayedit">
                 </div>
                 <div class="form-group col-md-6">   
-                    <select class="form-control" name="perfil" id="perfil" required>
+                    <select class="form-control" name="perfil" id="perfiledit" required>
                     <option value="" disabled selected>Perfil</option>
-                    <option value="1" >Administrador</option>
-                    <option value= "2" >Vendedor</option>
-                    <option value= "3" >Depositero</option>
-                    <option value= "4" >Gerente</option>
-                    <option value= "5" >Personal Administrativo</option>
                 </select>
                 </div>
                 <div class="form-group col-md-6">   
-                <select class="form-control" name="office" id="office" required>
-                <option>Sucursal</option>
-                <option value="1" > Pendente</option>
+                <select class="form-control" name="office" id="officeedit" required>
+                <option value="" disabled selected>Sucursal</option>
             </select>
             </div>
                 <div class="form-group col-md-6">          
-                <input type="email" placeholder="E-mail" class="form-control" name="mail" id="mail" required>
+                <input type="email" placeholder="E-mail" class="form-control" name="mail" id="mailedit" required>
             </div>
             <div class="form-group col-md-6">          
-            <input type="password" placeholder="Contraseña" class="form-control" name="password" id="password" required>
+            <input type="password" placeholder="Contraseña" class="form-control" name="password" id="passwordedit" required>
         </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <button type="submit" name="btn" id="btn" class="btn btn-warning"><i class="fas fa-edit"> Confirmar</i></button>   
+                <button type="submit" name="btn" id="iddbtninsertuser" class="btn btn-warning" ><i class="fas fa-edit"> Confirmar</i></button>   
             </div>
         </form>
     </div>
@@ -214,7 +203,7 @@ const showModalDelete = () => {
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" name="btn" id="btn" class=" btn btn-danger "><i class="fas fa-times"> Deshabilitar</i></button>   
+                    <button type="submit" name="btn" class=" btn btn-danger" id="iddbtndeleteuser"><i class="fas fa-times"> Deshabilitar</i></button>   
                 </div>
             </form>
         </div>
