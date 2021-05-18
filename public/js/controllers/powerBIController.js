@@ -4,13 +4,13 @@ import { Service } from "../services/powerbiService.js"
 const btn = document.getElementById('btnSimpleBi')
 const cardHistory = document.querySelector('[data-card]')
 
-window.modalDeletePowerBi = modalDeletePowerBi
+window.modalDeleteBi = modalDeleteBi
 window.listBiUser = listBiUser
 window.viewBi = viewBi
 window.editBi = editBi
 window.addPowerBi = addPowerBi
 window.editPowerBi = editPowerBi
-window.modalEditPowerBi = modalEditPowerBi
+window.modalEditBi = modalEditBi
 window.deletePowerBi = deletePowerBi
 
 btn.addEventListener('click', async (event) => {
@@ -146,7 +146,7 @@ async function addPowerBi(event) {
     }
 }
 
-async function modalEditPowerBi(event) {
+async function modalEditBi(event) {
     try {
         const btn = event.currentTarget
         const id = btn.getAttribute("data-id_powerbi")
@@ -189,7 +189,7 @@ async function editPowerBi(event) {
     }
 }
 
-async function modalDeletePowerBi(event) {
+async function modalDeleteBi(event) {
     try {
         const btn = event.currentTarget
         const id = btn.getAttribute("data-id_powerbi")

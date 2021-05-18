@@ -114,8 +114,8 @@ const listPowerBiAdmin = (powerbi) => {
         `
         <td>
         <a onclick="viewBi(event)" href="#" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>
-        <a onclick="modalEditPowerBi(event)" data-toggle="modal" data-target="#editpowerbi" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32;"></i></a>
-        <a onclick="modalDeletePowerBi(event)" data-toggle="modal" data-target="#deletepowerbi" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
+        <a onclick="modalEditBi(event)" data-toggle="modal" data-target="#editpowerbi" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32;"></i></a>
+        <a onclick="modalDeleteBi(event)" data-toggle="modal" data-target="#deletepowerbi" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
         </td>
         <td>${powerbi.title}</td>
         <td>${powerbi.typedesc}</td>
