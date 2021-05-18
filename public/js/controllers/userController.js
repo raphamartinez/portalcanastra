@@ -94,14 +94,68 @@ btn.addEventListener('click', async (event) => {
     }
 })
 
+
+window.addModalPowerBi = addModalPowerBi
+
+async function addModalPowerBi(event) {
+    event.preventDefault()
+    
+    try {
+        const btn = event.currentTarget
+        const id_login = btn.getAttribute("data-id_login")
+        $("#idinsertnewbi").attr("data-id_login", id_login)
+    }catch(error){
+        
+    }
+}
+
+
+
+
 window.editUser = editUser
 
-
 async function editUser(event) {
+    event.preventDefault()
+    
+    try {
+
+        const btn = event.currentTarget
+        const id_user = btn.getAttribute("data-id_user")
+        const id_login = btn.getAttribute("data-id_login")
+        const name = btn.form.name.value
+        const dateBirthday = btn.form.dateBirthday.value
+        const perfil = btn.form.perfil.value
+        const office = btn.form.office.value
+        const mail = btn.form.mail.value
+
+        const user = {
+            id_user: id_user,
+            id_login: id_login,
+            name: name,
+            dateBirthday: dateBirthday,
+            perfil: perfil,
+            id_office: office,
+            mail: mail
+        }
+
+        await Service.updateUser(user, id_user)
+
+        $('#edituser').modal('hide')
+        alert('Usuario actualizado con éxito!')
+    } catch (error) {
+        $('#edituser').modal('hide')
+        alert('Algo salió mal, informa al sector de TI')
+    }
+}
+
+window.modalEditUser = modalEditUser
+
+async function modalEditUser(event) {
 
     try {
         const btn = event.currentTarget
-        const id = btn.getAttribute("data-id")
+        const id_user = btn.getAttribute("data-id_user")
+        const id_login = btn.getAttribute("data-id_login")
         const name = btn.getAttribute("data-name")
         const dateBirthday = btn.getAttribute("data-dateBirthday")
         const perfil = btn.getAttribute("data-perfil")
@@ -110,21 +164,45 @@ async function editUser(event) {
 
 
 
-        $("#iddbtninsertuser").attr("data-id_user", id);
+        $("#iddbtnedituser").attr("data-id_user", id_user);
+        $("#iddbtnedituser").attr("data-id_login", id_login);
         $("#nameedit").val(name);
+        $("#dateBirthdayedit").val(dateBirthday);
         $("#perfiledit").val(perfil);
         $("#officeedit").val(office);
         $("#mailedit").val(mail);
 
     } catch (error) {
-
+        $('#edituser').modal('hide')
     }
-
 }
 
 window.deleteUser = deleteUser
 
 async function deleteUser(event) {
+    event.preventDefault()
+
+    try {
+
+        const form = event.currentTarget
+        const id_user = form.getAttribute("data-id_user")
+
+        await Service.deleteUser(id_user)
+
+        $('#deleteuser').modal('hide')
+        alert('Usuario discapacitado con éxito!')
+    } catch (error) {
+        $('#deleteuser').modal('hide')
+        alert('Algo salió mal, informa al sector de TI')
+
+    }
+
+}
+
+
+window.modalDeleteUser = modalDeleteUser
+
+async function modalDeleteUser(event) {
 
     try {
         const btn = event.currentTarget
@@ -132,9 +210,7 @@ async function deleteUser(event) {
         $("#iddbtndeleteuser").attr("data-id_user", id);
 
     } catch (error) {
-
     }
-
 }
 
 
@@ -165,6 +241,7 @@ async function createUser(event) {
         }
 
         await Service.insertUser(user)
+
         alert('Usuario agregado con éxito!')
     } catch (error) {
         alert('Usuario agregado con éxito!')

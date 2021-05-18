@@ -14,9 +14,9 @@ module.exports = app => {
 
     app.get('/user/:id', async (req, res, next) => {
         try {
-            const id = req.params.id
+            const id_user = req.params.id
 
-            const user = await User.viewUser(id)
+            const user = await User.viewUser(id_user)
             res.status(200).json(user)
         } catch (error) {
             next(error)
@@ -26,7 +26,6 @@ module.exports = app => {
     app.post('/user', async (req, res, next) => {
         try {
             const data = req.body
-
             const result = await User.insertUser(data)
             res.status(200).json(result)
         } catch (error) {
@@ -37,10 +36,9 @@ module.exports = app => {
     app.put('/user/:id', async (req, res, next) => {
 
         try {
-            const values = req.body
-            const id = req.params.id
-
-            const user = await User.updateUser(values, id)
+            const data = req.body
+            const id_user = req.params.id
+            const user = await User.updateUser(data, id_user)
             res.status(200).json(user)
         } catch (error) {
             next(error)
@@ -49,10 +47,9 @@ module.exports = app => {
 
     app.delete('/user/:id', async(req, res, next) => {
         try {
-            const id = req.params.id
-
-            const result = await User.deleteUser(id)
-            res.status(200).json(result)
+            const id_user = req.params.id
+            await User.deleteStatus(id_user)
+            res.status(200).json(true)
         } catch (error) {
             next(error)
         }

@@ -21,15 +21,16 @@ class PowerBi {
         }
     }
 
-    async updatePowerBi(id_powerbi, data) {
+    async updatePowerBi(data, id_powerbi) {
         try {
 
             const powerbi = {
                 id_powerbi: id_powerbi,
-                url: data.url,
-                type: data.type,
-                token: data.token,
-                idreport: data.idreport,
+                url: data.powerbi.url,
+                type: data.powerbi.type,
+                token: data.powerbi.token,
+                idreport: data.powerbi.idreport,
+                title: data.powerbi.title
             }
 
             const result = await Repositorie.update(powerbi)
@@ -45,9 +46,9 @@ class PowerBi {
 
             data.forEach(powerbi => {
                 if (powerbi.type = 1) {
-                    powerbi.type = 'Informe'
+                    powerbi.typedesc = 'Informe'
                 } else {
-                    powerbi.type = 'Integrado'
+                    powerbi.typedesc = 'Integrado'
                 }
             })
 
@@ -68,7 +69,6 @@ class PowerBi {
                     powerbi.type = 'Informe Integrado'
                 }
             })
-
             return data
 
         } catch (error) {

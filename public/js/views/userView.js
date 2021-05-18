@@ -4,15 +4,14 @@ const showTable = (user) => {
 
     const content = `
     <td>
-    <a data-toggle="modal" data-target="#addpowerbi" href="" data-id="${user.id_user}" data-name="${user.name}"><i class="fas fa-plus" style="color:#32CD32;"></i></a>
-    <a onclick="listBiUser(event)" href="" data-id="${user.id_user}" data-name="${user.name}"><i class="fas fa-file-powerpoint" style="color:#666600;"></i></a>
-    <a data-toggle="modal" data-target="#edituser" onclick="editUser(event)" href="" data-id="${user.id_user}" data-name="${user.name}" data-dateBirthday="${user.dateBirthday}" data-perfil="${user.perfil}" data-office="${user.id_office}" data-mail="${user.mail}" data-mail="${user.password}"><i class="fas fa-edit" style="color:#3498DB;"></i></a>
-    <a data-toggle="modal" data-target="#deleteuser" onclick="deleteUser(event)" href="" data-id="${user.id_user}" data-name="${user.name}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
+    <a onclick="addModalPowerBi(event)" data-toggle="modal" data-target="#addpowerbi" href="" data-id_login="${user.id_login}" data-name="${user.name}"><i class="fas fa-plus" style="color:#32CD32;"></i></a>
+    <a onclick="listBiUser(event)" href="" data-id="${user.id_login}" data-name="${user.name}"><i class="fas fa-file-powerpoint" style="color:#666600;"></i></a>
+    <a data-toggle="modal" data-target="#edituser" onclick="modalEditUser(event)" href="" data-id_login="${user.id_login}" data-id_user="${user.id_user}" data-name="${user.name}" data-dateBirthday="${user.dateBirthdayDesc}" data-perfil="${user.perfil}" data-office="${user.id_office}" data-mail="${user.mail}" data-mail="${user.password}"><i class="fas fa-edit" style="color:#3498DB;"></i></a>
+    <a data-toggle="modal" data-target="#deleteuser" onclick="modalDeleteUser(event)" href="" data-id="${user.id_user}" data-name="${user.name}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
     </td>
     <td>${user.name}</td>
-    <td>${user.perfil}</td>
+    <td>${user.perfilDesc}</td>
     <td>${user.dateBirthday}</td>
-    <td>${user.count}</td>
     <td>${user.dateReg}</td>
   </tr>
 `
@@ -34,7 +33,7 @@ const showModalPbiInsert = () => {
                 <span aria-hidden="true">x</span>
             </button>
         </div>
-        <form name="formedit" data-form-edit-powerbi>
+        <form>
             <div class="modal-body">
                 <div class="form-row">      
                 <div class="form-group col-md-6">
@@ -53,7 +52,7 @@ const showModalPbiInsert = () => {
                 </div> 
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <button type="submit" name="btn" id="btn" class="btn btn-success" onclick="addPowerBi(event)" data-insert-newbi><i class="fas fa-check"> Confirmar</i></button>   
+                <button type="submit" name="btn" id="idinsertnewbi" class="btn btn-success" onclick="addPowerBi(event)"><i class="fas fa-check"> Confirmar</i></button>   
             </div>
         </form>
     </div>
@@ -82,7 +81,7 @@ const showModalInsert = () => {
                 <span aria-hidden="true">x</span>
             </button>
         </div>
-        <form name="forminsert" data-form-insert-user>
+        <form>
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group col-md-6">          
@@ -112,7 +111,7 @@ const showModalInsert = () => {
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <button type="submit" name="btn" id="btn" class="btn btn-success"><i class="fas fa-check"> Registrar</i></button>   
+                <button type="submit" name="btn" class="btn btn-success"><i class="fas fa-check"> Registrar</i></button>   
             </div>
         </form>
     </div>
@@ -138,7 +137,7 @@ const showModalEdit= () => {
                 <span aria-hidden="true">x</span>
             </button>
         </div>
-        <form name="forminsert" data-form-insert-user>
+        <form>
             <div class="modal-body">
                 <div class="form-row">
                     <div class="form-group col-md-6">          
@@ -150,6 +149,11 @@ const showModalEdit= () => {
                 <div class="form-group col-md-6">   
                     <select class="form-control" name="perfil" id="perfiledit" required>
                     <option value="" disabled selected>Perfil</option>
+                    <option value="1" >Administrador</option>
+                    <option value= "2" >Vendedor</option>
+                    <option value= "3" >Depositero</option>
+                    <option value= "4" >Gerente</option>
+                    <option value= "5" >Personal Administrativo</option>
                 </select>
                 </div>
                 <div class="form-group col-md-6">   
@@ -157,17 +161,14 @@ const showModalEdit= () => {
                 <option value="" disabled selected>Sucursal</option>
             </select>
             </div>
-                <div class="form-group col-md-6">          
+                <div class="form-group col-md-12">          
                 <input type="email" placeholder="E-mail" class="form-control" name="mail" id="mailedit" required>
             </div>
-            <div class="form-group col-md-6">          
-            <input type="password" placeholder="Contraseña" class="form-control" name="password" id="passwordedit" required>
-        </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <button type="submit" name="btn" id="iddbtninsertuser" class="btn btn-warning" ><i class="fas fa-edit"> Confirmar</i></button>   
+                <button type="submit" name="btn" onclick="editUser(event)" id="iddbtnedituser" class="btn btn-warning" ><i class="fas fa-edit"> Confirmar</i></button>   
             </div>
         </form>
     </div>
@@ -193,7 +194,7 @@ const showModalDelete = () => {
                     <span aria-hidden="true">x</span>
                 </button>
             </div>
-            <form action="" method="">
+            <form>
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="col-md-12">
@@ -203,7 +204,7 @@ const showModalDelete = () => {
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" name="btn" class=" btn btn-danger" id="iddbtndeleteuser"><i class="fas fa-times"> Deshabilitar</i></button>   
+                    <button type="submit" onclick="deleteUser(event)" name="btn" class=" btn btn-danger" id="iddbtndeleteuser"><i class="fas fa-times"> Deshabilitar</i></button>   
                 </div>
             </form>
         </div>
@@ -236,7 +237,6 @@ const header = () => {
         <th scope="col">Nombre</th>
         <th scope="col">Perfil</th>
         <th scope="col">Fecha de Nacimiento</th>
-        <th scope="col">Cantidad PowerBi</th>
         <th scope="col">Fecha de Registro</th>
     </tr`
     line.innerHTML = content

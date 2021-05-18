@@ -15,9 +15,8 @@ module.exports = app => {
     app.get('/powerbis/:id', async (req, res, next) => {
 
         try {
-            const id = req.params.id
-
-            const powerbis = await PowerBi.listPowerBis(id)
+            const id_login = req.params.id
+            const powerbis = await PowerBi.listPowerBis(id_login)
             res.status(200).json(powerbis)
         } catch (error) {
             next(error)
@@ -26,9 +25,9 @@ module.exports = app => {
 
     app.get('/powerbi/:id', async (req, res, next) => {
         try {
-            const id = req.params.id
+            const id_powerbi = req.params.id
 
-            const user = await PowerBi.viewPowerBi(id)
+            const user = await PowerBi.viewPowerBi(id_powerbi)
             res.status(200).json(user)
         } catch (error) {
             next(error)
@@ -48,21 +47,19 @@ module.exports = app => {
     app.put('/powerbi/:id', async (req, res, next) => {
 
         try {
+            const id_powerbi = req.params.id
             const data = req.body
-            const id = req.params.id
-
-            const user = await PowerBi.updatePowerBi(data, id)
-            res.status(200).json(user)
+            await PowerBi.updatePowerBi(data, id_powerbi)
+            res.status(200).json(true)
         } catch (error) {
             next(error)
         }
     })
 
-    app.delete('/powerbi/:id', async(req, res, next) => {
+    app.delete('/powerbi/:id', async (req, res, next) => {
         try {
-            const id = req.params.id
-
-            const result = await PowerBi.deletePowerBi(id)
+            const id_powerbi = req.params.id
+            const result = await PowerBi.deletePowerBi(id_powerbi)
             res.status(200).json(result)
         } catch (error) {
             next(error)

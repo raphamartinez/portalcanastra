@@ -40,24 +40,18 @@ module.exports = () => {
   app.use(express.json())
 
 
-  // app.use((req, res, next) => {
-  //   res.header("Access-Control-Allow-Origin", "*")
-  //   res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE')
-  //   res.header('Access-Control-Allow-Credentials', true)
-  //   res.header("Access-Control-Allow-Headers", 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization')
-  //   app.use(cors())
-  //   next();
-  // });
-
-  // Resposta Fake para o coockie X-Powered-By
   app.use((req, res, next) => {
-    res.setHeader('X-Powered-By', 'PHP/7.1.7')
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE')
+    res.header('Access-Control-Allow-Credentials', true)
+    res.header("Access-Control-Allow-Headers", 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization')
+    app.use(cors())
     next();
   });
 
   // Resposta Fake para o coockie X-Powered-By
   app.use((req, res, next) => {
-    res.set('X-Powered-By', 'PHP/7.1.7')
+    res.setHeader('X-Powered-By', 'PHP/7.1.7')
     next();
   });
 

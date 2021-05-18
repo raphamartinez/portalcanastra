@@ -1,22 +1,29 @@
-const moment = require('moment')
 const Repositorie = require('../repositories/user')
 const RepositorieLogin = require('../repositories/login')
 const RepositorieBi = require('../repositories/powerbi')
+const bcrypt = require('bcrypt')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('./error')
 
 class User {
 
+    static generatePasswordHash(password) {
+        const costHash = 12
+        return bcrypt.hash(password, costHash)
+    }
+
     async insertUser(data) {
         try {
+            const password = await User.generatePasswordHash(data.user.login.password)
 
             const login = {
                 mail: data.user.login.mail,
-                password: data.user.login.password,
+                password: password,
                 mailVerify: 1,
                 status: 1
             }
-            
+
             const obj = await RepositorieLogin.insert(login)
+            console.log(obj)
 
             const user = {
                 name: data.user.name,
@@ -32,6 +39,7 @@ class User {
             }
 
             const result = await Repositorie.insert(user)
+            console.log(result)
 
             return result
         } catch (error) {
@@ -39,34 +47,37 @@ class User {
         }
     }
 
-    async deleteUser(id) {
+    async deleteStatus(id_user) {
         try {
-            const result = await Repositorie.delete(id)
+            const status = 0
+            const result = await Repositorie.deleteStatus(status, id_user)
             return result
         } catch (error) {
             throw new NotFound('Error')
         }
     }
 
-    async updateUser(id_user, data) {
+    async updateUser(data, id_user) {
         try {
-
-            if (data.dateBirthday) {
-                dateBirthday = moment(data.dateBirthday, 'DD/MM/YYYY').format
-            }
 
             const user = {
                 id_user: id_user,
-                name: data.name,
-                perfil: data.perfil,
-                dateBirthday: dateBirthday,
+                name: data.user.name,
+                perfil: data.user.perfil,
+                dateBirthday: data.user.dateBirthday,
                 office: {
-                    id_office: data.id_office
+                    id_office: data.user.id_office
                 }
             }
 
-            const result = await Repositorie.update(user)
-            return result
+            const login = {
+                id_login: data.user.id_login,
+                mail: data.user.mail
+            }
+
+            await Repositorie.update(user)
+            await RepositorieLogin.update(login)
+            return true
         } catch (error) {
             throw new InvalidArgumentError('Error')
         }
@@ -76,32 +87,30 @@ class User {
         try {
             let data = await Repositorie.list()
 
-            data.forEach(async user => {
+            await data.forEach(async obj => {
 
-                const count = await RepositorieBi.count(user.id_login)
+                obj.count = await RepositorieBi.count(obj.id_login)
 
-console.log(count)
-                user['count'] = count
-
-                switch (user.perfil) {
-                    case 1: user['perfilDesc'] = "admin"
+                switch (obj.perfil) {
+                    case 1: obj.perfilDesc = "admin"
                         break
 
-                    case 2: user['perfilDesc'] = "vendedor"
+                    case 2: obj.perfilDesc = "vendedor"
                         break
 
-                    case 3: user['perfilDesc'] = "depositero"
+                    case 3: obj.perfilDesc = "depositero"
                         break
 
-                    case 4: user['perfilDesc'] = "gerente"
+                    case 4: obj.perfilDesc = "gerente"
                         break
 
-                    case 5: user['perfilDesc'] = "personal administrativo"
+                    case 5: obj.perfilDesc = "personal administrativo"
+                        break
+
+                    default: obj.perfilDesc = "usuario"
                         break
                 }
             })
-
-console.log(data)
 
             return data
 
@@ -110,9 +119,9 @@ console.log(data)
         }
     }
 
-    async viewUser(id) {
+    async viewUser(id_user) {
         try {
-            const user = await Repositorie.view(id)
+            const user = await Repositorie.view(id_user)
             return user
         } catch (error) {
             throw new NotFound('Error')

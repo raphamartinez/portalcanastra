@@ -2,7 +2,7 @@ const context = window.location.pathname.substring(0, window.location.pathname.i
 const url = window.location.host;
 
 const login = async (mail, password) => {
-    const data = await fetch(`http://${url}/login`, {
+    const data = await fetch(`${protocol}//${url}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,7 +21,7 @@ const login = async (mail, password) => {
 }
 
 const refresh = async (accessToken, refreshToken) => {
-    const data = await fetch(`http://${url}/refresh`, {
+    const data = await fetch(`${protocol}//${url}/refresh`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ const refresh = async (accessToken, refreshToken) => {
 }
 
 const logout = async (accessToken, refreshToken) => {
-    const data = await fetch(`http://${url}/logout`, {
+    const data = await fetch(`${protocol}//${url}/logout`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

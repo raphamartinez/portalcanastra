@@ -61,7 +61,7 @@ class Login {
             const login = {
                 mail: data.mail,
                 password: password,
-                mailVeify: 1,
+                mailVerify: 1,
                 status: 1
             }
 

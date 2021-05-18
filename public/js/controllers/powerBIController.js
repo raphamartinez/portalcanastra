@@ -69,7 +69,6 @@ async function listBiUser(event) {
             body.appendChild(View.listPowerBiAdmin(powerbi))
         });
 
-        modal.appendChild(View.showModalInsert())     
         modal.appendChild(View.showModalDelete())
         modal.appendChild(View.showModalEdit())
     } catch (error) {
@@ -80,7 +79,7 @@ async function listBiUser(event) {
 
 window.viewBi = viewBi
 
-function viewBi(event){
+function viewBi(event) {
     event.preventDefault()
 
     const btn = event.currentTarget
@@ -101,7 +100,7 @@ function viewBi(event){
 
 window.editBi = editBi
 
-async function editBi(event){
+async function editBi(event) {
     event.preventDefault()
 
     const btn = event.currentTarget
@@ -121,27 +120,107 @@ async function editBi(event){
 
 window.addPowerBi = addPowerBi
 
-async function addPowerBi(event){
-    event.preventDefault()
+async function addPowerBi(event) {
+    try {
+        event.preventDefault()
 
-    const btn = event.currentTarget
-    const title = btn.form.title.value
-    const url = btn.form.url.value
-    const type = btn.form.type.value
+        const btn = event.currentTarget
+        const id_login = btn.getAttribute("data-id_login")
+        const title = btn.form.title.value
+        const url = btn.form.url.value
+        const type = btn.form.type.value
 
-    const powerbi = {
-        title: title,
-        url: url,
-        type: type
-    }
+        const powerbi = {
+            title: title,
+            url: url,
+            type: type,
+            id_login: id_login
+        }
 
-    const ok = await Service.insertBi(powerbi)
+        await Service.insertBi(powerbi)
 
-    if(ok === true){
         $('#addpowerbi').modal('hide')
         alert('PowerBi agregado con éxito!')
-    }else{
+    } catch (error) {
         $('#addpowerbi').modal('hide')
+        alert('Algo salió mal, informa al sector de TI')
+    }
+}
+
+window.modalEditPowerBi = modalEditPowerBi
+
+async function modalEditPowerBi(event) {
+    try {
+        const btn = event.currentTarget
+        const id = btn.getAttribute("data-id_powerbi")
+        const url = btn.getAttribute("data-url")
+        const title = btn.getAttribute("data-title")
+        const type = btn.getAttribute("data-type")
+
+        $("#ideditpowerbi").attr("data-id_powerbi", id);
+        $("#urledit").val(url);
+        $("#titleedit").val(title);
+        $("#typeedit").val(type);
+    } catch (error) {
+
+    }
+}
+
+window.editPowerBi = editPowerBi
+
+async function editPowerBi(event) {
+    event.preventDefault()
+    try {        
+
+        const btn = event.currentTarget
+        const id = btn.getAttribute("data-id_powerbi")
+        const title = btn.form.title.value
+        const url = btn.form.url.value
+        const type = btn.form.type.value
+
+        const powerbi = {
+            id_powerbi: id,
+            title: title,
+            url: url,
+            type: type
+        }
+
+        await Service.updateBi(powerbi, id)
+        $('#editpowerbi').modal('hide')
+        alert('PowerBi agregado con éxito!')
+    } catch (error) {
+        $('#editpowerbi').modal('hide')
+        alert('Algo salió mal, informa al sector de TI')
+    }
+}
+
+
+window.modalDeletePowerBi = modalDeletePowerBi
+
+async function modalDeletePowerBi(event) {
+    try {
+        const btn = event.currentTarget
+        const id = btn.getAttribute("data-id_powerbi")
+        $("#iddeletepowerbi").attr("data-id_powerbi", id);
+
+    } catch (error) {
+    }
+}
+
+window.deletePowerBi = deletePowerBi
+
+async function deletePowerBi(event) {
+    event.preventDefault()
+    try {
+        const btn = event.currentTarget
+        const id = btn.getAttribute("data-id_powerbi")
+
+        await Service.deleteBi(id)
+        $('#deletepowerbi').modal('hide')
+        alert('PowerBi excluido con éxito!')
+
+    } catch (error) {
+        $('#deletepowerbi').modal('hide')
         alert('Algo salió mal, informa al sector de TI')
     }
 }

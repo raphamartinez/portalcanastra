@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=chrome">
@@ -16,6 +17,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png">
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gradient-primary">
     <div class="container">
         <div class="row justify-content-center">
@@ -48,8 +50,9 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <button id="btnLogin" type="submit"
-                                            class=" btn btn-primary btn-user btn-block">
+                                        <button class="g-recaptcha btn btn-primary btn-user btn-block
+                                        "data-sitekey="6LeJV9UaAAAAAF0VrDRlauTB4KcbVcLSIJYWYAeF"
+                                            data-callback='onSubmit' data-action='submit' id="btnLogin">
                                             Login
                                         </button>
                                     </form>
@@ -71,7 +74,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="../js/libs/sb-admin-2.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script src="../js/services/recaptchaService.js"></script>
     <script type="module" src="../js/controllers/loginController.js"></script>
 </body>
+
 </html>

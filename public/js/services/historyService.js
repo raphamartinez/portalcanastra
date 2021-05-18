@@ -2,7 +2,7 @@ const context = window.location.pathname.substring(0, window.location.pathname.i
 const url = window.location.host;
 
 const historyDashoard =  async () => {
-    const data = await fetch(`http://${url}/history`)
+    const data = await fetch(`${protocol}//${url}/history`)
 
     if (data.ok) {
         return data.json()
@@ -11,7 +11,7 @@ const historyDashoard =  async () => {
 }
 
 const listHistory =  async () => {
-    const data = await fetch(`http://${url}/historys`)
+    const data = await fetch(`${protocol}//${url}/historys`)
 
     if (data.ok) {
         return data.json()

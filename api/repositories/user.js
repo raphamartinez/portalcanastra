@@ -9,15 +9,26 @@ class User {
 
             return true
         } catch (error) {
+            console.log(error);
             throw new InvalidArgumentError(error)
         }
     }
 
     async delete(id_user) {
         try {
-            const sql = `DELETE from user WHERE id_user = ${id_user}`
-            const result = await query(sql)
-            return result[0]
+            const sql = `DELETE from ansa.user WHERE id_user = ${id_user}`
+            await query(sql)
+            return true
+        } catch (error) {
+            throw new NotFound(error)
+        }
+    }
+
+    async deleteStatus(status, id_user) {
+        try {
+            const sql = `UPDATE ansa.user set status = ? WHERE id_user = ?`
+            await query(sql, [status, id_user])
+            return true
         } catch (error) {
             throw new NotFound(error)
         }
@@ -25,10 +36,11 @@ class User {
 
     async update(user) {
         try {
-            const sql = 'UPDATE user SET name = ?, perfil = ?,dateBirthday = ?, id_office = ? WHERE id_user = ?'
-            const result = await query(sql, [user.name, user.perfil, user.dateBirthday, user.office.id_office, user.id_user])
-            return result[0]
+            const sql = 'UPDATE ansa.user SET name = ?, perfil = ?, dateBirthday = ?, id_office = ? WHERE id_user = ?'
+            await query(sql, [user.name, user.perfil, user.dateBirthday, user.office.id_office, user.id_user])
+            return true
         } catch (error) {
+            console.log(error)
             throw new InvalidArgumentError(error)
         }
     }
@@ -46,7 +58,7 @@ class User {
 
     list() {
         try {
-            const sql = `SELECT US.id_user, US.id_login, US.name, US.perfil, LO.mail, US.id_office, DATE_FORMAT(US.dateBirthday, '%d/%m/%Y') as dateBirthday, DATE_FORMAT(US.dateReg, '%H:%i %d/%m/%Y') as dateReg 
+            const sql = `SELECT US.id_user, US.id_login, US.name, US.perfil, US.perfil as perfilDesc, LO.mail, US.id_office, DATE_FORMAT(US.dateBirthday, '%d/%m/%Y') as dateBirthday, DATE_FORMAT(US.dateBirthday, '%Y-%m-%d') as dateBirthdayDesc, DATE_FORMAT(US.dateReg, '%H:%i %d/%m/%Y') as dateReg 
             FROM ansa.user US, ansa.login LO WHERE LO.id_login = US.id_login and US.status = 1 `
             return query(sql)
         } catch (error) {

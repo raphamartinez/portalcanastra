@@ -1,9 +1,8 @@
 import { LoginService } from '../services/loginService.js'
 
-const form = document.querySelector('[data-form]')
+window.onSubmit = onSubmit
 
-form.addEventListener('submit', async (event) => {
-    event.preventDefault()
+async function onSubmit () {
 
     const mail = document.querySelector('[data-mail]').value
     const password = document.querySelector('[data-password]').value
@@ -26,4 +25,4 @@ form.addEventListener('submit', async (event) => {
     }catch(error){
         alert(error)
     }
-})
+}
