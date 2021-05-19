@@ -25,7 +25,7 @@ btn.addEventListener('click', async (event) => {
         let head = document.querySelector('[data-table-head]')
         let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')  
-        let id= document.querySelector('[data-iduselog]').value
+        let id= document.getElementById('data-id_login-sy').value
 
         title.innerHTML = "Informes"
         table.style.display = '';

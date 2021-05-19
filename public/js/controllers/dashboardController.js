@@ -15,10 +15,7 @@ window.onload = async function () {
 
     let title = document.querySelector('[data-title]')
 
-    let cardHistory = document.querySelector('[data-card]')   
-
-    let dividlogin = document.querySelector('[data-id_login-sy]')
-
+    let cardHistory = document.querySelector('[data-card]')     
 
     let history = await Service.historyDashoard()
 
@@ -31,7 +28,6 @@ window.onload = async function () {
     let username = document.querySelector('[data-username]')
     username.innerHTML = name
     title.innerHTML = "Dashboard"
-    dividlogin.dataset.iduselog= id_login
-
+    $("#data-id_login-sy").val(id_login)
 
 }
