@@ -17,7 +17,7 @@ window.onload = async function () {
 
     let cardHistory = document.querySelector('[data-card]')   
 
-    let dividlogin = document.querySelector('[data-id_login-sy]')
+    let dividlogin = document.querySelector('[data-id_login-sy]').value
 
 
     let history = await Service.historyDashoard()
