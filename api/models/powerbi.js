@@ -58,9 +58,9 @@ class PowerBi {
         }
     }
 
-    async listPowerBi() {
+    async listPowerBi(id_login) {
         try {
-            const data = await Repositorie.listLogin()
+            const data = await Repositorie.listLogin(id_login)
 
             data.forEach(powerbi => {
                 if (powerbi.type = 1) {

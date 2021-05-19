@@ -4,7 +4,7 @@ const split = document.URL.split("/")
 const protocol = split[0]
 
 const historyDashoard =  async () => {
-    const data = await fetch(`${protocol}//${url}/history`)
+    const data = await fetch(`https://${url}/history`)
 
     if (data.ok) {
         return data.json()
@@ -13,7 +13,7 @@ const historyDashoard =  async () => {
 }
 
 const listHistory =  async () => {
-    const data = await fetch(`${protocol}//${url}/historys`)
+    const data = await fetch(`https://${url}/historys`)
 
     if (data.ok) {
         return data.json()

@@ -4,7 +4,7 @@ const split = document.URL.split("/")
 const protocol = split[0]
 
 const insertUser =  async (user) => {
-    const data = await fetch(`${protocol}//${url}/user` , {
+    const data = await fetch(`https://${url}/user` , {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,7 +21,7 @@ const insertUser =  async (user) => {
 }
 
 const listOffice =  async () => {
-    const data = await fetch(`${protocol}//${url}/offices`)
+    const data = await fetch(`https://${url}/offices`)
 
     if (data.ok) {
         return data.json()
@@ -31,7 +31,7 @@ const listOffice =  async () => {
 
 
 const updateUser =  async (user,id_user) => {
-    const data = await fetch(`${protocol}//${url}/user/${id_user}` , {
+    const data = await fetch(`https://${url}/user/${id_user}` , {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ const updateUser =  async (user,id_user) => {
 }
 
 const deleteUser =  async (id_user) => {
-    const data = await fetch(`${protocol}//${url}/user/${id_user}` , {
+    const data = await fetch(`https://${url}/user/${id_user}` , {
         method: 'DELETE'
     })
 
@@ -63,7 +63,7 @@ const deleteUser =  async (id_user) => {
 }
 
 const viewUser =  async (id_user) => {
-    const data = await fetch(`${protocol}//${url}/user` , {
+    const data = await fetch(`https://${url}/user` , {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -81,7 +81,7 @@ const viewUser =  async (id_user) => {
 
 
 const listUsers =  async () => {
-    const data = await fetch(`${protocol}//${url}/users`)
+    const data = await fetch(`https://${url}/users`)
 
     if (data.ok) {
         return data.json()

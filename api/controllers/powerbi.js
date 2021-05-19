@@ -2,10 +2,12 @@ const PowerBi = require('../models/powerbi')
 
 module.exports = app => {
 
-    app.get('/powerbis', async (req, res, next) => {
+    app.get('/powerbis/:id', async (req, res, next) => {
 
         try {
-            const powerbis = await PowerBi.listPowerBi()
+            const id_login = req.params.id
+            
+            const powerbis = await PowerBi.listPowerBi(id_login)
             res.status(200).json(powerbis)
         } catch (error) {
             next(error)

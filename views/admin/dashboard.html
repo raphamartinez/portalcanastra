@@ -45,7 +45,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportes"
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportes" data-id_login-sy
                     aria-expanded="true" aria-controls="collapseReportes">
                     <i class="fas fa-file-alt fa-cog"></i>
                     <span>Informes</span>
@@ -91,19 +91,15 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Painel
-            </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
+            <li class="nav-item" data-adm>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin"
+                    aria-expanded="true" aria-controls="collapseAdmin">
                     <i class="fas fa-user-cog fa-folder"></i>
                     <span>Administración</span>
                 </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div id="collapseAdmin" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Paneles:</h6>
                         <a class="collapse-item" href="" data-btn-users>Lista de usuarios</a>
@@ -112,10 +108,6 @@
                 </div>
             </li>
 
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">

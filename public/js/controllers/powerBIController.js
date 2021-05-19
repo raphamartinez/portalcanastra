@@ -24,15 +24,16 @@ btn.addEventListener('click', async (event) => {
         let powerbi = document.querySelector('[data-powerbi]')
         let head = document.querySelector('[data-table-head]')
         let body = document.querySelector('[data-table-body]')
-
+        let modal = document.querySelector('[data-modal]')  
+        let id= document.querySelector('[data-iduselog]')
 
         title.innerHTML = "Informes"
         table.style.display = '';
         head.innerHTML = " "
         body.innerHTML = " "
         powerbi.innerHTML = " "
-
-        const data = await Service.listBiUser()
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(id)
 
         head.appendChild(View.header())
 
@@ -191,7 +192,7 @@ async function editPowerBi(event) {
 
 async function modalDeleteBi(event) {
     event.preventDefault()
-    
+
     try {
         const btn = event.currentTarget
         const id = btn.getAttribute("data-id_powerbi")

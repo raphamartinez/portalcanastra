@@ -3,8 +3,8 @@ const url = window.location.host;
 const split = document.URL.split("/")
 const protocol = split[0]
 
-const listBiUser =  async () => {
-    const data = await fetch(`${protocol}//${url}/powerbis`)
+const listBiUser =  async (id) => {
+    const data = await fetch(`https://${url}/powerbis/${id}`)
 
     if (data.ok) {
         return data.json()
@@ -13,7 +13,7 @@ const listBiUser =  async () => {
 }
 
 const listUser =  async (id) => {
-    const data = await fetch(`${protocol}//${url}/powerbis/${id}`)
+    const data = await fetch(`https://${url}/powerbis/${id}`)
 
     if (data.ok) {
         return data.json()
@@ -22,7 +22,7 @@ const listUser =  async (id) => {
 }
 
 const insertBi =  async (powerbi) => {
-    const data = await fetch(`${protocol}//${url}/powerbi` , {
+    const data = await fetch(`https://${url}/powerbi` , {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ const insertBi =  async (powerbi) => {
 
 
 const updateBi =  async (powerbi, id) => {
-    const data = await fetch(`${protocol}//${url}/powerbi/${id}` , {
+    const data = await fetch(`https://${url}/powerbi/${id}` , {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ const updateBi =  async (powerbi, id) => {
 }
 
 const deleteBi =  async (id) => {
-    const data = await fetch(`${protocol}//${url}/powerbi/${id}` , {
+    const data = await fetch(`https://${url}/powerbi/${id}` , {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -75,7 +75,7 @@ const deleteBi =  async (id) => {
 }
 
 const viewBi =  async (id) => {
-    const data = await fetch(`${protocol}//${url}/powerbi/${id}` , {
+    const data = await fetch(`https://${url}/powerbi/${id}` , {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
