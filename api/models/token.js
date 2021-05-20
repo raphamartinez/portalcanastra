@@ -71,7 +71,7 @@ module.exports = {
     access: {
         name: 'access token',
         list: blocklist,
-        dateExp: [15, 'm'],
+        dateExp: [40, 'm'],
         create(id) {
             return createTokenJWT(id, this.dateExp)
         },
