@@ -46,10 +46,12 @@ passport.use(
   new BearerStrategy(
     async (token, done) => {
     try {
+      console.log(token)
       const id = await Token.access.verify(token)
       const login = await Login.viewLogin(id)
       done(null, login, { token })
     } catch (error) {
+      console.log(error)
       done(error)
     }
   })

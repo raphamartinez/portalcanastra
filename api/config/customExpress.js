@@ -6,6 +6,7 @@ const consign = require('consign')
 const path = require('path');
 const { InvalidArgumentError, NotFound, NotAuthorized } = require('../models/error');
 const jwt = require('jsonwebtoken');
+const Login = require('../models/login')
 
 module.exports = () => {
 
@@ -60,8 +61,8 @@ module.exports = () => {
       async (token, done) => {
         try {
           const payload = jwt.verify(token, process.env.KEY_JWT)
-          const user = await User.viewUser(payload.id)
-          done(null, user)
+          const login = await Login.viewLogin(payload.id)
+          done(null, login, { token })
         } catch (error) {
           done(error)
         }

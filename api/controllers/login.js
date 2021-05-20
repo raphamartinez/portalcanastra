@@ -22,7 +22,7 @@ module.exports = app => {
         try {
             const token = req.token
             await Login.logout(token)
-            res.sendFile('login.html', { root: path.join(__dirname, '../../views/public') });
+            res.status(200).json({ url: '../public/login.html' })
         } catch (error) {
             next(error)
         }
@@ -38,7 +38,7 @@ module.exports = app => {
         }
     });
 
-    app.post('/insertLogin', async function (req, res, next) {
+    app.post('/insertLogin', Middleware.bearer, async function (req, res, next) {
         try {
             const data = req.body
             await Login.insertLogin(data)
@@ -70,19 +70,17 @@ module.exports = app => {
         }
     });
 
-    app.post('/refreshToken', Middleware.refresh, async function (req, res, next) {
+    app.post('/refresh', Middleware.refresh, async function (req, res, next) {
         try {
-            const token = await Login.login(id_login)
-
-            res.set('Authorization', token.accessToken)
-            res.status(200).json({ refreshToken: token.refreshToken })
+            const token = await Login.generateTokens(req.login.id_login)
+            res.status(200).json({ refreshToken: token.refreshToken, accessToken: token.accessToken })
         } catch (error) {
             next(error)
         }
     });
 
-    app.get('/login/mailVerify/:token', Middleware.verifyMail, async function (req, res, next) {
-        const { token } = req.params
-        //Chama user verify
-    });
+    // app.get('/login/mailVerify/:token', Middleware.verifyMail, async function (req, res, next) {
+    //     const { token } = req.params
+    //     //Chama user verify
+    // });
 }

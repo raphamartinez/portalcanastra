@@ -16,7 +16,12 @@ window.deletePowerBi = deletePowerBi
 btn.addEventListener('click', async (event) => {
     event.preventDefault()
     cardHistory.style.display = 'none';
-
+    let loading = document.querySelector('[data-loading]')
+loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
 
     try {
         let title = document.querySelector('[data-title]')
@@ -40,6 +45,7 @@ btn.addEventListener('click', async (event) => {
         data.forEach(powerbi => {
             body.appendChild(View.listPowerBi(powerbi))
         });
+        loading.innerHTML = " "
 
     } catch (error) {
 
@@ -48,7 +54,12 @@ btn.addEventListener('click', async (event) => {
 
 async function listBiUser(event) {
     event.preventDefault()
-
+    let loading = document.querySelector('[data-loading]')
+loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
     try {
 
         const btn = event.currentTarget
@@ -66,7 +77,6 @@ async function listBiUser(event) {
         body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-
         const data = await Service.listUser(id)
 
         head.appendChild(View.header())
@@ -77,6 +87,8 @@ async function listBiUser(event) {
 
         modal.appendChild(View.showModalDelete())
         modal.appendChild(View.showModalEdit())
+        loading.innerHTML = " "
+
     } catch (error) {
 
     }
@@ -85,7 +97,12 @@ async function listBiUser(event) {
 
 function viewBi(event) {
     event.preventDefault()
-
+    let loading = document.querySelector('[data-loading]')
+loading.innerHTML = `
+<div class="spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
     const btn = event.currentTarget
     const url = btn.getAttribute("data-url")
     let title = document.querySelector('[data-title]')
@@ -98,6 +115,7 @@ function viewBi(event) {
     table.style.display = 'none';
     head.innerHTML = " "
     body.innerHTML = " "
+    loading.innerHTML = " "
     powerbi.innerHTML = `   
     <iframe width="1140" height="600" src="${url}" frameborder="0" allowFullScreen="true"></iframe>`
 }
@@ -123,6 +141,14 @@ async function editBi(event) {
 async function addPowerBi(event) {
     try {
         event.preventDefault()
+        $('#addpowerbi').modal('hide')
+
+        let loading = document.querySelector('[data-loading]')
+        loading.innerHTML = `
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        `
 
         const btn = event.currentTarget
         const id_login = btn.getAttribute("data-id_login")
@@ -139,10 +165,10 @@ async function addPowerBi(event) {
 
         await Service.insertBi(powerbi)
 
-        $('#addpowerbi').modal('hide')
+        loading.innerHTML = " "
         alert('PowerBi agregado con éxito!')
     } catch (error) {
-        $('#addpowerbi').modal('hide')
+        loading.innerHTML = " "
         alert('Algo salió mal, informa al sector de TI')
     }
 }
@@ -166,6 +192,13 @@ async function modalEditBi(event) {
 
 async function editPowerBi(event) {
     event.preventDefault()
+    $('#editpowerbi').modal('hide')
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
     try {        
 
         const btn = event.currentTarget
@@ -182,10 +215,10 @@ async function editPowerBi(event) {
         }
 
         await Service.updateBi(powerbi, id)
-        $('#editpowerbi').modal('hide')
+        loading.innerHTML = " "
         alert('PowerBi agregado con éxito!')
     } catch (error) {
-        $('#editpowerbi').modal('hide')
+        loading.innerHTML = " "
         alert('Algo salió mal, informa al sector de TI')
     }
 }
@@ -204,16 +237,23 @@ async function modalDeleteBi(event) {
 
 async function deletePowerBi(event) {
     event.preventDefault()
+    $('#deletepowerbi').modal('hide')
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
     try {
         const btn = event.currentTarget
         const id = btn.getAttribute("data-id_powerbi")
 
         await Service.deleteBi(id)
-        $('#deletepowerbi').modal('hide')
-        alert('PowerBi excluido con éxito!')
 
+        loading.innerHTML = " "
+        alert('PowerBi excluido con éxito!')
     } catch (error) {
-        $('#deletepowerbi').modal('hide')
+        loading.innerHTML = " "
         alert('Algo salió mal, informa al sector de TI')
     }
 }

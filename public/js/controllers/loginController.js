@@ -26,3 +26,19 @@ async function onSubmit () {
         alert(error)
     }
 }
+
+window.onLogout = onLogout
+
+async function onLogout () {
+
+    try{
+        const data = await LoginService.logout()
+
+        sessionStorage.clear()
+        localStorage.clear()
+
+        window.location.href = data.url
+    }catch(error){
+        alert(error)
+    }
+}

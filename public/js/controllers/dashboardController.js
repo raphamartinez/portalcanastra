@@ -2,6 +2,13 @@ import { ViewDashboard } from "../views/dashboardView.js"
 import { Service } from "../services/historyService.js"
 
 window.onload = async function () {
+    let loading = document.querySelector('[data-loading]')
+loading.innerHTML = `
+<div class="spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+    
     let divadmin = document.querySelector('[data-adm]')
     let user = JSON.parse(sessionStorage.getItem('user'))
 
@@ -17,7 +24,7 @@ window.onload = async function () {
 
     let cardHistory = document.querySelector('[data-card]')     
 
-    let history = await Service.historyDashoard()
+    let history = await Service.historyDashboard()
 
     ViewDashboard.showCardHistory(cardHistory, history)
     ViewDashboard.showCardBd(cardHistory)
@@ -27,7 +34,8 @@ window.onload = async function () {
     console.log(perfil)
     let username = document.querySelector('[data-username]')
     username.innerHTML = name
-    title.innerHTML = "Dashboard"
+    loading.innerHTML = " "
+    title.innerHTML = "Informaciones"
     $("#data-id_login-sy").val(id_login)
 
 }

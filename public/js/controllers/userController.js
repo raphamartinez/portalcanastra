@@ -8,7 +8,12 @@ const cardHistory = document.querySelector('[data-card]')
 create.addEventListener('click', async (event) => {
     event.preventDefault()
     cardHistory.style.display = 'none';
-
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
     try {
         let title = document.querySelector('[data-title]')
         let table = document.querySelector('[data-table]')
@@ -35,7 +40,7 @@ create.addEventListener('click', async (event) => {
             divoffice.appendChild(View.listOffice(office))
         });
 
-
+        loading.innerHTML = " "
     } catch (error) {
 
     }
@@ -45,7 +50,12 @@ create.addEventListener('click', async (event) => {
 btn.addEventListener('click', async (event) => {
     event.preventDefault()
     cardHistory.style.display = 'none';
-
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
     try {
         let title = document.querySelector('[data-title]')
         let table = document.querySelector('[data-table]')
@@ -88,7 +98,7 @@ btn.addEventListener('click', async (event) => {
         offices.forEach(office => {
             divofficeinsert.appendChild(View.listOffice(office))
         });
-
+        loading.innerHTML = " "
     } catch (error) {
 
     }
@@ -116,7 +126,14 @@ window.editUser = editUser
 
 async function editUser(event) {
     event.preventDefault()
-    
+    $('#edituser').modal('hide')
+
+        let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
     try {
 
         const btn = event.currentTarget
@@ -140,10 +157,10 @@ async function editUser(event) {
 
         await Service.updateUser(user, id_user)
 
-        $('#edituser').modal('hide')
+        loading.innerHTML = " "
         alert('Usuario actualizado con éxito!')
     } catch (error) {
-        $('#edituser').modal('hide')
+        loading.innerHTML = " "
         alert('Algo salió mal, informa al sector de TI')
     }
 }
@@ -181,7 +198,14 @@ window.deleteUser = deleteUser
 
 async function deleteUser(event) {
     event.preventDefault()
+    $('#deleteuser').modal('hide')
 
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
     try {
 
         const form = event.currentTarget
@@ -189,10 +213,10 @@ async function deleteUser(event) {
 
         await Service.deleteUser(id_user)
 
-        $('#deleteuser').modal('hide')
+        loading.innerHTML = " "
         alert('Usuario discapacitado con éxito!')
     } catch (error) {
-        $('#deleteuser').modal('hide')
+        loading.innerHTML = " "
         alert('Algo salió mal, informa al sector de TI')
 
     }
@@ -217,6 +241,13 @@ async function modalDeleteUser(event) {
 window.createUser = createUser
 
 async function createUser(event) {
+    event.preventDefault()
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
 
     try {
         const btn = event.currentTarget
@@ -242,8 +273,10 @@ async function createUser(event) {
 
         await Service.insertUser(user)
 
+        loading.innerHTML = " "
         alert('Usuario agregado con éxito!')
     } catch (error) {
+        loading.innerHTML = " "
         alert('Usuario agregado con éxito!')
     }
 }

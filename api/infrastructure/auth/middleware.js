@@ -82,11 +82,10 @@ module.exports = {
     passport.authenticate(
       'bearer',
       { session: false },
-      (error, login, info) => {   
+      (error, login, info) => {
         if (error) {
           return next(error)
         }
-
         req.token = info.token
         req.login = login
         req.authenticated = true
@@ -98,9 +97,9 @@ module.exports = {
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.body
-      const id = await Token.refresh.verify(refreshToken)
+      const id_login = await Token.refresh.verify(refreshToken)
       await Token.refresh.invalid(refreshToken)
-      req.user = await Login.viewLogin(id)
+      req.login = await Login.viewLogin(id_login)
       return next()
     } catch (error) {
       if (error.name === 'InvalidArgumentError') {
@@ -114,7 +113,7 @@ module.exports = {
     try {
       const { token } = req.params
       const id = await Token.verifyMail.verify(token)
-      req.user = await Login.viewLogin(id)
+      req.login = await Login.viewLogin(id)
       next()
     } catch (error) {
       if (error) {

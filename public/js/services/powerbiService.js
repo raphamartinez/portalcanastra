@@ -4,7 +4,14 @@ const split = document.URL.split("/")
 const protocol = split[0]
 
 const listBiUser =  async (id) => {
-    const data = await fetch(`https://${url}/powerbis/${id}`)
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/powerbis/${id}` , {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+    })
 
     if (data.ok) {
         return data.json()
@@ -13,7 +20,14 @@ const listBiUser =  async (id) => {
 }
 
 const listUser =  async (id) => {
-    const data = await fetch(`https://${url}/powerbis/${id}`)
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/powerbis/${id}` , {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+    })
 
     if (data.ok) {
         return data.json()
@@ -22,10 +36,13 @@ const listUser =  async (id) => {
 }
 
 const insertBi =  async (powerbi) => {
-    const data = await fetch(`https://${url}/powerbi` , {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/powerbi` , {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         },
         body: JSON.stringify({
             powerbi: powerbi
@@ -40,10 +57,13 @@ const insertBi =  async (powerbi) => {
 
 
 const updateBi =  async (powerbi, id) => {
-    const data = await fetch(`https://${url}/powerbi/${id}` , {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/powerbi/${id}` , {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         },
         body: JSON.stringify({
             powerbi: powerbi
@@ -59,10 +79,13 @@ const updateBi =  async (powerbi, id) => {
 }
 
 const deleteBi =  async (id) => {
-    const data = await fetch(`https://${url}/powerbi/${id}` , {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/powerbi/${id}` , {
         method: 'DELETE',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         }
     })
 
@@ -75,10 +98,13 @@ const deleteBi =  async (id) => {
 }
 
 const viewBi =  async (id) => {
-    const data = await fetch(`https://${url}/powerbi/${id}` , {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/powerbi/${id}` , {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         }
     })
 

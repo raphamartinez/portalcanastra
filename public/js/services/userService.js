@@ -4,10 +4,13 @@ const split = document.URL.split("/")
 const protocol = split[0]
 
 const insertUser =  async (user) => {
-    const data = await fetch(`https://${url}/user` , {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/user` , {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         },
         body: JSON.stringify({
             user: user
@@ -21,7 +24,14 @@ const insertUser =  async (user) => {
 }
 
 const listOffice =  async () => {
-    const data = await fetch(`https://${url}/offices`)
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/offices` , {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+    })
 
     if (data.ok) {
         return data.json()
@@ -31,10 +41,13 @@ const listOffice =  async () => {
 
 
 const updateUser =  async (user,id_user) => {
-    const data = await fetch(`https://${url}/user/${id_user}` , {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/user/${id_user}` , {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         },
         body: JSON.stringify({
             user: user
@@ -50,8 +63,14 @@ const updateUser =  async (user,id_user) => {
 }
 
 const deleteUser =  async (id_user) => {
-    const data = await fetch(`https://${url}/user/${id_user}` , {
-        method: 'DELETE'
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/user/${id_user}` , {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
     })
 
     const result = await data.json()
@@ -63,10 +82,13 @@ const deleteUser =  async (id_user) => {
 }
 
 const viewUser =  async (id_user) => {
-    const data = await fetch(`https://${url}/user` , {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/user` , {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         },
         body: JSON.stringify({
             id_user: id_user
@@ -81,7 +103,14 @@ const viewUser =  async (id_user) => {
 
 
 const listUsers =  async () => {
-    const data = await fetch(`https://${url}/users`)
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/users` , {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+    })
 
     if (data.ok) {
         return data.json()

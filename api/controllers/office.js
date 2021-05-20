@@ -1,8 +1,9 @@
 const Office = require('../models/office')
+const Middleware = require('../infrastructure/auth/middleware')
 
 module.exports = app => {
 
-    app.get('/offices', async (req, res, next) => {
+    app.get('/offices', Middleware.bearer, async (req, res, next) => {
         try {
             const offices = await Office.listOffice()
             res.status(200).json(offices)
@@ -11,7 +12,7 @@ module.exports = app => {
         }
     })
 
-    app.get('/office/:id', async (req, res, next) => {
+    app.get('/office/:id', Middleware.bearer, async (req, res, next) => {
         try {
             const id_office = req.params.id
 
@@ -22,7 +23,7 @@ module.exports = app => {
         }
     })
 
-    app.post('/office', async (req, res, next) => {
+    app.post('/office', Middleware.bearer, async (req, res, next) => {
         try {
             const data = req.body
 
@@ -33,7 +34,7 @@ module.exports = app => {
         }
     })
 
-    app.put('/office/:id', async (req, res, next) => {
+    app.put('/office/:id', Middleware.bearer, async (req, res, next) => {
         try {
             const data = req.body
             const id_office = req.params.id
@@ -45,7 +46,7 @@ module.exports = app => {
         }
     })
 
-    app.delete('/office/:id', async (req, res, next) => {
+    app.delete('/office/:id', Middleware.bearer, async (req, res, next) => {
         try {
             const id_office = req.params.id
 

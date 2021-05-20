@@ -1,8 +1,9 @@
 const User = require('../models/user')
+const Middleware = require('../infrastructure/auth/middleware')
 
 module.exports = app => {
 
-    app.get('/users', async (req, res, next) => {
+    app.get('/users', Middleware.bearer , async (req, res, next) => {
 
         try {
             const users = await User.listUsers()
@@ -12,7 +13,7 @@ module.exports = app => {
         }
     })
 
-    app.get('/user/:id', async (req, res, next) => {
+    app.get('/user/:id', Middleware.bearer, async (req, res, next) => {
         try {
             const id_user = req.params.id
 
@@ -23,7 +24,7 @@ module.exports = app => {
         }
     })
 
-    app.post('/user', async (req, res, next) => {
+    app.post('/user', Middleware.bearer, async (req, res, next) => {
         try {
             const data = req.body
             const result = await User.insertUser(data)
@@ -33,7 +34,7 @@ module.exports = app => {
         }
     })
 
-    app.put('/user/:id', async (req, res, next) => {
+    app.put('/user/:id', Middleware.bearer, async (req, res, next) => {
 
         try {
             const data = req.body
@@ -45,7 +46,7 @@ module.exports = app => {
         }
     })
 
-    app.delete('/user/:id', async(req, res, next) => {
+    app.delete('/user/:id', Middleware.bearer, async(req, res, next) => {
         try {
             const id_user = req.params.id
             await User.deleteStatus(id_user)

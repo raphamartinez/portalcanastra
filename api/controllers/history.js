@@ -1,7 +1,8 @@
 const History = require('../models/history')
+const Middleware = require('../infrastructure/auth/middleware')
 
 module.exports = app => {
-    app.get('/history', async (req, res, next) => {
+    app.get('/history', Middleware.bearer, async (req, res, next) => {
         try {
             const history = await History.listHistoryDashboard()
             res.status(200).json(history)
@@ -10,7 +11,7 @@ module.exports = app => {
         }
     })
 
-    app.get('/historys', async (req, res, next) => {
+    app.get('/historys', Middleware.bearer, async (req, res, next) => {
         try {
             const history = await History.listHistory()
             res.status(200).json(history)
