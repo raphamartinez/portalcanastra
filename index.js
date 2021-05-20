@@ -4,7 +4,6 @@ const customExpress = require('./api/config/customExpress')
 const connection = require('./api/infrastructure/database/connection')
 const tables = require('./api/infrastructure/database/tables')
 const express = require('express')
-const WebScraping = require('./api/models/webscraping')
 
 connection.connect((error => {
 
