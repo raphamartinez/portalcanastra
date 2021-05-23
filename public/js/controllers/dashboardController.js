@@ -1,5 +1,5 @@
 import { ViewDashboard } from "../views/dashboardView.js"
-import { Service } from "../services/historyService.js"
+import { ServiceHistory } from "../services/historyService.js"
 
 window.onload = async function () {
     let loading = document.querySelector('[data-loading]')
@@ -16,9 +16,9 @@ window.onload = async function () {
     let history
     if (perfil !== 1) {
         divadmin.innerHTML = " "
-        history = await Service.historyDashboard()
+        history = await ServiceHistory.historyDashboard()
     } else {
-        history = await Service.historyDashboard()
+        history = await ServiceHistory.historyDashboard()
     }
 
     let table = document.querySelector('[data-table]')
@@ -40,5 +40,4 @@ window.onload = async function () {
     loading.innerHTML = " "
     title.innerHTML = "Informaciones"
     $("#data-id_login-sy").val(id_login)
-
 }

@@ -1,5 +1,5 @@
 import { View } from "../views/historyView.js"
-import { Service } from "../services/historyService.js"
+import { ServiceHistory } from "../services/historyService.js"
 
 const btn = document.querySelector('[data-history]')
 const cardHistory = document.querySelector('[data-card]')
@@ -28,19 +28,13 @@ loading.innerHTML = `
         body.innerHTML = " "
         powerbi.innerHTML = " "
         loading.innerHTML = " "
-        const data = await Service.listHistory()
+        const data = await ServiceHistory.listHistory()
 
         head.appendChild(View.header())
 
         data.forEach(history => {
             body.appendChild(View.newLine(history))
         });
-
-
-        // table.niceScroll({
-        //     cursorcolor: "#34495E"
-        // });
-        // table.scrollTop(table.get(0).scrollHeight, -1);
     } catch (error) {
 
     }

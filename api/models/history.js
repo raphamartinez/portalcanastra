@@ -5,15 +5,15 @@ class History {
 
     async listHistoryDashboard(perfil, id_login) {
         try {
-            if(perfil === 1){
+            if (perfil === 1) {
                 const count = await Repositorie.countInTheTime()
                 const lastAccess = await Repositorie.lastAccess()
-    
+
                 return { count, lastAccess }
-            }else{
+            } else {
                 const count = await Repositorie.countInTheTimeUser(id_login)
                 const lastAccess = await Repositorie.lastAccessUser(id_login)
-    
+
                 return { count, lastAccess }
             }
 
@@ -22,32 +22,15 @@ class History {
         }
     }
 
-    async listHistoryDashboardUser() {
+    async listHistory(perfil, id_login) {
         try {
-            const count = await Repositorie.countInTheTime()
-            const lastAccess = await Repositorie.lastAccess()
-
-            return { count, lastAccess }
-        } catch (error) {
-            throw new InternalServerError('Error')
-        }
-    }
-
-    async listHistory() {
-        try {
-            const list = await Repositorie.list()
-
-            return list
-        } catch (error) {
-            throw new InternalServerError('Error')
-        }
-    }
-
-    async listHistoryUser() {
-        try {
-            const list = await Repositorie.listUser()
-
-            return list
+            if (perfil === 1) {
+                const list = await Repositorie.list()
+                return list
+            } else {
+                const list = await Repositorie.listUser(id_login)
+                return list
+            }
         } catch (error) {
             throw new InternalServerError('Error')
         }
@@ -63,7 +46,7 @@ class History {
         }
     }
 
-    async insertHistory(description, id_login) {
+    async insertHistory(id_login, description) {
         try {
             const history = {
                 description: description,

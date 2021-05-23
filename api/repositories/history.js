@@ -4,9 +4,9 @@ const { InvalidArgumentError, InternalServerError, NotFound } = require('../mode
 class History {
     async insert(history) {
         try{
-            const sql = 'INSERT INTO history (description, status, dateReg, id_login) values (?, 1, now(), ?)'
-            const result = query(sql,[history.description, history.id_login])
-            return result[0]
+            const sql = 'INSERT INTO ansa.history (description, status, dateReg, id_login) values (?, 1, now(), ?)'
+            await query(sql,[history.description, history.id_login])
+            return true
         }catch (error) {
             throw new InvalidArgumentError(error)
         }

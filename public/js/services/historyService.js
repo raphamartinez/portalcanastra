@@ -56,7 +56,28 @@ const listHistory =  async () => {
     throw new Error('Usuario o la contraseña no son válidos')
 }
 
-export const Service = {
+const insertHistory =  async (description) => {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/history` , {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({
+            description: description
+        })
+    })
+
+    if (data.ok) {
+        return data.json()
+    }
+    throw new Error('error')
+}
+
+export const ServiceHistory = {
     historyDashboard,
-    listHistory
+    listHistory,
+    insertHistory
 }

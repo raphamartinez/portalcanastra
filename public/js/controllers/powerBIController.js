@@ -1,5 +1,6 @@
 import { View } from "../views/powerbiView.js"
 import { Service } from "../services/powerbiService.js"
+import { ServiceHistory } from "../services/historyService.js"
 
 const btn = document.getElementById('btnSimpleBi')
 const cardHistory = document.querySelector('[data-card]')
@@ -17,7 +18,7 @@ btn.addEventListener('click', async (event) => {
     event.preventDefault()
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
-loading.innerHTML = `
+    loading.innerHTML = `
 <div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
   <span class="sr-only">Loading...</span>
 </div>
@@ -29,8 +30,8 @@ loading.innerHTML = `
         let powerbi = document.querySelector('[data-powerbi]')
         let head = document.querySelector('[data-table-head]')
         let body = document.querySelector('[data-table-body]')
-        let modal = document.querySelector('[data-modal]')  
-        let id= document.getElementById('data-id_login-sy').value
+        let modal = document.querySelector('[data-modal]')
+        let id = document.getElementById('data-id_login-sy').value
 
         title.innerHTML = "Informes"
         table.style.display = '';
@@ -55,7 +56,7 @@ loading.innerHTML = `
 async function listBiUser(event) {
     event.preventDefault()
     let loading = document.querySelector('[data-loading]')
-loading.innerHTML = `
+    loading.innerHTML = `
 <div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
   <span class="sr-only">Loading...</span>
 </div>
@@ -98,7 +99,7 @@ loading.innerHTML = `
 function viewBi(event) {
     event.preventDefault()
     let loading = document.querySelector('[data-loading]')
-loading.innerHTML = `
+    loading.innerHTML = `
 <div class="spinner-border text-primary" role="status">
   <span class="sr-only">Loading...</span>
 </div>
@@ -110,14 +111,17 @@ loading.innerHTML = `
     let head = document.querySelector('[data-table-head]')
     let body = document.querySelector('[data-table-body]')
     let powerbi = document.querySelector('[data-powerbi]')
+    let description = btn.getAttribute("data-title")
 
-    title.innerHTML = btn.getAttribute("data-title")
+    title.innerHTML = description
     table.style.display = 'none';
     head.innerHTML = " "
     body.innerHTML = " "
     loading.innerHTML = " "
     powerbi.innerHTML = `   
     <iframe width="1140" height="600" src="${url}" frameborder="0" allowFullScreen="true"></iframe>`
+
+    ServiceHistory.insertHistory(`Acceso de Informe - ${description}`)
 }
 
 async function editBi(event) {
@@ -199,7 +203,7 @@ async function editPowerBi(event) {
       <span class="sr-only">Loading...</span>
     </div>
     `
-    try {        
+    try {
 
         const btn = event.currentTarget
         const id = btn.getAttribute("data-id_powerbi")
