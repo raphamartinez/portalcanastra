@@ -5,7 +5,6 @@ const connection = require('./api/infrastructure/database/connection')
 const tables = require('./api/infrastructure/database/tables')
 const WebScraping = require('./api/models/webscraping')
 const express = require('express')
-
 connection.connect((error => {
 
     if (error) {
@@ -21,6 +20,8 @@ connection.connect((error => {
             app.get('/', function (req, res) {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
+
+            WebScraping.listProsegurMaintenance()
         })
     }
 }))

@@ -3,16 +3,19 @@ class Tables {
 
   init(connection) {
     this.connection = connection
-    this.createTableProsegur()
-    this.createTableAddress() 
-    this.createTableContact() 
-    this.createTableOffice() 
-    this.createTableClient() 
-    this.createTableLogin() 
-    this.createTableUser() 
-    this.createTableHistory() 
-    this.createTableLabel() 
-    this.createTableItemGroup() 
+    this.createTableProsegurArrest()
+    this.createTableProsegurPower()
+    this.createTableProsegurMaintenance()
+    this.createTableProsegurTire()
+    this.createTableAddress()
+    this.createTableContact()
+    this.createTableOffice()
+    this.createTableClient()
+    this.createTableLogin()
+    this.createTableUser()
+    this.createTableHistory()
+    this.createTableLabel()
+    this.createTableItemGroup()
     this.createTableItem()
     this.createTableAddressClient()
     this.createTableContactClient()
@@ -47,14 +50,58 @@ class Tables {
     })
   }
 
-  createTableProsegur() {
-    const sql = `CREATE TABLE IF NOT EXISTS prosegur (id_prosegur int NOT NULL AUTO_INCREMENT, dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegur))`
+  createTableProsegurArrest() {
+    const sql = `CREATE TABLE IF NOT EXISTS prosegurarrest (id_prosegurarrest int NOT NULL AUTO_INCREMENT, dateStart DATETIME, dateEnd DATETIME, plate VARCHAR (10), alias VARCHAR (50),
+    stoppedTime VARCHAR(20), direction VARCHAR(250), detentionDistance DOUBLE, coordinates VARCHAR (250),
+        dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegurarrest))`
 
     this.connection.query(sql, (error) => {
       if (error) {
         console.log(error)
       } else {
-        console.log('prosegur table created')
+        console.log('prosegurarrest table created')
+      }
+    })
+  }
+
+  createTableProsegurPower() {
+    const sql = `CREATE TABLE IF NOT EXISTS prosegurpower (id_prosegurpower int NOT NULL AUTO_INCREMENT, dateStart DATETIME, dateEnd DATETIME, plate VARCHAR (10), alias VARCHAR (50),
+    stoppedTime VARCHAR(20), direction VARCHAR(250), detentionDistance double, coordinates VARCHAR (250), type VARCHAR(6),
+        dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegurpower))`
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('prosegurpower table created')
+      }
+    })
+  }
+
+  createTableProsegurMaintenance() {
+    const sql = `CREATE TABLE IF NOT EXISTS prosegurmaintenance (id_prosegurmaintenance int NOT NULL AUTO_INCREMENT, dateHigh DATETIME, car VARCHAR (100), work VARCHAR (100),
+    invoice VARCHAR(100), cost double, typeNotice VARCHAR(50), warnAfter VARCHAR (60), state VARCHAR(25),
+        dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegurmaintenance))`
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('prosegurmaintenance table created')
+      }
+    })
+  }
+
+  createTableProsegurTire() {
+    const sql = `CREATE TABLE IF NOT EXISTS prosegurtire (id_prosegurtire int NOT NULL AUTO_INCREMENT, nrSerie VARCHAR(100), state VARCHAR(15), location  VARCHAR(15),
+     brand VARCHAR (50), measures VARCHAR (50), kmInstallation VARCHAR (50), kmTotal VARCHAR(50), user VARCHAR(50), car VARCHAR(20),
+        dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegurtire))`
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('prosegurtire table created')
       }
     })
   }
@@ -184,26 +231,26 @@ class Tables {
     const sql = `CREATE TABLE IF NOT EXISTS label (id_label int NOT NULL AUTO_INCREMENT, code VARCHAR (20) NOT NULL,
       name VARCHAR (30) NOT NULL, type VARCHAR (10), jerarquia VARCHAR (20) NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_label))`
 
-  this.connection.query(sql, (error) => {
-    if (error) {
-      console.log(error)
-    } else {
-      console.log('label table created')
-    }
-  })
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('label table created')
+      }
+    })
   }
 
   createTableItemGroup() {
     const sql = `CREATE TABLE IF NOT EXISTS itemGroup (id_itemGroup int NOT NULL AUTO_INCREMENT, code VARCHAR (20) NOT NULL,
       name VARCHAR (30) NOT NULL, vatcode VARCHAR (5), dateReg DATETIME NOT NULL, PRIMARY KEY (id_itemGroup))`
 
-  this.connection.query(sql, (error) => {
-    if (error) {
-      console.log(error)
-    } else {
-      console.log('itemGroup table created')
-    }
-  })
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('itemGroup table created')
+      }
+    })
   }
 
   createTableItem() {
@@ -212,13 +259,13 @@ class Tables {
       status int NOT NULL, dateReg DATETIME NOT NULL, id_label int NOT NULL, id_itemGroup int NOT NULL, PRIMARY KEY (id_item),
       FOREIGN KEY (id_label) REFERENCES label(id_label), FOREIGN KEY (id_itemGroup) REFERENCES itemGroup(id_itemGroup))`
 
-  this.connection.query(sql, (error) => {
-    if (error) {
-      console.log(error)
-    } else {
-      console.log('item table created')
-    }
-  })
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('item table created')
+      }
+    })
   }
 }
 

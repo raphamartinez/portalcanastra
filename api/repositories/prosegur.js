@@ -1,29 +1,115 @@
 const query = require('../infrastructure/database/queries')
+const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 class Prosegur {
-    insert(prosegur) {
-        const sql = 'INSERT INTO prosegur set ?'
-        return query(sql,prosegur)
+
+    async insertTire(values) {
+        try {
+            console.log(values)
+
+            const sql = 'INSERT INTO ansa.prosegurtire (nrSerie, state, location, car, brand, measures, kmInstallation, kmTotal, user, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const result = await query(sql, values)
+            return result[0]
+        } catch (error) {
+            console.log(error)
+            throw new InvalidArgumentError(error)
+        }
     }
 
-    delete(id) {
-        const sql = `DELETE from prosegur WHERE id_prosegur = ${id}`
-        return query(sql)
+    async listTire() {
+        try {
+            const sql = `SELECT kmInstallation FROM ansa.prosegurtire ORDER BY id_prosegurtire DESC LIMIT 1 `
+            const result = await query(sql)
+
+            if(!result[0]){
+                return 0
+            }
+            
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 
-    update(prosegur,id) {
-        const sql = 'UPDATE prosegur SET ? WHERE id_prosegur = ?'
-        return query(sql,[prosegur, id])
+    async insertMaintenance(values) {
+        try {
+            const sql = 'INSERT INTO ansa.prosegurmaintenance (dateHigh, car, work, invoice, cost, typeNotice, warnAfter, state, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const result = await query(sql, values)
+            return result[0]
+        } catch (error) {
+            console.log(error)
+            throw new InvalidArgumentError(error)
+        }
     }
 
-    view(id) {
-        const sql = `SELECT * FROM prosegur where id_prosegur = ${id}`
-        return query(sql)
+    async listMaintenance() {
+        try {
+            const sql = `SELECT dateHigh FROM ansa.prosegurmaintenance ORDER BY id_prosegurmaintenance DESC LIMIT 1 `
+            const result = await query(sql)
+
+            if(!result[0]){
+                return 0
+            }
+
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 
-    list() {
-        const sql = 'SELECT * FROM prosegur'
-        return query(sql)
+    async insertPower(values) {
+        try {
+            console.log(values);
+            const sql = 'INSERT INTO ansa.prosegurpower (dateStart, dateEnd, plate, alias, type, stoppedTime, direction, detentionDistance, coordinates, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const result = await query(sql, values)
+            return result[0]
+        } catch (error) {
+            console.log(error)
+            throw new InvalidArgumentError(error)
+        }
+    }
+
+    async listPower() {
+        try {
+            const sql = `SELECT dateEnd FROM ansa.prosegurpower ORDER BY id_prosegurpower DESC LIMIT 1 `
+            const result = await query(sql)
+
+            if(!result[0]){
+                return 0
+            }
+
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
+    }
+
+    async insertArrest(values) {
+        console.log(values)
+
+        try {
+            const sql = 'INSERT INTO ansa.prosegurarrest (dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const result = await query(sql, values)
+            return result[0]
+        } catch (error) {
+            console.log(error)
+            throw new InvalidArgumentError(error)
+        }
+    }
+
+    async listArrest() {
+        try {
+            const sql = `SELECT dateEnd FROM ansa.prosegurarrest ORDER BY id_prosegurarrest DESC LIMIT 1 `
+            const result = await query(sql)
+
+            if(!result[0]){
+                return 0
+            }
+
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
     }
 }
 

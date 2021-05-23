@@ -1,8 +1,10 @@
 const puppeteer = require('puppeteer');
+const Repositorie = require('../repositories/prosegur')
+const moment = require('moment')
 
 class WebScraping {
 
-    async listProsegurDetencion() {
+    async listProsegurPowerandStop() {
         try {
 
             const browser = await puppeteer.launch()
@@ -19,7 +21,6 @@ class WebScraping {
             await page.waitForTimeout(1000)
 
             await page.click(`select [value="ALL"]`)
-            await page.screenshot({ path: 'teste2.png' })
             await page.waitForTimeout(1000)
 
             const form = await page.$('#form');
@@ -30,23 +31,47 @@ class WebScraping {
             await page.click(`#datatableStops_wrapper > div.top > div.dt-buttons > button:nth-child(1)`)
             await page.click(`#datatableStopsOnOff_wrapper > div.top > div.dt-buttons > button:nth-child(1)`)
 
-            const dataPage = await page.evaluate(() => {
-                const tdsStop = Array.from(document.querySelectorAll('#datatableStops tr td'))
-                const tdsOnOff = Array.from(document.querySelectorAll('#datatableStopsOnOff tr td'))
-                return {
-                    Stop: tdsStop.map(td => td.innerText),
-                    OnOff: tdsOnOff.map(td => td.innerText)
+            const tableStop = await page.evaluate(() => {
+                const tdsNeumaticos = Array.from(document.querySelectorAll('#datatableStops tr'),
+                    row => Array.from(row.querySelectorAll('tr, td'), cell => cell.innerText))
+                return tdsNeumaticos
+            })
+
+            const tableOnOff = await page.evaluate(() => {
+                const tdsNeumaticos = Array.from(document.querySelectorAll('#datatableStopsOnOff tr'),
+                    row => Array.from(row.querySelectorAll('tr, td'), cell => cell.innerText))
+                return tdsNeumaticos
+            })
+
+            const stop = tableStop.slice(1)
+            const onOff = tableOnOff.slice(1)
+
+            const lastInsertArrest = await Repositorie.listArrest()
+
+            stop.forEach(async line => {
+                const pop = line.pop()
+
+                if(line[1] > lastInsertArrest){
+                await Repositorie.insertArrest(line)
                 }
             })
 
-            console.log(dataPage)
+            const lastInsertPower = await Repositorie.listPower()
 
+            onOff.forEach(async line => {
+                const pop = line.pop()
+
+                if(line[1] > lastInsertPower){
+                await Repositorie.insertPower(line)
+                }
+            })
 
         } catch (error) {
+            console.log(error)
         }
     }
 
-    async listProsegurMantenimiento() {
+    async listProsegurMaintenance() {
         try {
 
             const browser = await puppeteer.launch()
@@ -62,19 +87,28 @@ class WebScraping {
             await page.goto('https://localizacion.prosegur.com/vehiculos/mantenimiento/mantenimiento')
             await page.waitForTimeout(1000)
 
-            const dataPage = await page.evaluate(() => {
+            const data = await page.evaluate(() => {
                 const tdsNeumaticos = Array.from(document.querySelectorAll('#DataTables_Table_0 tr'),
                     row => Array.from(row.querySelectorAll('tr, td'), cell => cell.innerText))
-
                 return tdsNeumaticos
             })
 
-            console.log(dataPage)
+            const lastInsertMaintenance = await Repositorie.listMaintenance()
+
+            const maintenances = data.slice(1)
+
+            maintenances.forEach(line => {
+                if(line[0] > lastInsertMaintenance){
+                    Repositorie.insertMaintenance(line.slice(1))
+                }
+            })
+
         } catch (error) {
+            console.log(error)
         }
     }
 
-    async listProsegurNeumatico() {
+    async listProsegurTire() {
         try {
 
             const browser = await puppeteer.launch()
@@ -90,22 +124,23 @@ class WebScraping {
             await page.goto('https://localizacion.prosegur.com/neumaticos/listado')
             await page.waitForTimeout(1000)
 
-            const dataPage = await page.evaluate(() => {
+            const data = await page.evaluate(() => {
                 const tdsNeumaticos = Array.from(document.querySelectorAll('#dt-neumaticos-listado tr'),
                     row => Array.from(row.querySelectorAll('tr, td'), cell => cell.innerText))
                 return tdsNeumaticos
             })
 
-            
+            const lastInsertTire = await Repositorie.listTire()
+            const tires = data.slice(1)
 
-            // const dataPage = await page.evaluate(() => {
-            //     return tdsNeumaticos = document.querySelectorAll('#dt-neumaticos-listado tr').map( column => 
-            //      Array.from(column.querySelectorAll('#dt-neumaticos-listado th, td').map(cell => cell.innerText))
-            //     )
-            // })
+            tires.forEach(line => {
+                if (line[6] > lastInsertTire) {
+                    Repositorie.insertTire(line.slice(1))
+                }
+            })
 
-            console.log(dataPage)
         } catch (error) {
+            console.log(error)
         }
     }
 }
