@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const Repositorie = require('../repositories/prosegur')
-const moment = require('moment')
+const fs = require('fs')
 
 class WebScraping {
 
@@ -10,8 +10,8 @@ class WebScraping {
             const browser = await puppeteer.launch()
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
-            await page.type('#nombre', 'pviana05@gmail.com')
-            await page.type('#pass', 'America+123')
+            await page.type('#nombre', process.env.PROSEGUR_MAIL)
+            await page.type('#pass', process.env.PROSEGUR_PASSWORD)
             await page.click('#btn-submit')
 
             await page.waitForNavigation()
@@ -51,8 +51,8 @@ class WebScraping {
             stop.forEach(async line => {
                 const pop = line.pop()
 
-                if(line[1] > lastInsertArrest){
-                await Repositorie.insertArrest(line)
+                if (line[1] > lastInsertArrest) {
+                    await Repositorie.insertArrest(line)
                 }
             })
 
@@ -61,8 +61,8 @@ class WebScraping {
             onOff.forEach(async line => {
                 const pop = line.pop()
 
-                if(line[1] > lastInsertPower){
-                await Repositorie.insertPower(line)
+                if (line[1] > lastInsertPower) {
+                    await Repositorie.insertPower(line)
                 }
             })
 
@@ -77,8 +77,8 @@ class WebScraping {
             const browser = await puppeteer.launch()
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
-            await page.type('#nombre', 'pviana05@gmail.com')
-            await page.type('#pass', 'America+123')
+            await page.type('#nombre', process.env.PROSEGUR_MAIL)
+            await page.type('#pass', process.env.PROSEGUR_PASSWORD)
             await page.click('#btn-submit')
 
             await page.waitForNavigation()
@@ -98,7 +98,7 @@ class WebScraping {
             const maintenances = data.slice(1)
 
             maintenances.forEach(line => {
-                if(line[0] > lastInsertMaintenance){
+                if (line[0] > lastInsertMaintenance) {
                     Repositorie.insertMaintenance(line.slice(1))
                 }
             })
@@ -114,8 +114,8 @@ class WebScraping {
             const browser = await puppeteer.launch()
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
-            await page.type('#nombre', 'pviana05@gmail.com')
-            await page.type('#pass', 'America+123')
+            await page.type('#nombre', process.env.PROSEGUR_MAIL)
+            await page.type('#pass', process.env.PROSEGUR_PASSWORD)
             await page.click('#btn-submit')
 
             await page.waitForNavigation()
@@ -141,6 +141,35 @@ class WebScraping {
 
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    async listProsegurOffice() {
+        try {
+            const browser = await puppeteer.launch()
+            const page = await browser.newPage()
+            await page.goto('https://smart.prosegur.com/smart-web-min/smart-login/#/negocios')
+            await page.type('#txt_user_name', process.env.PROSEGUR_MAIL)
+            await page.type('#txt_user_pass', process.env.PROSEGUR_PASSWORD)  
+            await page.click('#btn_enter')
+
+            await page.waitForNavigation()
+            await page.waitForTimeout(3000)
+
+            await page.goto('https://smart.prosegur.com/smart-web-min/smart-multisede/#/reports')
+
+
+
+            fs.readFile('./file.csv', async (err, data) => {
+                if (err) {
+                  console.error(err)
+                  return
+                }
+                console.log(await neatCsv(data))
+              })
+
+        } catch (error) {
+
         }
     }
 }
