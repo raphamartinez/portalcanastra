@@ -52,7 +52,7 @@ class Login {
 
     async view(id_login) {
         try {
-            const sql = `SELECT US.name, US.perfil, US.id_login FROM ansa.login LO, ansa.user US where US.id_login = LO.id_login and LO.id_login = ${id_login}`
+            const sql = `SELECT US.name, US.perfil, US.id_login FROM ansa.login LO, ansa.user US where US.id_login = LO.id_login and LO.id_login = ${id_login} and LO.status = 1`
             const result = await query(sql)
             return result[0]
         } catch (error) {

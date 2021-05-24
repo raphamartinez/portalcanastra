@@ -7,7 +7,7 @@ module.exports = app => {
             const id_login = req.login.id_login
             const description = req.body.description
 
-            const history = await History.insertHistory(id_login, description)
+            const history = await History.insertHistory(description, id_login)
             res.status(200).json(history)
         } catch (error) {
             next(error)

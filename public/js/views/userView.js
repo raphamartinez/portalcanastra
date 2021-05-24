@@ -42,8 +42,10 @@ const showModalPbiInsert = () => {
                         <div class="form-group col-md-6">
                     <select class="selectpicker form-control" name="type" id="type" required>
                     <option value="" disabled selected>Tipo</option>
-                    <option value="1">Informe</option>
-                    <option value="2">Integrado</option>
+                    <option value="1" >Informe</option>
+                    <option value="2">Personal</option>
+                    <option value="3">Seguridad - Vehículos</option>
+                    <option value="4">Seguridad - Sucursales</option>
                 </select>
                 </div>  
                 <div class="form-group col-md-12">

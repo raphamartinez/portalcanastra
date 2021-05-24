@@ -87,10 +87,7 @@ class User {
         try {
             let data = await Repositorie.list()
 
-            await data.forEach(async obj => {
-
-                obj.count = await RepositorieBi.count(obj.id_login)
-
+          data.forEach(obj => {
                 switch (obj.perfil) {
                     case 1: obj.perfilDesc = "admin"
                         break

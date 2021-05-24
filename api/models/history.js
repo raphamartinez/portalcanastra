@@ -46,7 +46,7 @@ class History {
         }
     }
 
-    async insertHistory(id_login, description) {
+    async insertHistory(description, id_login) {
         try {
             const history = {
                 description: description,

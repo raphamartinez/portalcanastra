@@ -33,11 +33,8 @@ window.onload = async function () {
     ViewDashboard.showCardBd(cardHistory)
 
     let name = user.name.substring(0, (user.name + " ").indexOf(" "))
-    let id_login = user.id_login
-    console.log(perfil)
     let username = document.querySelector('[data-username]')
     username.innerHTML = name
     loading.innerHTML = " "
     title.innerHTML = "Informaciones"
-    $("#data-id_login-sy").val(id_login)
 }

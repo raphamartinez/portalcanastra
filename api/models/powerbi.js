@@ -45,10 +45,19 @@ class PowerBi {
             const data = await Repositorie.listLogin(id_login)
 
             data.forEach(powerbi => {
-                if (powerbi.type = 1) {
-                    powerbi.typedesc = 'Informe'
-                } else {
-                    powerbi.typedesc = 'Integrado'
+                
+                switch (powerbi.type) {
+                    case 1: powerbi.typedesc = 'Informe'
+                        break
+
+                    case 2: powerbi.typedesc = 'Personal'
+                        break
+
+                    case 3: powerbi.typedesc = 'Seguridad - Vehículos'
+                        break
+
+                    case 4: powerbi.typedesc = 'Seguridad - Sucursales'
+                        break
                 }
             })
 
@@ -58,15 +67,15 @@ class PowerBi {
         }
     }
 
-    async listPowerBi(id_login) {
+    async listPowerBi(id_login, type) {
         try {
-            const data = await Repositorie.listLogin(id_login)
+            const data = await Repositorie.listLoginType(id_login, type)
 
-            data.forEach(powerbi => {
+            data.map(powerbi => {
                 if (powerbi.type = 1) {
-                    powerbi.type = 'Relatório'
+                    powerbi.typeDesc = 'Relatório'
                 } else {
-                    powerbi.type = 'Informe Integrado'
+                    powerbi.typeDesc = 'Informe Integrado'
                 }
             })
             return data

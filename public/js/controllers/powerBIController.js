@@ -2,7 +2,10 @@ import { View } from "../views/powerbiView.js"
 import { Service } from "../services/powerbiService.js"
 import { ServiceHistory } from "../services/historyService.js"
 
-const btn = document.getElementById('btnSimpleBi')
+const btnInforme = document.getElementById('btnInforme')
+const btnPunto = document.getElementById('btnPunto')
+const btnVehiculos = document.getElementById('btnVehiculos')
+const btnSucursales = document.getElementById('btnSucursales')
 const cardHistory = document.querySelector('[data-card]')
 
 window.modalDeleteBi = modalDeleteBi
@@ -14,7 +17,7 @@ window.editPowerBi = editPowerBi
 window.modalEditBi = modalEditBi
 window.deletePowerBi = deletePowerBi
 
-btn.addEventListener('click', async (event) => {
+btnSucursales.addEventListener('click', async (event) => {
     event.preventDefault()
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
@@ -25,13 +28,134 @@ btn.addEventListener('click', async (event) => {
 `
 
     try {
+        const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
+        let type = 4
         let table = document.querySelector('[data-table]')
         let powerbi = document.querySelector('[data-powerbi]')
         let head = document.querySelector('[data-table-head]')
         let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
-        let id = document.getElementById('data-id_login-sy').value
+
+        title.innerHTML = "Seguridad - Sucursales"
+        table.style.display = '';
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(type)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBi(powerbi))
+        });
+        loading.innerHTML = " "
+
+    } catch (error) {
+
+    }
+})
+
+btnVehiculos.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 3
+        let table = document.querySelector('[data-table]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+        title.innerHTML = "Seguridad - Vehículos"
+        table.style.display = '';
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(type)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBi(powerbi))
+        });
+        loading.innerHTML = " "
+
+    } catch (error) {
+
+    }
+})
+
+btnPunto.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 2
+        let table = document.querySelector('[data-table]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+        title.innerHTML = "Control de Punto"
+        table.style.display = '';
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(type)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBi(powerbi))
+        });
+        loading.innerHTML = " "
+
+    } catch (error) {
+
+    }
+})
+
+btnInforme.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 1
+        let table = document.querySelector('[data-table]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = "Informes"
         table.style.display = '';
@@ -39,7 +163,7 @@ btn.addEventListener('click', async (event) => {
         body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listBiUser(id)
+        const data = await Service.listBiUser(type)
 
         head.appendChild(View.header())
 

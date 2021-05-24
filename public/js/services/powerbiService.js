@@ -3,10 +3,10 @@ const url = window.location.host;
 const split = document.URL.split("/")
 const protocol = split[0]
 
-const listBiUser =  async (id) => {
+const listBiUser =  async (type) => {
     const accessToken = JSON.parse(localStorage.getItem('accessToken'))
 
-    const data = await fetch(`${protocol}//${url}/powerbis/${id}` , {
+    const data = await fetch(`${protocol}//${url}/powerbis/${type}` , {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${accessToken}`
@@ -22,7 +22,7 @@ const listBiUser =  async (id) => {
 const listUser =  async (id) => {
     const accessToken = JSON.parse(localStorage.getItem('accessToken'))
 
-    const data = await fetch(`${protocol}//${url}/powerbis/${id}` , {
+    const data = await fetch(`${protocol}//${url}/powerbisuser/${id}` , {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${accessToken}`

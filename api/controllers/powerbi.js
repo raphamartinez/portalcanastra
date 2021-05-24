@@ -3,28 +3,31 @@ const Middleware = require('../infrastructure/auth/middleware')
 
 module.exports = app => {
 
-    app.get('/powerbis/:id', Middleware.bearer, async (req, res, next) => {
+    app.get('/powerbis/:type', Middleware.bearer, async (req, res, next) => {
 
         try {
-            const id_login = req.params.id
+            const id_login = req.login.id_login
+            const type = req.params.type
             
-            const powerbis = await PowerBi.listPowerBi(id_login)
+            const powerbis = await PowerBi.listPowerBi(id_login, type)
             res.status(200).json(powerbis)
         } catch (error) {
             next(error)
         }
     })
 
-    app.get('/powerbis/:id', Middleware.bearer, async (req, res, next) => {
+    app.get('/powerbisuser/:id', Middleware.bearer, async (req, res, next) => {
 
         try {
             const id_login = req.params.id
+            
             const powerbis = await PowerBi.listPowerBis(id_login)
             res.status(200).json(powerbis)
         } catch (error) {
             next(error)
         }
     })
+
 
     app.get('/powerbi/:id', Middleware.bearer, async (req, res, next) => {
         try {
