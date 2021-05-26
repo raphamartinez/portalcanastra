@@ -25,7 +25,7 @@ class Prosegur {
                 return 0
             }
             
-            return result[0]
+            return result[0].kmInstallation
         } catch (error) {
             throw new InvalidArgumentError(error)
         }
@@ -44,14 +44,14 @@ class Prosegur {
 
     async listMaintenance() {
         try {
-            const sql = `SELECT dateHigh FROM ansa.prosegurmaintenance ORDER BY id_prosegurmaintenance DESC LIMIT 1 `
+            const sql = `SELECT dateHigh FROM ansa.prosegurmaintenance ORDER BY dateHigh DESC LIMIT 1 `
             const result = await query(sql)
 
             if(!result[0]){
                 return 0
             }
 
-            return result[0]
+            return result[0].dateHigh
         } catch (error) {
             throw new InvalidArgumentError(error)
         }
@@ -71,14 +71,14 @@ class Prosegur {
 
     async listPower() {
         try {
-            const sql = `SELECT dateEnd FROM ansa.prosegurpower ORDER BY id_prosegurpower DESC LIMIT 1 `
+            const sql = `SELECT DATE_FORMAT(dateEnd, '%Y-%m-%d %H:%i:%s') as dateEnd FROM ansa.prosegurpower ORDER BY dateEnd DESC LIMIT 1 `
             const result = await query(sql)
 
             if(!result[0]){
                 return 0
             }
 
-            return result[0]
+            return result[0].dateEnd
         } catch (error) {
             throw new InvalidArgumentError(error)
         }
@@ -99,7 +99,22 @@ class Prosegur {
 
     async listArrest() {
         try {
-            const sql = `SELECT dateEnd FROM ansa.prosegurarrest ORDER BY id_prosegurarrest DESC LIMIT 1 `
+            const sql = `SELECT DATE_FORMAT(dateEnd, '%Y-%m-%d %H:%i:%s') as dateEnd  FROM ansa.prosegurarrest ORDER BY dateEnd DESC LIMIT 1 `
+            const result = await query(sql)
+
+            if(!result[0]){
+                return 0
+            }
+
+            return result[0].dateEnd
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
+    }
+
+    async listInviolavel() {
+        try {
+            const sql = `SELECT date FROM ansa.inviolaveloffice ORDER BY date DESC LIMIT 1 `
             const result = await query(sql)
 
             if(!result[0]){
@@ -111,6 +126,17 @@ class Prosegur {
             throw new InvalidArgumentError(error)
         }
     }
+
+    async insertInviolavel(values){
+        try {
+            const sql = 'INSERT INTO ansa.inviolaveloffice (title, date, description, dateReg) values (?, ?, ?, now())'
+            const result = await query(sql, values)
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
+    }
+
 }
 
 module.exports = new Prosegur()

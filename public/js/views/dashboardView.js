@@ -15,7 +15,7 @@ const showCardHistory = (cardHistory, history) => {
                 <div class="h8 mb-0 font-weight-bold text-gray-600">El último acceso fue ${history.lastAccess.name} a ${history.lastAccess.time}</div>
             </div>
             <div class="col-auto">
-            <a><i class="fas fa-calendar fa-2x text-gray-300"></i></a>
+            <a href="#" data-history><i class="fas fa-calendar fa-2x text-gray-300"></i></a>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@ const showCardBd = (cardHistory) => {
                     <div class="h8 mb-0 font-weight-bold text-gray-600">Clic en el símbolo para actualizar de nuevo</div>
                 </div>
                 <div class="col-auto">
-                    <a><i class="fas fa-sync fa-2x text-gray-300"></i></a>
+                    <a href="#" data-history><i class="fas fa-sync fa-2x text-gray-300"></i></a>
                 </div>
             </div>
         </div>

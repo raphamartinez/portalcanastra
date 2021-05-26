@@ -17,9 +17,10 @@ const insertUser =  async (user) => {
         })
     })
 
-    if (data) {
+    if (data.ok === true) {
         return data.json()
     }
+    
     throw new Error('error')
 }
 

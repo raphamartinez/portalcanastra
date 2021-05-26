@@ -42,7 +42,8 @@ create.addEventListener('click', async (event) => {
 
         loading.innerHTML = " "
     } catch (error) {
-
+        loading.innerHTML = " "
+        alert('Algo salió mal, informa al sector de TI!')
     }
 })
 
@@ -100,7 +101,8 @@ btn.addEventListener('click', async (event) => {
         });
         loading.innerHTML = " "
     } catch (error) {
-
+        loading.innerHTML = " "
+        alert('Algo salió mal, informa al sector de TI!')
     }
 })
 
@@ -109,13 +111,13 @@ window.addModalPowerBi = addModalPowerBi
 
 async function addModalPowerBi(event) {
     event.preventDefault()
-    
+
     try {
         const btn = event.currentTarget
         const id_login = btn.getAttribute("data-id_login")
         $("#idinsertnewbi").attr("data-id_login", id_login)
-    }catch(error){
-        
+    } catch (error) {
+
     }
 }
 
@@ -128,7 +130,7 @@ async function editUser(event) {
     event.preventDefault()
     $('#edituser').modal('hide')
 
-        let loading = document.querySelector('[data-loading]')
+    let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
     <div class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
@@ -250,6 +252,7 @@ async function createUser(event) {
     `
 
     try {
+        const body = document.querySelector('[data-table-body]')
         const btn = event.currentTarget
         const name = btn['name'].value
         const dateBirthday = btn['dateBirthday'].value
@@ -268,17 +271,74 @@ async function createUser(event) {
             login: {
                 mail: mail,
                 password: password
-            }
+            },
+            dateReg: Date.now()
         }
 
         await Service.insertUser(user)
-
         loading.innerHTML = " "
-        alert('Usuario agregado con éxito!')
+
+        await listUsers()
     } catch (error) {
         loading.innerHTML = " "
-        alert('Usuario agregado con éxito!')
+        alert(error)
     }
 }
 
 
+async function listUsers() {
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
+    try {
+        let title = document.querySelector('[data-title]')
+        let table = document.querySelector('[data-table]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+
+        title.innerHTML = "Lista de Usuarios"
+        table.style.display = ''
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = ""
+
+        const data = await Service.listUsers()
+        const offices = await Service.listOffice()
+
+
+        head.appendChild(View.header())
+
+        data.forEach(user => {
+            body.appendChild(View.showTable(user))
+        });
+
+
+        modal.appendChild(View.showModalInsert())
+        modal.appendChild(View.showModalDelete())
+        modal.appendChild(View.showModalEdit())
+        modal.appendChild(View.showModalPbiInsert())
+
+        const divofficeedit = document.getElementById('officeedit')
+        const divofficeinsert = document.getElementById('officeinsert')
+
+        offices.forEach(office => {
+            divofficeedit.appendChild(View.listOffice(office))
+        });
+
+        offices.forEach(office => {
+            divofficeinsert.appendChild(View.listOffice(office))
+        });
+        loading.innerHTML = " "
+        alert('Usuario agregado con éxito!')
+    } catch (error) {
+        loading.innerHTML = " "
+        alert(error)
+    }
+}

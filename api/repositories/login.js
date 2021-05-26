@@ -54,6 +54,11 @@ class Login {
         try {
             const sql = `SELECT US.name, US.perfil, US.id_login FROM ansa.login LO, ansa.user US where US.id_login = LO.id_login and LO.id_login = ${id_login} and LO.status = 1`
             const result = await query(sql)
+
+            if(!result){
+                throw new InvalidArgumentError(`El nombre de usuario o la contraseña no son válidos`)
+            }
+
             return result[0]
         } catch (error) {
             throw new InvalidArgumentError(error)
@@ -71,8 +76,13 @@ class Login {
 
     async viewMail(mail) {
         try {
-            const sql = `SELECT * FROM login where mail = '${mail}'`
+            const sql = `SELECT * FROM login where mail = '${mail}' and status = 1`
             const result = await query(sql)
+
+            if(!result[0]){
+                throw new NotFound('Mail not found')
+            }
+            
             return result[0]
         } catch (error) {
             throw new NotFound(error)
@@ -85,6 +95,23 @@ class Login {
             const result = await query(sql, [mail, id_login])
             return result[0]
         } catch (error) {
+            throw new InternalServerError(error)
+        }
+    }
+
+
+    async checkMail(mail){
+        try {
+            const sql = `SELECT mail FROM ansa.login WHERE mail = '${mail}'`
+            const result = await query(sql, mail)
+
+            if(!result[0]){
+                return true
+            }
+
+            return false
+        } catch (error) {
+            console.log(error)
             throw new InternalServerError(error)
         }
     }

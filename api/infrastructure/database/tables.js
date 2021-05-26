@@ -3,6 +3,7 @@ class Tables {
 
   init(connection) {
     this.connection = connection
+    this.createTableInviolavelOffice()
     this.createTableProsegurArrest()
     this.createTableProsegurPower()
     this.createTableProsegurMaintenance()
@@ -23,6 +24,18 @@ class Tables {
     this.createTableViewPowerBI()
   }
 
+  createTableInviolavelOffice() {
+    const sql = `CREATE TABLE IF NOT EXISTS inviolaveloffice (id_inviolaveloffice int NOT NULL AUTO_INCREMENT, title VARCHAR (150) NOT NULL, date DATETIME NOT NULL, 
+     description VARCHAR (250) NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_inviolaveloffice))`
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+      }
+    })
+  }
+
   createTableViewPowerBI() {
     const sql = `CREATE TABLE IF NOT EXISTS viewpowerbi (id_viewpowerbi int NOT NULL AUTO_INCREMENT, id_powerbi int NOT NULL, id_login int NOT NULL,
      dateReg DATETIME NOT NULL, PRIMARY KEY (id_viewpowerbi),  FOREIGN KEY (id_powerbi) REFERENCES powerbi (id_powerbi), 
@@ -32,7 +45,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('viewpowerbi table created')
       }
     })
   }
@@ -45,7 +57,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('powerbi table created')
       }
     })
   }
@@ -59,7 +70,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('prosegurarrest table created')
       }
     })
   }
@@ -73,7 +83,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('prosegurpower table created')
       }
     })
   }
@@ -87,7 +96,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('prosegurmaintenance table created')
       }
     })
   }
@@ -101,7 +109,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('prosegurtire table created')
       }
     })
   }
@@ -115,7 +122,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('addressclient table created')
       }
     })
   }
@@ -129,7 +135,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('contactclient table created')
       }
     })
   }
@@ -142,7 +147,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('address table created')
       }
     })
   }
@@ -155,7 +159,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('contact table created')
       }
     })
   }
@@ -168,7 +171,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('office table created')
       }
     })
   }
@@ -181,7 +183,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('client table created')
       }
     })
   }
@@ -194,7 +195,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('login table created')
       }
     })
   }
@@ -208,7 +208,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('user table created')
       }
     })
   }
@@ -222,7 +221,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('history table created')
       }
     })
   }
@@ -235,7 +233,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('label table created')
       }
     })
   }
@@ -248,7 +245,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('itemGroup table created')
       }
     })
   }
@@ -263,7 +259,6 @@ class Tables {
       if (error) {
         console.log(error)
       } else {
-        console.log('item table created')
       }
     })
   }

@@ -1,10 +1,12 @@
-require('dotenv').config({path: __dirname + '\\.env', encoding: 'utf8'})
+require('dotenv').config({ path: __dirname + '\\.env', encoding: 'utf8' })
 
 const customExpress = require('./api/config/customExpress')
 const connection = require('./api/infrastructure/database/connection')
 const tables = require('./api/infrastructure/database/tables')
 const WebScraping = require('./api/models/webscraping')
 const express = require('express')
+const schedule = require('node-schedule');
+
 connection.connect((error => {
 
     if (error) {
@@ -13,6 +15,7 @@ connection.connect((error => {
         const app = customExpress()
         tables.init(connection)
         app.listen(3000, () => {
+            console.log('Server Running!');
 
             app.use(express.static(__dirname + '/public'))
             app.use(express.static(__dirname + '/views'))
@@ -21,7 +24,14 @@ connection.connect((error => {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
 
-            WebScraping.listProsegurMaintenance()
+            schedule.scheduleJob('0 23 * * ? *', async function () {
+                try{
+                    await WebScraping.init()
+                    console.log('Executed Cron today sucessfuly!');
+                } catch(error){
+                    console.log('Error cron!');
+                }
+            });
         })
     }
 }))

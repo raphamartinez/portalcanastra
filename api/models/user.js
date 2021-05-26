@@ -1,6 +1,5 @@
 const Repositorie = require('../repositories/user')
 const RepositorieLogin = require('../repositories/login')
-const RepositorieBi = require('../repositories/powerbi')
 const bcrypt = require('bcrypt')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('./error')
 
@@ -14,34 +13,38 @@ class User {
     async insertUser(data) {
         try {
             const password = await User.generatePasswordHash(data.user.login.password)
+            const verifyMail = await RepositorieLogin.checkMail(data.user.login.mail)
 
-            const login = {
-                mail: data.user.login.mail,
-                password: password,
-                mailVerify: 1,
-                status: 1
-            }
-
-            const obj = await RepositorieLogin.insert(login)
-            console.log(obj)
-
-            const user = {
-                name: data.user.name,
-                perfil: data.user.perfil,
-                dateBirthday: data.user.dateBirthday,
-                status: 1,
-                office: {
-                    id_office: data.user.office.id_office
-                },
-                login: {
-                    id_login: obj.id_login
+            if (verifyMail === true) {
+                const login = {
+                    mail: data.user.login.mail,
+                    password: password,
+                    mailVerify: 1,
+                    status: 1
                 }
+
+                const obj = await RepositorieLogin.insert(login)
+                console.log(obj)
+
+                const user = {
+                    name: data.user.name,
+                    perfil: data.user.perfil,
+                    dateBirthday: data.user.dateBirthday,
+                    status: 1,
+                    office: {
+                        id_office: data.user.office.id_office
+                    },
+                    login: {
+                        id_login: obj.id_login
+                    }
+                }
+
+                const result = await Repositorie.insert(user)
+
+                return result
+            } else {
+                throw new InvalidArgumentError('Error, ya existe este email!')
             }
-
-            const result = await Repositorie.insert(user)
-            console.log(result)
-
-            return result
         } catch (error) {
             throw new InvalidArgumentError('Error')
         }
@@ -60,24 +63,30 @@ class User {
     async updateUser(data, id_user) {
         try {
 
-            const user = {
-                id_user: id_user,
-                name: data.user.name,
-                perfil: data.user.perfil,
-                dateBirthday: data.user.dateBirthday,
-                office: {
-                    id_office: data.user.id_office
+            const verifyMail = await RepositorieLogin.checkMail(data.user.mail)
+
+            if (verifyMail === true) {
+                const user = {
+                    id_user: id_user,
+                    name: data.user.name,
+                    perfil: data.user.perfil,
+                    dateBirthday: data.user.dateBirthday,
+                    office: {
+                        id_office: data.user.id_office
+                    }
                 }
-            }
 
-            const login = {
-                id_login: data.user.id_login,
-                mail: data.user.mail
-            }
+                const login = {
+                    id_login: data.user.id_login,
+                    mail: data.user.mail
+                }
 
-            await Repositorie.update(user)
-            await RepositorieLogin.update(login)
-            return true
+                await Repositorie.update(user)
+                await RepositorieLogin.update(login)
+                return true
+            } else {
+                throw new InvalidArgumentError('Ya existe Este email!')
+            }
         } catch (error) {
             throw new InvalidArgumentError('Error')
         }
@@ -87,7 +96,7 @@ class User {
         try {
             let data = await Repositorie.list()
 
-          data.forEach(obj => {
+            data.forEach(obj => {
                 switch (obj.perfil) {
                     case 1: obj.perfilDesc = "admin"
                         break
