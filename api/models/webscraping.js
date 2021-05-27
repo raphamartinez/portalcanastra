@@ -295,6 +295,8 @@ class WebScraping {
                     // }
 
 
+                    objectarray.map(s => s.trim())
+                    console.log(objectarray);
 
                     // for (let i = 0; i < removeCommon.length; i += 3) {
                     //     const chunk = removeCommon.slice(i, i + 3)
