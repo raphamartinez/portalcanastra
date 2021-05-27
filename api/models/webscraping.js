@@ -7,11 +7,11 @@ class WebScraping {
 
     async init() {
         try {
-            this.listProsegurPowerandStop()
-            this.listProsegurMaintenance()
-            this.listProsegurTire()
+            // this.listProsegurPowerandStop()
+            // this.listProsegurMaintenance()
+            // this.listProsegurTire()
             // this.listProsegurOffice()
-            // this.listInviolavel()
+            this.listInviolavel()
         } catch (error) {
             console.log(error)
         }
@@ -255,20 +255,19 @@ class WebScraping {
                 ]
             ]
 
-            const results = []
-
             logins.forEach(async login => {
 
                 const browser = await puppeteer.launch()
                 const page = await browser.newPage()
                 await page.goto('https://webalarme.com.br/')
+                await page.setDefaultNavigationTimeout(0);
                 await page.type('body > div.login.ng-scope > div.content > form > div.row.form-group.inline-fields.ng-scope > div.field.margin-right-10-percent > input', provider)
                 await page.type('body > div.login.ng-scope > div.content > form > div.row.form-group.inline-fields.ng-scope > div:nth-child(2) > input', login[1])
                 await page.type('body > div.login.ng-scope > div.content > form > div:nth-child(4) > div.form-group > div > input', login[2])
                 await page.click('body > div.login.ng-scope > div.content > form > div.form-actions.padding-login > button')
 
                 await page.waitForNavigation()
-                await page.waitForTimeout(3000)
+                await page.waitForTimeout(1000)
 
                 await page.goto('https://webalarme.com.br/#!/events')
                 await page.waitForTimeout(1000)
@@ -279,39 +278,43 @@ class WebScraping {
                             cell => cell.innerText))
                     return tdsNeumaticos
                 })
+                await browser.close();
 
-                // const lastInsert = await Repositorie.listInviolavel()
-                let obj = []
-
-
-                data.forEach(function (item, index, object) {
+                data.forEach(async object => {
 
                     const result = object.toString()
                     const removeSpace = result.split('\n').toString()
-                    const removeCommon = removeSpace.split(',')
-                    obj = removeCommon
-                    // if (removeCommon[index] === 'TESTE AUTOMATICO DO RADIO   ') {
-                    //     removeCommon.splice(index, 2);
-                    // }
+                    const objectarray = removeSpace.split(',')
+
+                    var i = 0;
+                    while (i < objectarray.length) {
+                        if (objectarray[i].trim() === 'TESTE AUTOMATICO DO RADIO') {
+                            objectarray.splice(i, 2);
+                        } else {
+                            ++i;
+                        }
+                    }
+                    const lastInsert = await Repositorie.listInviolavel()
 
 
-                    objectarray.map(s => s.trim())
-                    console.log(objectarray);
 
-                    // for (let i = 0; i < removeCommon.length; i += 3) {
-                    //     const chunk = removeCommon.slice(i, i + 3)
-                    //     res.push(chunk)
-                    // }
+                    const chunk = (array) =>
+                        array.reduce((acc, _, i) => {
+                            if (i % 3 === 0) acc.push(array.slice(i, i + 3))
+                            return acc
+                        }, [])
 
-                    // if(res[2] > lastInsert){
-                    //     Repositorie.insertInviolavel(removeCommon)
-                    // }
+                    const chunked = chunk(objectarray, 3)
+
+
+                    chunked.forEach(async line => {
+                        const title = line[0].trim()
+                        console.log(lastInsert);
+                        if (line[1] > lastInsert) {
+                            await Repositorie.insertInviolavel(title, line[1], line[2])
+                        }
+                    })
                 })
-                console.log(obj)
-                const id = obj.indexOf('TESTE AUTOMATICO DO RADIO')
-                console.log(id)
-
-                await browser.close();
             })
         } catch (error) {
             console.log(error)

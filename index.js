@@ -20,10 +20,11 @@ connection.connect((error => {
             app.use(express.static(__dirname + '/public'))
             app.use(express.static(__dirname + '/views'))
 
-            app.get('/', function (req, res) {
+            app.all('/', function (req, res) {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
 
+             WebScraping.init()
             schedule.scheduleJob('0 23 * * ? *', async function () {
                 try{
                     await WebScraping.init()

@@ -22,6 +22,8 @@ class Tables {
     this.createTableContactClient()
     this.createTablePowerBI()
     this.createTableViewPowerBI()
+
+    return true
   }
 
   createTableInviolavelOffice() {

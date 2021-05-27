@@ -27,7 +27,8 @@ module.exports = () => {
     else {
       next();
     }
-  });
+  })
+
 
   // app.use((req, res, next) => {
   //   res.set({
@@ -35,9 +36,13 @@ module.exports = () => {
   //   })
   //   next()
   // });
+  
   app.use(express.json())
   app.use(express.urlencoded({ extended: false }))
   app.use(express.urlencoded({ extended: true }))
+
+  app.use(express.static(__dirname + '/public'))
+  app.use(express.static(__dirname + '/views'))
 
 
   app.use((req, res, next) => {
@@ -73,38 +78,38 @@ module.exports = () => {
     .then('controllers')
     .into(app)
 
-  app.use((error, req, res, next) => {
-    let status = 500
-    const body = {
-      message: error.message
-    }
+  // app.use((error, req, res, next) => {
+  //   let status = 500
+  //   const body = {
+  //     message: error.message
+  //   }
 
-    if (error instanceof NotFound) {
-      status = 404
-      body.dateExp = error.dateExp
-    }
+  //   if (error instanceof NotFound) {
+  //     status = 404
+  //     body.dateExp = error.dateExp
+  //   }
 
-    if (error instanceof NotAuthorized) {
-      status = 401
-      body.dateExp = error.dateExp
-    }
+  //   if (error instanceof NotAuthorized) {
+  //     status = 401
+  //     body.dateExp = error.dateExp
+  //   }
 
-    if (error instanceof InvalidArgumentError) {
-      status = 400
-    }
+  //   if (error instanceof InvalidArgumentError) {
+  //     status = 400
+  //   }
 
-    if (error instanceof jwt.JsonWebTokenError) {
-      status = 401
-    }
+  //   if (error instanceof jwt.JsonWebTokenError) {
+  //     status = 401
+  //   }
 
-    if (error instanceof jwt.TokenExpiredError) {
-      status = 401
-      body.dateExp = error.dateExp
-    }
+  //   if (error instanceof jwt.TokenExpiredError) {
+  //     status = 401
+  //     body.dateExp = error.dateExp
+  //   }
 
-    res.status(status)
-    res.json(body)
-  })
+  //   res.status(status)
+  //   res.json(body)
+  // })
 
   return app
 }

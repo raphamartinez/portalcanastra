@@ -127,12 +127,14 @@ class Prosegur {
         }
     }
 
-    async insertInviolavel(values){
+    async insertInviolavel(title, date, desc){
         try {
+            console.log(title);
             const sql = 'INSERT INTO ansa.inviolaveloffice (title, date, description, dateReg) values (?, ?, ?, now())'
-            const result = await query(sql, values)
+            const result = await query(sql, [title, date, desc])
             return result[0]
         } catch (error) {
+            console.log(error);
             throw new InvalidArgumentError(error)
         }
     }

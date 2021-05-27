@@ -28,15 +28,16 @@ module.exports = app => {
         }
 
     });
+    
 
 
-    app.get('/admin/*', Middleware.bearer, async function (req, res, next) {
+    app.all('/admin/*', Middleware.bearer, async function (req, res, next) {
         try {
             next()
         } catch (error) {
             next(error)
         }
-    });
+    })
 
     app.post('/insertLogin', Middleware.bearer, async function (req, res, next) {
         try {

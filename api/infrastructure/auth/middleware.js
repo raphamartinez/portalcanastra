@@ -83,13 +83,17 @@ module.exports = {
       'bearer',
       { session: false },
       (error, login, info) => {
-        if (error) {
+        try {
+          if (error) {
+            return next(error)
+          }
+          req.token = info.token
+          req.login = login
+          req.authenticated = true
+          return next()
+        } catch (error) {
           return next(error)
         }
-        req.token = info.token
-        req.login = login
-        req.authenticated = true
-        return next()
       }
     )(req, res, next)
   },
