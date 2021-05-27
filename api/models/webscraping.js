@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
 const Repositorie = require('../repositories/prosegur')
-const fs = require('fs')
 
 class WebScraping {
 
@@ -10,7 +9,7 @@ class WebScraping {
             this.listProsegurPowerandStop()
             this.listProsegurMaintenance()
             this.listProsegurTire()
-            // this.listProsegurOffice()
+            this.listProsegurOffice()
             this.listInviolavel()
         } catch (error) {
             console.log(error)
@@ -163,30 +162,69 @@ class WebScraping {
 
     async listProsegurOffice() {
         try {
-            const browser = await puppeteer.launch()
+            const browser = await puppeteer.launch({
+                args: ['--lang=pt-BR']
+            })
             const page = await browser.newPage()
+
+            await page.setExtraHTTPHeaders({
+                'Accept-Language': 'pt'
+            });
+
+            await page.evaluateOnNewDocument(() => {
+                Object.defineProperty(navigator, "language", {
+                    get: function() {
+                        return "pt-BR";
+                    }
+                });
+                Object.defineProperty(navigator, "languages", {
+                    get: function() {
+                        return ["pt-BR", "pt"];
+                    }
+                });
+            });
+
             await page.goto('https://smart.prosegur.com/smart-web-min/smart-login/#/negocios')
+            await page.waitForTimeout(1000)
+
             await page.type('#txt_user_name', process.env.PROSEGUR_MAIL)
             await page.type('#txt_user_pass', process.env.PROSEGUR_PASSWORD)
+            await page.screenshot({ path: 'buddy-screenshot.png' });
             await page.click('#btn_enter')
 
             await page.waitForNavigation()
+
+            await page.goto('https://smart.prosegur.com/smart-web-min/smart-multisede/#/event-console')
             await page.waitForTimeout(3000)
 
-            await page.goto('https://smart.prosegur.com/smart-web-min/smart-multisede/#/reports')
-
-
-
-            fs.readFile('./file.csv', async (err, data) => {
-                if (err) {
-                    console.error(err)
-                    return
-                }
-                console.log(await neatCsv(data))
+            const data = await page.evaluate(() => {
+                const tdsNeumaticos = Array.from(document.querySelectorAll('body > div.container > div > div.main-content.ng-scope > div.table-responsive.ng-scope > div'),
+                    row => Array.from(row.querySelectorAll('div >.table-row, div'),
+                        cell => cell.innerText))
+                return tdsNeumaticos
             })
-
             await browser.close();
 
+            data.forEach(async obj => {
+
+                const chunk = (array) =>
+                    array.reduce((acc, _, i) => {
+                        if (i % 8 === 0) acc.push(array.slice(i, i + 8))
+                        return acc
+                    }, [])
+
+                const chunked = chunk(obj, 8)
+
+                const tires = chunked.slice(1)
+
+                const lastInsert = await Repositorie.listOffice()
+
+                tires.forEach(line => {
+                    if(line[2] > lastInsert){
+                        Repositorie.insertOffice(line[2], line[3], line[4], line[5], line[6])
+                    }
+                })
+            })
         } catch (error) {
 
         }

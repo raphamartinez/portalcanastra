@@ -6,6 +6,7 @@ const tables = require('./api/infrastructure/database/tables')
 const WebScraping = require('./api/models/webscraping')
 const express = require('express')
 const schedule = require('node-schedule');
+const CronJob = require('cron').CronJob
 
 connection.connect((error => {
 
@@ -24,14 +25,16 @@ connection.connect((error => {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
 
-            schedule.scheduleJob('0 23 * * ? *', async function () {
+            const job = new CronJob('0 0 23 * * *', () => {
                 try{
-                    await WebScraping.init()
+                    WebScraping.init()
                     console.log('Executed Cron today sucessfuly!');
                 } catch(error){
                     console.log('Error cron!');
                 }
             });
+
+            job.start()
         })
     }
 }))
