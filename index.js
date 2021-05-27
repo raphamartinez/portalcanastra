@@ -24,7 +24,6 @@ connection.connect((error => {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
 
-             WebScraping.init()
             schedule.scheduleJob('0 23 * * ? *', async function () {
                 try{
                     await WebScraping.init()

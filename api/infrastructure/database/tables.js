@@ -27,8 +27,8 @@ class Tables {
   }
 
   createTableInviolavelOffice() {
-    const sql = `CREATE TABLE IF NOT EXISTS inviolaveloffice (id_inviolaveloffice int NOT NULL AUTO_INCREMENT, title VARCHAR (150) NOT NULL, date DATETIME NOT NULL, 
-     description VARCHAR (250) NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_inviolaveloffice))`
+    const sql = `CREATE TABLE IF NOT EXISTS inviolaveloffice (id_inviolaveloffice int NOT NULL AUTO_INCREMENT, title VARCHAR (150) NOT NULL, date VARCHAR (50)  NOT NULL, 
+     office VARCHAR (100) NOT NULL, description VARCHAR (250) NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_inviolaveloffice))`
 
     this.connection.query(sql, (error) => {
       if (error) {

@@ -7,9 +7,9 @@ class WebScraping {
 
     async init() {
         try {
-            // this.listProsegurPowerandStop()
-            // this.listProsegurMaintenance()
-            // this.listProsegurTire()
+            this.listProsegurPowerandStop()
+            this.listProsegurMaintenance()
+            this.listProsegurTire()
             // this.listProsegurOffice()
             this.listInviolavel()
         } catch (error) {
@@ -199,56 +199,67 @@ class WebScraping {
 
             const logins = [
                 [
+                    "DCMEX",
                     "3500",
                     "345",
                     "ANSA3500"
                 ],
                 [
+                    "ANSA IMPORTADOS DEPOSITO",
                     "3502",
                     "371",
                     "ANSA3502"
                 ],
                 [
+                    "DC7",
                     "3532",
                     "233",
                     "ANSA3532"
                 ],
                 [
+                    "DCMEX3",
                     "3533",
                     "583",
                     "ANSA3533"
                 ],
                 [
+                    "AC PJC",
                     "3537",
                     "494",
                     "ANSA3537"
                 ],
                 [
+                    "TRUCK",
                     "3538",
                     "493",
                     "ANSA3538"
                 ],
                 [
+                    "ANSA DEPOSITO CENTRO DE CAMARAS",
                     "3539",
                     "288",
                     "ANSA3539"
                 ],
                 [
+                    "DC",
                     "3540",
                     "511",
                     "ANSA3540"
                 ],
                 [
+                    "ANSA ADM",
                     "3541",
                     "936",
                     "ANSA3541"
                 ],
                 [
+                    "ANSA IMPORTADOS",
                     "3543",
                     "911",
                     "ANSA3543"
                 ],
                 [
+                    "DC6",
                     "3587",
                     "232",
                     "ANSA3587"
@@ -262,8 +273,8 @@ class WebScraping {
                 await page.goto('https://webalarme.com.br/')
                 await page.setDefaultNavigationTimeout(0);
                 await page.type('body > div.login.ng-scope > div.content > form > div.row.form-group.inline-fields.ng-scope > div.field.margin-right-10-percent > input', provider)
-                await page.type('body > div.login.ng-scope > div.content > form > div.row.form-group.inline-fields.ng-scope > div:nth-child(2) > input', login[1])
-                await page.type('body > div.login.ng-scope > div.content > form > div:nth-child(4) > div.form-group > div > input', login[2])
+                await page.type('body > div.login.ng-scope > div.content > form > div.row.form-group.inline-fields.ng-scope > div:nth-child(2) > input', login[2])
+                await page.type('body > div.login.ng-scope > div.content > form > div:nth-child(4) > div.form-group > div > input', login[3])
                 await page.click('body > div.login.ng-scope > div.content > form > div.form-actions.padding-login > button')
 
                 await page.waitForNavigation()
@@ -296,8 +307,6 @@ class WebScraping {
                     }
                     const lastInsert = await Repositorie.listInviolavel()
 
-
-
                     const chunk = (array) =>
                         array.reduce((acc, _, i) => {
                             if (i % 3 === 0) acc.push(array.slice(i, i + 3))
@@ -305,13 +314,12 @@ class WebScraping {
                         }, [])
 
                     const chunked = chunk(objectarray, 3)
-
-
                     chunked.forEach(async line => {
                         const title = line[0].trim()
-                        console.log(lastInsert);
+
                         if (line[1] > lastInsert) {
-                            await Repositorie.insertInviolavel(title, line[1], line[2])
+                            console.log(line);
+                            await Repositorie.insertInviolavel(title, line[1], line[2], login[0])
                         }
                     })
                 })
