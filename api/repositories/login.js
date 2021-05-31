@@ -79,7 +79,7 @@ class Login {
             const sql = `SELECT * FROM login where mail = '${mail}' and status = 1`
             const result = await query(sql)
 
-            if(!result[0]){
+            if(!result){
                 throw new NotFound('Mail not found')
             }
             

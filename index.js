@@ -23,16 +23,18 @@ connection.connect((error => {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
 
-            const job = new CronJob('0 0 23 * * *', () => {
-                try{
-                    WebScraping.init()
-                    console.log('Executed Cron today sucessfuly!');
-                } catch(error){
-                    console.log('Error cron!');
-                }
-            });
+            WebScraping.init()
 
-            job.start()
+            // const job = new CronJob('0 0 23 * * *', () => {
+            //     try{
+            //         WebScraping.init()
+            //         console.log('Executed Cron today sucessfuly!');
+            //     } catch(error){
+            //         console.log('Error cron!');
+            //     }
+            // });
+
+            // job.start()
         })
     }
 }))
