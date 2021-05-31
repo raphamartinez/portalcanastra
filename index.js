@@ -9,7 +9,7 @@ const express = require('express')
 const CronJob = require('cron').CronJob
 
 connection.connect((error => {
-
+    process.setMaxListeners(100)
     if (error) {
         console.log(error)
     } else {
