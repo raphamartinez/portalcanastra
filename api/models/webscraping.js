@@ -21,6 +21,7 @@ class WebScraping {
             await this.listProsegurMaintenance()
             await this.listProsegurOffice()
             await this.listInviolavel()
+            console.log('robot ok');
         } catch (error) {
             console.log(error)
         }
