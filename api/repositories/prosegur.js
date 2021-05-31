@@ -57,7 +57,6 @@ class Prosegur {
 
     async insertPower(values) {
         try {
-            console.log(values);
             const sql = 'INSERT INTO ansa.prosegurpower (dateStart, dateEnd, plate, alias, type, stoppedTime, direction, detentionDistance, coordinates, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
             const result = await query(sql, values)
             return result[0]

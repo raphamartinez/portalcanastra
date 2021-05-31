@@ -29,7 +29,10 @@ class WebScraping {
     async listProsegurPowerandStop() {
         try {
 
-            const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
+            const browser = await puppeteer.launch({ 
+                headless: true, 
+                args: ['--no-sandbox'] 
+            })
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
             await page.type('#nombre', process.env.PROSEGUR_MAIL)
@@ -97,7 +100,7 @@ class WebScraping {
         try {
 
             const browser = await puppeteer.launch({
-                headless: false,
+                headless: true,
                 args: ['--no-sandbox']
             })
 
