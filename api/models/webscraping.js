@@ -1,14 +1,23 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer')
 const Repositorie = require('../repositories/prosegur')
+const xlsx = require('read-excel-file/node')
+
+
+
+function readExcel() {
+
+    xlsx('./Mantenimientos.xlsx').then((rows) => {
+        console.log(rows);
+       })
+}
 
 class WebScraping {
-
 
     async init() {
         try {
             this.listProsegurPowerandStop()
-            this.listProsegurMaintenance()
-            this.listProsegurTire()
+            // this.listProsegurMaintenance()
+            // this.listProsegurTire()
             this.listProsegurOffice()
             this.listInviolavel()
         } catch (error) {
@@ -76,7 +85,7 @@ class WebScraping {
                 }
             })
 
-            await browser.close();
+            await browser.close()
 
         } catch (error) {
             console.log(error)
@@ -86,9 +95,16 @@ class WebScraping {
     async listProsegurMaintenance() {
         try {
 
-            const browser = await puppeteer.launch()
+            readExcel()
+
+            const browser = await puppeteer.launch({
+                headless: false
+            })
+
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
+
+            await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: __dirname});
             await page.type('#nombre', process.env.PROSEGUR_MAIL)
             await page.type('#pass', process.env.PROSEGUR_PASSWORD)
             await page.click('#btn-submit')
@@ -96,64 +112,31 @@ class WebScraping {
             await page.waitForNavigation()
             await page.waitForTimeout(3000)
 
-            await page.goto('https://localizacion.prosegur.com/vehiculos/mantenimiento/mantenimiento')
+            await page.goto('https://localizacion.prosegur.com/informes/mantenimientos')
             await page.waitForTimeout(1000)
 
+            await page.click(`select [value="TODOS"]`)
+            await page.waitForTimeout(1000)
+
+            await page.click('#button_generar_excel')
+            await page.waitForTimeout(4000)
+
+
+            // const attr = await page.$eval('#datatable_mantenimientos_last', el => el.getAttribute('data-dt-idx'))
+
             const data = await page.evaluate(() => {
-                const tdsNeumaticos = Array.from(document.querySelectorAll('#DataTables_Table_0 tr'),
-                    row => Array.from(row.querySelectorAll('tr, td'), cell => cell.innerText))
+                const tdsNeumaticos = Array.from(document.querySelectorAll('#datatableStops_paginate > span, a'),
+                    row => Array.from(row.querySelectorAll('.paginate_button '), cell => cell.innerText))
                 return tdsNeumaticos
             })
 
-            const lastInsertMaintenance = await Repositorie.listMaintenance()
+            // console.log(data)
 
-            const maintenances = data.slice(1)
+            // await page.click('#datatable_mantenimientos_next')
 
-            maintenances.forEach(line => {
-                if (line[0] > lastInsertMaintenance) {
-                    Repositorie.insertMaintenance(line.slice(1))
-                }
-            })
 
-            await browser.close();
 
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async listProsegurTire() {
-        try {
-
-            const browser = await puppeteer.launch()
-            const page = await browser.newPage()
-            await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
-            await page.type('#nombre', process.env.PROSEGUR_MAIL)
-            await page.type('#pass', process.env.PROSEGUR_PASSWORD)
-            await page.click('#btn-submit')
-
-            await page.waitForNavigation()
-            await page.waitForTimeout(3000)
-
-            await page.goto('https://localizacion.prosegur.com/neumaticos/listado')
-            await page.waitForTimeout(1000)
-
-            const data = await page.evaluate(() => {
-                const tdsNeumaticos = Array.from(document.querySelectorAll('#dt-neumaticos-listado tr'),
-                    row => Array.from(row.querySelectorAll('tr, td'), cell => cell.innerText))
-                return tdsNeumaticos
-            })
-
-            const lastInsertTire = await Repositorie.listTire()
-            const tires = data.slice(1)
-
-            tires.forEach(line => {
-                if (line[5] !== lastInsertTire) {
-                    Repositorie.insertTire(line.slice(1))
-                }
-            })
-
-            await browser.close();
+            await browser.close()
 
         } catch (error) {
             console.log(error)
@@ -173,12 +156,12 @@ class WebScraping {
 
             await page.evaluateOnNewDocument(() => {
                 Object.defineProperty(navigator, "language", {
-                    get: function() {
+                    get: function () {
                         return "pt-BR";
                     }
                 });
                 Object.defineProperty(navigator, "languages", {
-                    get: function() {
+                    get: function () {
                         return ["pt-BR", "pt"];
                     }
                 });
@@ -189,7 +172,6 @@ class WebScraping {
 
             await page.type('#txt_user_name', process.env.PROSEGUR_MAIL)
             await page.type('#txt_user_pass', process.env.PROSEGUR_PASSWORD)
-            await page.screenshot({ path: 'buddy-screenshot.png' });
             await page.click('#btn_enter')
 
             await page.waitForNavigation()
@@ -203,7 +185,7 @@ class WebScraping {
                         cell => cell.innerText))
                 return tdsNeumaticos
             })
-            await browser.close();
+            await browser.close()
 
             data.forEach(async obj => {
 
@@ -220,7 +202,7 @@ class WebScraping {
                 const lastInsert = await Repositorie.listOffice()
 
                 tires.forEach(line => {
-                    if(line[2] > lastInsert){
+                    if (line[2] > lastInsert) {
                         Repositorie.insertOffice(line[2], line[3], line[4], line[5], line[6])
                     }
                 })
@@ -327,7 +309,7 @@ class WebScraping {
                             cell => cell.innerText))
                     return tdsNeumaticos
                 })
-                await browser.close();
+                await browser.close()
 
                 data.forEach(async object => {
 
@@ -356,7 +338,6 @@ class WebScraping {
                         const title = line[0].trim()
 
                         if (line[1] > lastInsert) {
-                            console.log(line);
                             await Repositorie.insertInviolavel(title, line[1], line[2], login[0])
                         }
                     })

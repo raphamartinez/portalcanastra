@@ -5,8 +5,6 @@ class Prosegur {
 
     async insertTire(values) {
         try {
-            console.log(values)
-
             const sql = 'INSERT INTO ansa.prosegurtire (nrSerie, state, location, car, brand, measures, kmInstallation, kmTotal, user, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
             const result = await query(sql, values)
             return result[0]
@@ -85,7 +83,6 @@ class Prosegur {
     }
 
     async insertArrest(values) {
-        console.log(values)
 
         try {
             const sql = 'INSERT INTO ansa.prosegurarrest (dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, now())'
@@ -158,7 +155,7 @@ class Prosegur {
                 return 0
             }
 
-            return result[0].dateEnd
+            return result[0].date
         } catch (error) {
             throw new InvalidArgumentError(error)
         }
