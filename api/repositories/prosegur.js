@@ -29,10 +29,10 @@ class Prosegur {
         }
     }
 
-    async insertMaintenance(values) {
+    async insertMaintenance(car, brand, kmNow, currentLocation, maintenanceDate, kmMaintenance, typeWarning, kmElapsed, remaining, work, state) {
         try {
-            const sql = 'INSERT INTO ansa.prosegurmaintenance (dateHigh, car, work, invoice, cost, typeNotice, warnAfter, state, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, now())'
-            const result = await query(sql, values)
+            const sql = 'INSERT INTO ansa.prosegurmaintenance (car, brand, kmNow, currentLocation, maintenanceDate, kmMaintenance, typeWarning, kmElapsed, remaining, work, state, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const result = await query(sql, [car, brand, kmNow, currentLocation, maintenanceDate, kmMaintenance, typeWarning, kmElapsed, remaining, work, state])
             return result[0]
         } catch (error) {
             console.log(error)
@@ -42,14 +42,14 @@ class Prosegur {
 
     async listMaintenance() {
         try {
-            const sql = `SELECT dateHigh FROM ansa.prosegurmaintenance ORDER BY dateHigh DESC LIMIT 1 `
+            const sql = `SELECT maintenanceDate FROM ansa.prosegurmaintenance ORDER BY maintenanceDate DESC LIMIT 1 `
             const result = await query(sql)
 
             if(!result[0]){
                 return 0
             }
 
-            return result[0].dateHigh
+            return result[0].maintenanceDate
         } catch (error) {
             throw new InvalidArgumentError(error)
         }

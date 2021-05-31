@@ -1,14 +1,16 @@
 const puppeteer = require('puppeteer')
 const Repositorie = require('../repositories/prosegur')
 const xlsx = require('read-excel-file/node')
+const path = require('path')
+const fs = require('fs')
+const moment = require('moment')
+const { getJsDateFromExcel } = require("excel-date-to-js");
 
-
-
-function readExcel() {
-
-    xlsx('./Mantenimientos.xlsx').then((rows) => {
-        console.log(rows);
-       })
+async function readExcel(path) {
+    const data = xlsx(path).then((rows) => {
+        return rows
+    })
+    return data
 }
 
 class WebScraping {
@@ -16,8 +18,7 @@ class WebScraping {
     async init() {
         try {
             this.listProsegurPowerandStop()
-            // this.listProsegurMaintenance()
-            // this.listProsegurTire()
+            this.listProsegurMaintenance()
             this.listProsegurOffice()
             this.listInviolavel()
         } catch (error) {
@@ -28,7 +29,7 @@ class WebScraping {
     async listProsegurPowerandStop() {
         try {
 
-            const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']})
+            const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
             await page.type('#nombre', process.env.PROSEGUR_MAIL)
@@ -95,17 +96,15 @@ class WebScraping {
     async listProsegurMaintenance() {
         try {
 
-            readExcel()
-
             const browser = await puppeteer.launch({
-                headless: true, 
-                args: ['--no-sandbox']
+                headless: false
             })
 
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
 
-            await page._client.send('Page.setDownloadBehavior', {behavior: 'allow', downloadPath: __dirname});
+            let reqPath = path.join(__dirname, '../../')
+            await page._client.send('Page.setDownloadBehavior', { behavior: 'allow', downloadPath: reqPath });
             await page.type('#nombre', process.env.PROSEGUR_MAIL)
             await page.type('#pass', process.env.PROSEGUR_PASSWORD)
             await page.click('#btn-submit')
@@ -116,29 +115,37 @@ class WebScraping {
             await page.goto('https://localizacion.prosegur.com/informes/mantenimientos')
             await page.waitForTimeout(1000)
 
+            const dtInit = await page.$eval("#dateInit", (input) => {
+                return input.getAttribute("value")
+            });
+
+            const dtEnd = await page.$eval("#dateEnd", (input) => {
+                return input.getAttribute("value")
+            });
+
             await page.click(`select [value="TODOS"]`)
             await page.waitForTimeout(1000)
 
             await page.click('#button_generar_excel')
             await page.waitForTimeout(4000)
-
-
-            // const attr = await page.$eval('#datatable_mantenimientos_last', el => el.getAttribute('data-dt-idx'))
-
-            const data = await page.evaluate(() => {
-                const tdsNeumaticos = Array.from(document.querySelectorAll('#datatableStops_paginate > span, a'),
-                    row => Array.from(row.querySelectorAll('.paginate_button '), cell => cell.innerText))
-                return tdsNeumaticos
-            })
-
-            // console.log(data)
-
-            // await page.click('#datatable_mantenimientos_next')
-
-
-
             await browser.close()
 
+            const filePath = `${reqPath}Mantenimientos_${dtInit}_${dtEnd}.xlsx`
+            const fields = await readExcel(filePath)
+            fields.splice(0, 4)
+
+            const lastInsert = await Repositorie.listMaintenance()
+
+            fields.forEach(line => {
+                const timestamp = getJsDateFromExcel(line[4]);
+                const dateMaintenance = moment(timestamp).format("DD-MM-YYYY HH:mm")
+
+                if (dateMaintenance > lastInsert) {
+                    Repositorie.insertMaintenance(line[0], line[1], line[2], line[3], dateMaintenance, line[5], line[6], line[7], line[8], line[9], line[10])
+                }
+            })
+
+            fs.unlinkSync(filePath)
         } catch (error) {
             console.log(error)
         }
@@ -291,7 +298,7 @@ class WebScraping {
             logins.forEach(async login => {
 
                 const browser = await puppeteer.launch({
-                    headless: true, 
+                    headless: true,
                     args: ['--no-sandbox']
                 })
                 const page = await browser.newPage()

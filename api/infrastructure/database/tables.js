@@ -7,7 +7,7 @@ class Tables {
     this.createTableProsegurOffice()
     this.createTableProsegurArrest()
     this.createTableProsegurPower()
-    // this.createTableProsegurMaintenance()
+    this.createTableProsegurMaintenance()
     this.createTableAddress()
     this.createTableContact()
     this.createTableOffice()
@@ -74,7 +74,7 @@ class Tables {
       }
     })
   }
-  
+
   createTableProsegurArrest() {
     const sql = `CREATE TABLE IF NOT EXISTS prosegurarrest (id_prosegurarrest int NOT NULL AUTO_INCREMENT, dateStart DATETIME, dateEnd DATETIME, plate VARCHAR (10), alias VARCHAR (50),
     stoppedTime VARCHAR(20), direction VARCHAR(250), detentionDistance DOUBLE, coordinates VARCHAR (250),
@@ -102,8 +102,8 @@ class Tables {
   }
 
   createTableProsegurMaintenance() {
-    const sql = `CREATE TABLE IF NOT EXISTS prosegurmaintenance (id_prosegurmaintenance int NOT NULL AUTO_INCREMENT, dateHigh DATETIME, car VARCHAR (100), work VARCHAR (100),
-    invoice VARCHAR(100), cost double, typeNotice VARCHAR(50), warnAfter VARCHAR (60), state VARCHAR(25), tarea VARCHAR(25),
+    const sql = `CREATE TABLE IF NOT EXISTS prosegurmaintenance (id_prosegurmaintenance int NOT NULL AUTO_INCREMENT, car VARCHAR (25), brand VARCHAR (25), kmNow INT, 
+    currentLocation VARCHAR (100), maintenanceDate VARCHAR (25), kmMaintenance INT, typeWarning VARCHAR (25), kmElapsed INT, remaining INT, work VARCHAR (100), state VARCHAR (100), 
         dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegurmaintenance))`
 
     this.connection.query(sql, (error) => {

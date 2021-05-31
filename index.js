@@ -14,6 +14,7 @@ connection.connect((error => {
     } else {
         const app = customExpress()
         app.listen(3000, () => {
+            tables.init(connection)
             console.log('Server Running!');
 
             app.use(express.static(__dirname + '/public'))
@@ -23,18 +24,16 @@ connection.connect((error => {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
 
-            WebScraping.init()
+            const job = new CronJob('0 0 23 * * *', () => {
+                try{
+                    WebScraping.init()
+                    console.log('Executed Cron today sucessfuly!');
+                } catch(error){
+                    console.log('Error cron!');
+                }
+            });
 
-            // const job = new CronJob('0 0 23 * * *', () => {
-            //     try{
-            //         WebScraping.init()
-            //         console.log('Executed Cron today sucessfuly!');
-            //     } catch(error){
-            //         console.log('Error cron!');
-            //     }
-            // });
-
-            // job.start()
+            job.start()
         })
     }
 }))
