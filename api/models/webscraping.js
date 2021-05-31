@@ -17,10 +17,10 @@ class WebScraping {
 
     async init() {
         try {
-            this.listProsegurPowerandStop()
-            this.listProsegurMaintenance()
-            this.listProsegurOffice()
-            this.listInviolavel()
+            await this.listProsegurPowerandStop()
+            await this.listProsegurMaintenance()
+            await this.listProsegurOffice()
+            await this.listInviolavel()
         } catch (error) {
             console.log(error)
         }
