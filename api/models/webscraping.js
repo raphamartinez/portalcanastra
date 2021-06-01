@@ -25,6 +25,15 @@ async function secondToTime(secs) {
     return sign + z(secs / 3600 | 0) + ':' + z((secs % 3600) / 60 | 0) + ':' + z(secs % 60);
 }
 
+async function formatStringDate(data) {
+    var dia  = data.split("/")[0];
+    var mes  = data.split("/")[1];
+    var ano  = data.split("/")[2];
+  
+    return ("0"+dia).slice(-2) + '-' + ("0"+mes).slice(-2) + '-' + ano;
+    // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
+  }
+
 class WebScraping {
 
     async init() {
@@ -44,7 +53,7 @@ class WebScraping {
 
             const browser = await puppeteer.launch({
                 headless: true,
-                args: ['--no-sandbox']
+
             })
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
@@ -115,7 +124,7 @@ class WebScraping {
 
             const browser = await puppeteer.launch({
                 headless: true,
-                args: ['--no-sandbox']
+
             })
 
             const page = await browser.newPage()
@@ -172,7 +181,7 @@ class WebScraping {
     async listProsegurOffice() {
         try {
             const browser = await puppeteer.launch({
-                args: ['--lang=pt-BR', '--no-sandbox'],
+                args: ['--lang=pt-BR'],
                 headless: true,
             })
             const page = await browser.newPage()
@@ -236,9 +245,10 @@ class WebScraping {
                     var diff = date1 - date2
 
                     const timeFinal = await secondToTime(diff)
-                    const objDate = `${line[2]} ${timeFinal}`
-                    const time = objDate.replace('-',"/")
-                    if(time > lastInsert){
+                    const newDate = await formatStringDate(line[2])
+                    const time = `${newDate} ${timeFinal}`
+
+                    if (time > lastInsert) {
                         Repositorie.insertOffice(time, line[4], line[5], line[6])
                     }
                 })
@@ -326,7 +336,7 @@ class WebScraping {
 
                 const browser = await puppeteer.launch({
                     headless: true,
-                    args: ['--no-sandbox']
+
                 })
                 const page = await browser.newPage()
                 await page.goto('https://webalarme.com.br/')

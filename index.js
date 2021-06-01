@@ -25,7 +25,7 @@ connection.connect((error => {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
 
-            const job = new CronJob('* 0 * * * *', () => {
+            const job = new CronJob('* * 23 * * *', () => {
                 try{
                     WebScraping.init()
                     console.log('Executed Cron sucessfuly!');

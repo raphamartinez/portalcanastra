@@ -38,7 +38,6 @@ class Login {
 
     async searchMail(mail) {
         try {
-            console.log(mail);
             const login = await Repositorie.viewMail(mail)
             return login
         } catch (error) {
