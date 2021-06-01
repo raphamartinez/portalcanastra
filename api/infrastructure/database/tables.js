@@ -64,7 +64,7 @@ class Tables {
   }
 
   createTableProsegurOffice() {
-    const sql = `CREATE TABLE IF NOT EXISTS proseguroffice (id_proseguroffice int NOT NULL AUTO_INCREMENT, date VARCHAR(25), time VARCHAR(25), codconnection VARCHAR (20), contract VARCHAR (25),
+    const sql = `CREATE TABLE IF NOT EXISTS proseguroffice (id_proseguroffice int NOT NULL AUTO_INCREMENT, time VARCHAR(25), codconnection VARCHAR (20), contract VARCHAR (25),
     description VARCHAR (250), dateReg DATETIME NOT NULL, PRIMARY KEY (id_proseguroffice))`
 
     this.connection.query(sql, (error) => {
@@ -76,7 +76,7 @@ class Tables {
   }
 
   createTableProsegurArrest() {
-    const sql = `CREATE TABLE IF NOT EXISTS prosegurarrest (id_prosegurarrest int NOT NULL AUTO_INCREMENT, dateStart DATETIME, dateEnd DATETIME, plate VARCHAR (10), alias VARCHAR (50),
+    const sql = `CREATE TABLE IF NOT EXISTS prosegurarrest (id_prosegurarrest int NOT NULL AUTO_INCREMENT, dateStart DATETIME, dateEnd DATETIME, plate VARCHAR (10), office VARCHAR (10), alias VARCHAR (50),
     stoppedTime VARCHAR(20), direction VARCHAR(250), detentionDistance DOUBLE, coordinates VARCHAR (250),
         dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegurarrest))`
 

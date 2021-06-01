@@ -13,6 +13,18 @@ async function readExcel(path) {
     return data
 }
 
+async function timeToSecond(s) {
+    var b = s.split(':');
+    return b[0] * 3600 + b[1] * 60 + (+b[2] || 0);
+}
+
+async function secondToTime(secs) {
+    function z(n) { return (n < 10 ? '0' : '') + n; }
+    var sign = secs < 0 ? '-' : '';
+    secs = Math.abs(secs);
+    return sign + z(secs / 3600 | 0) + ':' + z((secs % 3600) / 60 | 0) + ':' + z(secs % 60);
+}
+
 class WebScraping {
 
     async init() {
@@ -30,9 +42,9 @@ class WebScraping {
     async listProsegurPowerandStop() {
         try {
 
-            const browser = await puppeteer.launch({ 
-                headless: true, 
-                args: ['--no-sandbox'] 
+            const browser = await puppeteer.launch({
+                headless: true,
+                args: ['--no-sandbox']
             })
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
@@ -76,8 +88,9 @@ class WebScraping {
 
             stop.forEach(async line => {
                 const pop = line.pop()
+                const office = line[3].slice(1, 7)
                 if (line[1] > lastInsertArrest) {
-                    await Repositorie.insertArrest(line)
+                    await Repositorie.insertArrest(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], office)
                 }
             })
 
@@ -191,7 +204,7 @@ class WebScraping {
             await page.waitForNavigation()
 
             await page.goto('https://smart.prosegur.com/smart-web-min/smart-multisede/#/event-console')
-            await page.waitForTimeout(3000)
+            await page.waitForTimeout(4000)
 
             const data = await page.evaluate(() => {
                 const tdsNeumaticos = Array.from(document.querySelectorAll('body > div.container > div > div.main-content.ng-scope > div.table-responsive.ng-scope > div'),
@@ -215,9 +228,18 @@ class WebScraping {
 
                 const lastInsert = await Repositorie.listOffice()
 
-                tires.forEach(line => {
-                    if (line[2] > lastInsert) {
-                        Repositorie.insertOffice(line[2], line[3], line[4], line[5], line[6])
+                tires.forEach(async line => {
+
+                    var date1 = await timeToSecond(line[3])
+                    var date2 = await timeToSecond("01:00:00")
+
+                    var diff = date1 - date2
+
+                    const timeFinal = await secondToTime(diff)
+                    const objDate = `${line[2]} ${timeFinal}`
+                    const time = objDate.replace('-',"/")
+                    if(time > lastInsert){
+                        Repositorie.insertOffice(time, line[4], line[5], line[6])
                     }
                 })
             })

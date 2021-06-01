@@ -81,11 +81,11 @@ class Prosegur {
         }
     }
 
-    async insertArrest(values) {
+    async insertArrest(dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates,office) {
 
         try {
-            const sql = 'INSERT INTO ansa.prosegurarrest (dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, now())'
-            const result = await query(sql, values)
+            const sql = 'INSERT INTO ansa.prosegurarrest (dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates, office, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const result = await query(sql, [dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates,office])
             return result[0]
         } catch (error) {
             console.log(error)
@@ -134,10 +134,10 @@ class Prosegur {
         }
     }
 
-    async insertOffice(date, time, codconnection, contract, description) {
+    async insertOffice(time, codconnection, contract, description) {
         try {
-            const sql = 'INSERT INTO ansa.proseguroffice (date, time, codconnection, contract, description, dateReg) values (?, ?, ?, ?, ?, now())'
-            const result = await query(sql, [date, time, codconnection, contract, description])
+            const sql = 'INSERT INTO ansa.proseguroffice (time, codconnection, contract, description, dateReg) values (?, ?, ?, ?, now())'
+            const result = await query(sql, [time, codconnection, contract, description])
             return result[0]
         } catch (error) {
             console.log(error)
@@ -147,14 +147,14 @@ class Prosegur {
 
     async listOffice() {
         try {
-            const sql = `SELECT date FROM ansa.proseguroffice ORDER BY date DESC LIMIT 1 `
+            const sql = `SELECT time FROM ansa.proseguroffice ORDER BY time DESC LIMIT 1 `
             const result = await query(sql)
 
             if(!result[0]){
                 return 0
             }
 
-            return result[0].date
+            return result[0].time
         } catch (error) {
             throw new InvalidArgumentError(error)
         }
