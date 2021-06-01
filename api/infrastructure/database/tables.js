@@ -3,6 +3,7 @@ class Tables {
 
   init(connection) {
     this.connection = connection
+    this.createTableWebscrapingHistory()
     this.createTableInviolavelOffice()
     this.createTableProsegurOffice()
     this.createTableProsegurArrest()
@@ -24,6 +25,17 @@ class Tables {
     this.createTableViewPowerBI()
 
     return true
+  }
+
+  createTableWebscrapingHistory() {
+    const sql = `CREATE TABLE IF NOT EXISTS webscrapinghistory (id_webscraping int NOT NULL AUTO_INCREMENT, dateReg DATETIME NOT NULL, PRIMARY KEY (id_webscraping))`
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+      }
+    })
   }
 
   createTableInviolavelOffice() {

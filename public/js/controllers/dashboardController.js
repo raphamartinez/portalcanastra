@@ -14,11 +14,14 @@ window.onload = async function () {
 
     let perfil = user.perfil
     let history
+    let lastupdate
     if (perfil !== 1) {
         divadmin.innerHTML = " "
         history = await ServiceHistory.historyDashboard()
+        lastupdate = await ServiceHistory.listWebscraping()
     } else {
         history = await ServiceHistory.historyDashboard()
+        lastupdate = await ServiceHistory.listWebscraping()
     }
 
     let table = document.querySelector('[data-table]')
@@ -30,7 +33,7 @@ window.onload = async function () {
 
 
     ViewDashboard.showCardHistory(cardHistory, history)
-    ViewDashboard.showCardBd(cardHistory)
+    ViewDashboard.showCardBd(cardHistory, lastupdate)
 
     let name = user.name.substring(0, (user.name + " ").indexOf(" "))
     let username = document.querySelector('[data-username]')

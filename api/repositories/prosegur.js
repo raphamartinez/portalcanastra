@@ -3,13 +3,38 @@ const { InvalidArgumentError, InternalServerError, NotFound } = require('../mode
 
 class Prosegur {
 
+    async insertHistory() {
+        try {
+            const sql = "INSERT INTO ansa.webscrapinghistory (dateReg) values ( now() )"
+            const result = await query(sql)
+            return result[0]
+        } catch (error) {
+            console.log(error)
+            throw new InvalidArgumentError(error)
+        }
+    }
+
+    async listHistoryWebscraping(){
+        try {
+            const sql = `SELECT DATE_FORMAT(dateReg, '%H:%i %d/%m/%Y') as dateReg FROM ansa.webscrapinghistory ORDER BY dateReg DESC LIMIT 1 `
+            const result = await query(sql)
+
+            if(!result[0]){
+                return 0
+            }
+            
+            return result[0].dateReg 
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
+    }
+
     async insertTire(values) {
         try {
             const sql = 'INSERT INTO ansa.prosegurtire (nrSerie, state, location, car, brand, measures, kmInstallation, kmTotal, user, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
             const result = await query(sql, values)
             return result[0]
         } catch (error) {
-            console.log(error)
             throw new InvalidArgumentError(error)
         }
     }

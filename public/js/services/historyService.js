@@ -76,8 +76,44 @@ const insertHistory =  async (description) => {
     throw new Error('error')
 }
 
+const updateWebscraping =  async () => {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/seguridad` , {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    })
+    if (data.ok === true) {
+        return data.json()
+    }
+
+    throw new Error('error')
+}
+
+const listWebscraping =  async () => {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
+
+    const data = await fetch(`${protocol}//${url}/seguridadhistory` , {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    })
+    if (data.ok === true) {
+        return data.json()
+    }
+
+    throw new Error('error')
+}
+
 export const ServiceHistory = {
     historyDashboard,
     listHistory,
-    insertHistory
+    insertHistory,
+    updateWebscraping,
+    listWebscraping
 }

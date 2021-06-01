@@ -24,7 +24,7 @@ const showCardHistory = (cardHistory, history) => {
 
 }
 
-const showCardBd = (cardHistory) => {
+const showCardBd = (cardHistory, lastupdate) => {
     let div = document.createElement('div');
 
     div.className = "col-xl-6 col-md-6 mb-4"
@@ -37,11 +37,11 @@ const showCardBd = (cardHistory) => {
                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                     Actualización Datos Ansa
                     </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">Última actualización de datos hace 1 hora</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="lastupdate">Última actualización - ${lastupdate}</div>
                     <div class="h8 mb-0 font-weight-bold text-gray-600">Clic en el símbolo para actualizar de nuevo</div>
                 </div>
                 <div class="col-auto">
-                    <a href="#" data-history><i class="fas fa-sync fa-2x text-gray-300"></i></a>
+                    <a onclick="updateWebscraping()" href="#" ><i id="datahistory" class="fas fa-sync fa-2x text-gray-300"></i></a>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ const path = require('path')
 const fs = require('fs')
 const moment = require('moment')
 const { getJsDateFromExcel } = require("excel-date-to-js");
+const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 async function readExcel(path) {
     const data = xlsx(path).then((rows) => {
@@ -26,13 +27,13 @@ async function secondToTime(secs) {
 }
 
 async function formatStringDate(data) {
-    var dia  = data.split("/")[0];
-    var mes  = data.split("/")[1];
-    var ano  = data.split("/")[2];
-  
-    return ("0"+dia).slice(-2) + '-' + ("0"+mes).slice(-2) + '-' + ano;
+    var dia = data.split("/")[0];
+    var mes = data.split("/")[1];
+    var ano = data.split("/")[2];
+
+    return ("0" + dia).slice(-2) + '-' + ("0" + mes).slice(-2) + '-' + ano;
     // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
-  }
+}
 
 class WebScraping {
 
@@ -42,9 +43,20 @@ class WebScraping {
             await this.listProsegurMaintenance()
             await this.listProsegurOffice()
             await this.listInviolavel()
+
+            await Repositorie.insertHistory()
             console.log('robot ok');
         } catch (error) {
-            console.log(error)
+            throw new InternalServerError(error)
+        }
+    }
+
+    async listWebscrapingHistory() {
+        try {
+            const dateReg = await Repositorie.listHistoryWebscraping()
+            return dateReg
+        } catch (error) {
+            throw new InternalServerError(error)
         }
     }
 
@@ -115,7 +127,7 @@ class WebScraping {
             await browser.close()
 
         } catch (error) {
-            console.log(error)
+            throw new InternalServerError(error)
         }
     }
 
@@ -174,14 +186,14 @@ class WebScraping {
 
             fs.unlinkSync(filePath)
         } catch (error) {
-            console.log(error)
+            throw new InternalServerError(error)
         }
     }
 
     async listProsegurOffice() {
         try {
             const browser = await puppeteer.launch({
-                args: ['--lang=pt-BR', '--no-sandbox'], 
+                args: ['--lang=pt-BR', '--no-sandbox'],
                 headless: true,
             })
             const page = await browser.newPage()
@@ -254,7 +266,7 @@ class WebScraping {
                 })
             })
         } catch (error) {
-
+            throw new InternalServerError(error)
         }
     }
 
@@ -393,7 +405,7 @@ class WebScraping {
                 })
             })
         } catch (error) {
-            console.log(error)
+            throw new InternalServerError(error)
         }
     }
 }
