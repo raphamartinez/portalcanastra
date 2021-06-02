@@ -65,6 +65,7 @@ class WebScraping {
 
             const browser = await puppeteer.launch({
                 headless: true,
+                args: ['--no-sandbox'],
             })
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
@@ -136,6 +137,7 @@ class WebScraping {
 
             const browser = await puppeteer.launch({
                 headless: true,
+                args: ['--no-sandbox'],
             })
 
             const page = await browser.newPage()
@@ -192,7 +194,7 @@ class WebScraping {
     async listProsegurOffice() {
         try {
             const browser = await puppeteer.launch({
-                args: ['--lang=pt-BR'],
+                args: ['--lang=pt-BR', '--no-sandbox'],
                 headless: true,
             })
             const page = await browser.newPage()
@@ -349,6 +351,7 @@ class WebScraping {
 
                 const browser = await puppeteer.launch({
                     headless: true,
+                    args: ['--no-sandbox'],
                 })
                 const page = await browser.newPage()
                 await page.goto('https://webalarme.com.br/')
