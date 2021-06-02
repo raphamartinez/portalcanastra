@@ -42,7 +42,8 @@ btn.addEventListener('click', async (event) => {
 
 window.updateWebscraping = updateWebscraping
 
-async function updateWebscraping() {
+async function updateWebscraping(el) {
+    el.removeAttribute('ondblclick');
 
     const icon = document.getElementById('datahistory')
     const lastupdate = document.getElementById('lastupdate')
@@ -55,8 +56,10 @@ async function updateWebscraping() {
         icon.classList.remove("fa-spin")
         lastupdate.innerHTML =`Última actualización - ${dateReg}`
         console.log('Actualizado con éxito!')
+        el.setAttribute('ondblclick','updateWebscraping(this)')
     } catch (error) {
         console.log(error);
         icon.classList.remove("fa-spin");
+        el.setAttribute('ondblclick','updateWebscraping(this)')
     }
 }

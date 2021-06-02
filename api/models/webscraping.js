@@ -65,7 +65,6 @@ class WebScraping {
 
             const browser = await puppeteer.launch({
                 headless: true,
-                args: ['--no-sandbox']
             })
             const page = await browser.newPage()
             await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
@@ -74,10 +73,10 @@ class WebScraping {
             await page.click('#btn-submit')
 
             await page.waitForNavigation()
-            await page.waitForTimeout(3000)
+            await page.waitForTimeout(2000)
 
             await page.goto('https://localizacion.prosegur.com/informes/detenciones')
-            await page.waitForTimeout(1000)
+            await page.waitForTimeout(4000)
 
             await page.click(`select [value="ALL"]`)
             await page.waitForTimeout(1000)
@@ -86,10 +85,9 @@ class WebScraping {
 
             await form.evaluate(form => form.submit());
             await page.waitForNavigation()
-
+            await page.waitForTimeout(4000)
             await page.click(`#datatableStops_wrapper > div.top > div.dt-buttons > button:nth-child(1)`)
             await page.click(`#datatableStopsOnOff_wrapper > div.top > div.dt-buttons > button:nth-child(1)`)
-
             const tableStop = await page.evaluate(() => {
                 const tdsNeumaticos = Array.from(document.querySelectorAll('#datatableStops tr'),
                     row => Array.from(row.querySelectorAll('tr, td'), cell => cell.innerText))
@@ -102,29 +100,31 @@ class WebScraping {
                 return tdsNeumaticos
             })
 
+            await browser.close()
+
             const stop = tableStop.slice(1)
             const onOff = tableOnOff.slice(1)
 
-            const lastInsertArrest = await Repositorie.listArrest()
+            if (stop.length !== 1) {
+                const lastInsertArrest = await Repositorie.listArrest()
+                stop.forEach(async line => {
+                    const pop = line.pop()
+                    const office = line[3].slice(1, 7)
+                    if (line[1] > lastInsertArrest) {
+                        await Repositorie.insertArrest(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], office)
+                    }
+                })
+            }
 
-            stop.forEach(async line => {
-                const pop = line.pop()
-                const office = line[3].slice(1, 7)
-                if (line[1] > lastInsertArrest) {
-                    await Repositorie.insertArrest(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], office)
-                }
-            })
-
-            const lastInsertPower = await Repositorie.listPower()
-
-            onOff.forEach(async line => {
-                const pop = line.pop()
-                if (line[1] > lastInsertPower) {
-                    await Repositorie.insertPower(line)
-                }
-            })
-
-            await browser.close()
+            if (onOff.length !== 1) {
+                const lastInsertPower = await Repositorie.listPower()
+                onOff.forEach(async line => {
+                    const pop = line.pop()
+                    if (line[1] > lastInsertPower) {
+                        await Repositorie.insertPower(line)
+                    }
+                })
+            }
 
         } catch (error) {
             throw new InternalServerError(error)
@@ -136,7 +136,6 @@ class WebScraping {
 
             const browser = await puppeteer.launch({
                 headless: true,
-                args: ['--no-sandbox']
             })
 
             const page = await browser.newPage()
@@ -152,7 +151,7 @@ class WebScraping {
             await page.waitForTimeout(3000)
 
             await page.goto('https://localizacion.prosegur.com/informes/mantenimientos')
-            await page.waitForTimeout(1000)
+            await page.waitForTimeout(4000)
 
             const dtInit = await page.$eval("#dateInit", (input) => {
                 return input.getAttribute("value")
@@ -193,7 +192,7 @@ class WebScraping {
     async listProsegurOffice() {
         try {
             const browser = await puppeteer.launch({
-                args: ['--lang=pt-BR', '--no-sandbox'],
+                args: ['--lang=pt-BR'],
                 headless: true,
             })
             const page = await browser.newPage()
@@ -216,7 +215,7 @@ class WebScraping {
             });
 
             await page.goto('https://smart.prosegur.com/smart-web-min/smart-login/#/negocios')
-            await page.waitForTimeout(1000)
+            await page.waitForTimeout(4000)
 
             await page.type('#txt_user_name', process.env.PROSEGUR_MAIL)
             await page.type('#txt_user_pass', process.env.PROSEGUR_PASSWORD)
@@ -249,21 +248,23 @@ class WebScraping {
 
                 const lastInsert = await Repositorie.listOffice()
 
-                tires.forEach(async line => {
+                if (tires.length !== 1) {
+                    tires.forEach(async line => {
 
-                    var date1 = await timeToSecond(line[3])
-                    var date2 = await timeToSecond("01:00:00")
+                        var date1 = await timeToSecond(line[3])
+                        var date2 = await timeToSecond("01:00:00")
 
-                    var diff = date1 - date2
+                        var diff = date1 - date2
 
-                    const timeFinal = await secondToTime(diff)
-                    const newDate = await formatStringDate(line[2])
-                    const time = `${newDate} ${timeFinal}`
+                        const timeFinal = await secondToTime(diff)
+                        const newDate = await formatStringDate(line[2])
+                        const time = `${newDate} ${timeFinal}`
 
-                    if (time > lastInsert) {
-                        Repositorie.insertOffice(time, line[4], line[5], line[6])
-                    }
-                })
+                        if (time > lastInsert) {
+                            Repositorie.insertOffice(time, line[4], line[5], line[6])
+                        }
+                    })
+                }
             })
         } catch (error) {
             throw new InternalServerError(error)
@@ -348,7 +349,6 @@ class WebScraping {
 
                 const browser = await puppeteer.launch({
                     headless: true,
-                    args: ['--no-sandbox']
                 })
                 const page = await browser.newPage()
                 await page.goto('https://webalarme.com.br/')
@@ -362,7 +362,7 @@ class WebScraping {
                 await page.waitForTimeout(1000)
 
                 await page.goto('https://webalarme.com.br/#!/events')
-                await page.waitForTimeout(1000)
+                await page.waitForTimeout(4000)
 
                 const data = await page.evaluate(() => {
                     const tdsNeumaticos = Array.from(document.querySelectorAll('body > div.page-wrapper.ng-scope > div.page-container > div.page-content-wrapper > div > div.col-12.ng-scope > div > div.portlet-body > div '),

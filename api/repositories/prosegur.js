@@ -16,14 +16,14 @@ class Prosegur {
 
     async listHistoryWebscraping(){
         try {
-            const sql = `SELECT DATE_FORMAT(dateReg, '%H:%i %d/%m/%Y') as dateReg FROM ansa.webscrapinghistory ORDER BY dateReg DESC LIMIT 1 `
+            const sql = `SELECT DATE_FORMAT(dateReg, '%H:%i %d/%m/%Y') as date FROM ansa.webscrapinghistory ORDER BY dateReg DESC LIMIT 1 `
             const result = await query(sql)
 
             if(!result[0]){
                 return 0
             }
             
-            return result[0].dateReg 
+            return result[0].date 
         } catch (error) {
             throw new InvalidArgumentError(error)
         }

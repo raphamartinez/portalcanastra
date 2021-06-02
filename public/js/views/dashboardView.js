@@ -38,10 +38,10 @@ const showCardBd = (cardHistory, lastupdate) => {
                     Actualización Datos Ansa
                     </div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="lastupdate">Última actualización - ${lastupdate}</div>
-                    <div class="h8 mb-0 font-weight-bold text-gray-600">Clic en el símbolo para actualizar de nuevo</div>
+                    <div class="h8 mb-0 font-weight-bold text-gray-600">Doble clic en el símbolo para actualizar de nuevo</div>
                 </div>
                 <div class="col-auto">
-                    <a onclick="updateWebscraping()" href="#" ><i id="datahistory" class="fas fa-sync fa-2x text-gray-300"></i></a>
+                    <a ondblclick="updateWebscraping(this)" href="#" ><i id="datahistory" class="fas fa-sync fa-2x text-gray-300"></i></a>
                 </div>
             </div>
         </div>
