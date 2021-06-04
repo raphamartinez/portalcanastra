@@ -27,7 +27,6 @@ class Login {
         }
     }
 
-
     async logout(token) {
         try {
             await Token.access.invalid(token)
@@ -96,7 +95,6 @@ class Login {
             throw new InvalidArgumentError('Error')
         }
     }
-
 
     async updatePassword(password, id_login) {
         try {

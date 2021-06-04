@@ -5,7 +5,7 @@ class Prosegur {
 
     async insertHistory() {
         try {
-            const sql = "INSERT INTO ansa.webscrapinghistory (dateReg) values ( now() )"
+            const sql = "INSERT INTO ansa.webscrapinghistory (dateReg) values ( now() - interval 4 hour )"
             const result = await query(sql)
             return result[0]
         } catch (error) {
@@ -31,7 +31,7 @@ class Prosegur {
 
     async insertTire(values) {
         try {
-            const sql = 'INSERT INTO ansa.prosegurtire (nrSerie, state, location, car, brand, measures, kmInstallation, kmTotal, user, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const sql = 'INSERT INTO ansa.prosegurtire (nrSerie, state, location, car, brand, measures, kmInstallation, kmTotal, user, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now() - interval 4 hour )'
             const result = await query(sql, values)
             return result[0]
         } catch (error) {
@@ -56,7 +56,7 @@ class Prosegur {
 
     async insertMaintenance(car, brand, kmNow, currentLocation, maintenanceDate, kmMaintenance, typeWarning, kmElapsed, remaining, work, state) {
         try {
-            const sql = 'INSERT INTO ansa.prosegurmaintenance (car, brand, kmNow, currentLocation, maintenanceDate, kmMaintenance, typeWarning, kmElapsed, remaining, work, state, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const sql = 'INSERT INTO ansa.prosegurmaintenance (car, brand, kmNow, currentLocation, maintenanceDate, kmMaintenance, typeWarning, kmElapsed, remaining, work, state, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now() - interval 4 hour )'
             const result = await query(sql, [car, brand, kmNow, currentLocation, maintenanceDate, kmMaintenance, typeWarning, kmElapsed, remaining, work, state])
             return result[0]
         } catch (error) {
@@ -82,7 +82,7 @@ class Prosegur {
 
     async insertPower(values) {
         try {
-            const sql = 'INSERT INTO ansa.prosegurpower (dateStart, dateEnd, plate, alias, type, stoppedTime, direction, detentionDistance, coordinates, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const sql = 'INSERT INTO ansa.prosegurpower (dateStart, dateEnd, plate, alias, type, stoppedTime, direction, detentionDistance, coordinates, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now() - interval 4 hour )'
             const result = await query(sql, values)
             return result[0]
         } catch (error) {
@@ -109,7 +109,7 @@ class Prosegur {
     async insertArrest(dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates,office) {
 
         try {
-            const sql = 'INSERT INTO ansa.prosegurarrest (dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates, office, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())'
+            const sql = 'INSERT INTO ansa.prosegurarrest (dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates, office, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, now() - interval 4 hour )'
             const result = await query(sql, [dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates,office])
             return result[0]
         } catch (error) {
@@ -150,7 +150,7 @@ class Prosegur {
 
     async insertInviolavel(title, date, desc, office){
         try {
-            const sql = 'INSERT INTO ansa.inviolaveloffice (title, date, description, office, dateReg) values (?, ?, ?, ?, now())'
+            const sql = 'INSERT INTO ansa.inviolaveloffice (title, date, description, office, dateReg) values (?, ?, ?, ?, now() - interval 4 hour )'
             const result = await query(sql, [title, date, desc, office])
             return result[0]
         } catch (error) {
@@ -161,7 +161,7 @@ class Prosegur {
 
     async insertOffice(time, codconnection, contract, description) {
         try {
-            const sql = 'INSERT INTO ansa.proseguroffice (time, codconnection, contract, description, dateReg) values (?, ?, ?, ?, now())'
+            const sql = 'INSERT INTO ansa.proseguroffice (time, codconnection, contract, description, dateReg) values (?, ?, ?, ?, now() - interval 4 hour )'
             const result = await query(sql, [time, codconnection, contract, description])
             return result[0]
         } catch (error) {

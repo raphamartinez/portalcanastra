@@ -4,14 +4,13 @@ const { InvalidArgumentError, InternalServerError, NotFound } = require('../mode
 class PowerBi {
     async insert(powerbi) {
         try {
-            console.log(powerbi)
 
-            const sql = 'INSERT INTO ansa.powerbi (url, title, type, dateReg) values (?, ?, ?, now())'
+            const sql = 'INSERT INTO ansa.powerbi (url, title, type, dateReg) values (?, ?, ?, now() - interval 4 hour )'
             await query(sql, [powerbi.url, powerbi.title, powerbi.type])
 
             const sqlId = 'select LAST_INSERT_ID() as id_powerbi from ansa.powerbi LIMIT 1'
             const obj = await query(sqlId)
-            const sqlView = 'INSERT INTO ansa.viewpowerbi (id_powerbi, id_login, dateReg) values ( ?, ?, now() )'
+            const sqlView = 'INSERT INTO ansa.viewpowerbi (id_powerbi, id_login, dateReg) values ( ?, ?, now() - interval 4 hour )'
             await query(sqlView,[obj[0].id_powerbi, powerbi.id_login])
 
             return true
@@ -58,7 +57,6 @@ class PowerBi {
 
             return true
         } catch (error) {
-            console.log(error)
             throw new NotFound(error)
         }
     }
@@ -70,7 +68,7 @@ class PowerBi {
             const result = await query(sql)
             return result[0]
         }catch(error){
-
+            throw new InternalServerError(error)
         }
     }
 
@@ -93,7 +91,6 @@ class PowerBi {
             throw new InternalServerError(error)
         }
     }
-
 }
 
 module.exports = new PowerBi()

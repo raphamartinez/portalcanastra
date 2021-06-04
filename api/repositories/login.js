@@ -5,7 +5,7 @@ class Login {
     
     async insert(login) {
         try{
-            const sql = 'INSERT INTO ansa.login (mail, password, mailVerify, status, dateReg ) values (?, ?, ?, ?, now() )'
+            const sql = 'INSERT INTO ansa.login (mail, password, mailVerify, status, dateReg ) values (?, ?, ?, ?, now() - interval 4 hour )'
             await query(sql, [login.mail, login.password, login.mailVerify, login.status])
            
             const sqlId = 'select LAST_INSERT_ID() as id_login from ansa.login LIMIT 1'
@@ -76,10 +76,10 @@ class Login {
 
     async viewMail(mail) {
         try {
-            const sql = `SELECT * FROM login where mail = '${mail}' and status = 1`
+            const sql = `SELECT mail, password, id_login FROM login where mail = '${mail}' and status = 1`
             const result = await query(sql)
 
-            if(!result){
+            if(!result[0]){
                 throw new NotFound('Mail not found')
             }
             

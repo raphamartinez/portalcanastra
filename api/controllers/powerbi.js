@@ -8,7 +8,6 @@ module.exports = app => {
         try {
             const id_login = req.login.id_login
             const type = req.params.type
-            
             const powerbis = await PowerBi.listPowerBi(id_login, type)
             res.status(200).json(powerbis)
         } catch (error) {
@@ -20,7 +19,6 @@ module.exports = app => {
 
         try {
             const id_login = req.params.id
-            
             const powerbis = await PowerBi.listPowerBis(id_login)
             res.status(200).json(powerbis)
         } catch (error) {
@@ -32,7 +30,6 @@ module.exports = app => {
     app.get('/powerbi/:id', Middleware.bearer, async (req, res, next) => {
         try {
             const id_powerbi = req.params.id
-
             const user = await PowerBi.viewPowerBi(id_powerbi)
             res.status(200).json(user)
         } catch (error) {

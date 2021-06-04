@@ -4,7 +4,7 @@ const { InvalidArgumentError, InternalServerError, NotFound } = require('../mode
 class History {
     async insert(history) {
         try{
-            const sql = 'INSERT INTO ansa.history (description, status, dateReg, id_login) values (?, 1, now(), ?)'
+            const sql = 'INSERT INTO ansa.history (description, status, dateReg, id_login) values (?, 1, now() - interval 4 hour , ?)'
             await query(sql,[history.description, history.id_login])
             return true
         }catch (error) {
@@ -32,7 +32,7 @@ class History {
 
     async countInTheTime() {
         try{
-            const sql = `SELECT COUNT(id_history) as count FROM ansa.history WHERE dateReg < DATE_ADD(now(), INTERVAL 1 DAY)`
+            const sql = `SELECT COUNT(id_history) as count FROM ansa.history WHERE dateReg < DATE_ADD(now() - interval 4 hour , INTERVAL 1 DAY)`
             const result = await query(sql)
             return result[0]
         }catch (error) {
@@ -53,7 +53,7 @@ class History {
 
     async countInTheTimeUser(id_login) {
         try{
-            const sql = `SELECT COUNT(id_history) as count FROM ansa.history WHERE id_login = ${id_login} and dateReg < DATE_ADD(now(), INTERVAL 1 DAY)`
+            const sql = `SELECT COUNT(id_history) as count FROM ansa.history WHERE id_login = ${id_login} and dateReg < DATE_ADD(now() - interval 4 hour , INTERVAL 1 DAY)`
             const result = await query(sql)
             return result[0]
         }catch (error) {

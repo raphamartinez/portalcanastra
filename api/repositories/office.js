@@ -5,7 +5,7 @@ class Office {
     
     async insert(office) {
         try {
-            const sql = 'INSERT INTO office (name, status, dateReg) set (?, ?, now())'
+            const sql = 'INSERT INTO office (name, status, dateReg) set (?, ?, now() - interval 4 hour )'
             const result = await query(sql, [office.name, office.status])
             return result[0]
         } catch (error) {
