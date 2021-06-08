@@ -27,10 +27,10 @@ connection.connect((error => {
 
             WebScraping.init()
 
-            const job = new CronJob('0 0 23 * * *', () => {
+            const job = new CronJob('0 01 * * * *', () => {
                 try{
-                    WebScraping.init()
                     console.log('Executed Cron sucessfuly!');
+                    WebScraping.init()
                 } catch(error){
                     console.log('Error cron!');
                 }

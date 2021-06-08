@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer')
 const Repositorie = require('../repositories/prosegur')
 const xlsx = require('read-excel-file/node')
+const excelToJson = require('convert-excel-to-json')
 const path = require('path')
 const fs = require('fs')
 const moment = require('moment')
@@ -8,6 +9,7 @@ const { getJsDateFromExcel } = require("excel-date-to-js");
 const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 async function readExcel(path) {
+
     const data = xlsx(path).then((rows) => {
         return rows
     })
@@ -32,7 +34,28 @@ async function formatStringDate(data) {
     var ano = data.split("/")[2];
 
     return ("0" + dia).slice(-2) + '-' + ("0" + mes).slice(-2) + '-' + ano;
-    // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
+}
+
+
+async function formatStringDatetoCompare(data) {
+    var ano = data.split("-")[2];
+    var mes = data.split("-")[1];
+    var dia = data.split("-")[0];
+
+    return ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2) + '-' + ano;
+}
+
+async function dateCompare(d1, d2) {
+    const dt1 = await formatStringDatetoCompare(d1)
+
+    const date1 = new Date(dt1);
+    const date2 = new Date(d2);
+
+    if (date1.getTime() > date2.getTime()) {
+        return true
+    } else {
+        return false
+    }
 }
 
 class WebScraping {
@@ -43,10 +66,12 @@ class WebScraping {
             await this.listProsegurMaintenance()
             await this.listProsegurOffice()
             await this.listInviolavel()
-
-            await Repositorie.insertHistory()
+            await this.listProsegurDistance()
+            await Repositorie.insertHistory('Actualizado con éxito')
             console.log('robot ok');
         } catch (error) {
+            await Repositorie.insertHistory(`Error - ${error}`)
+            console.log('robot error');
             throw new InternalServerError(error)
         }
     }
@@ -107,21 +132,25 @@ class WebScraping {
             const onOff = tableOnOff.slice(1)
 
             if (stop.length !== 1) {
-                const lastInsertArrest = await Repositorie.listArrest()
                 stop.forEach(async line => {
+                    const lastInsertArrest = await Repositorie.listArrest(line[2])
                     const pop = line.pop()
                     const office = line[3].slice(1, 7)
-                    if (line[1] > lastInsertArrest) {
+
+                    const test = await dateCompare(line[1], lastInsertArrest)
+                    if (test) {
                         await Repositorie.insertArrest(line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], office)
                     }
                 })
             }
 
             if (onOff.length !== 1) {
-                const lastInsertPower = await Repositorie.listPower()
                 onOff.forEach(async line => {
+                    const lastInsertPower = await Repositorie.listPower(line[2])
                     const pop = line.pop()
-                    if (line[1] > lastInsertPower) {
+
+                    const test = await dateCompare(line[1], lastInsertPower)
+                    if (test) {
                         await Repositorie.insertPower(line)
                     }
                 })
@@ -164,24 +193,89 @@ class WebScraping {
             });
 
             await page.click(`select [value="TODOS"]`)
-            await page.waitForTimeout(1000)
+            await page.waitForTimeout(3000)
 
             await page.click('#button_generar_excel')
-            await page.waitForTimeout(4000)
+            await page.waitForTimeout(5000)
             await browser.close()
 
             const filePath = `${reqPath}Mantenimientos_${dtInit}_${dtEnd}.xlsx`
             const fields = await readExcel(filePath)
             fields.splice(0, 4)
 
-            const lastInsert = await Repositorie.listMaintenance()
-
-            fields.forEach(line => {
+            fields.forEach(async line => {
                 const timestamp = getJsDateFromExcel(line[4]);
-                const dateMaintenance = moment(timestamp).format("DD-MM-YYYY HH:mm")
+                const dateMaintenance = moment(timestamp).format("DD-MM-YYYY HH:mm:ss")
+                const lastInsert = await Repositorie.listMaintenance(line[0])
 
-                if (dateMaintenance > lastInsert) {
-                    Repositorie.insertMaintenance(line[0], line[1], line[2], line[3], dateMaintenance, line[5], line[6], line[7], line[8], line[9], line[10])
+                const test = await dateCompare(dateMaintenance, lastInsert)
+                if (test) {
+                    const date = moment(timestamp).format("YYYY-MM-DD HH:mm:ss")
+                    Repositorie.insertMaintenance(line[0], line[1], line[2], line[3], date, line[5], line[6], line[7], line[8], line[9], line[10])
+                }
+            })
+
+            fs.unlinkSync(filePath)
+        } catch (error) {
+            throw new InternalServerError(error)
+        }
+    }
+
+    async listProsegurDistance() {
+        try {
+
+            const browser = await puppeteer.launch({
+                headless: true,
+                args: ['--no-sandbox'],
+            })
+
+            const page = await browser.newPage()
+            await page.goto('https://localizacion.prosegur.com/login?origin=subdomain&timezone=3')
+
+            let reqPath = path.join(__dirname, '../../')
+            await page._client.send('Page.setDownloadBehavior', { behavior: 'allow', downloadPath: reqPath });
+            await page.type('#nombre', process.env.PROSEGUR_MAIL)
+            await page.type('#pass', process.env.PROSEGUR_PASSWORD)
+            await page.click('#btn-submit')
+
+            await page.waitForNavigation()
+            await page.waitForTimeout(3000)
+
+            await page.goto('https://localizacion.prosegur.com/informes/distancias-recorridas')
+            await page.waitForTimeout(3000)
+
+            const dtInit = await page.$eval("#dateInit", (input) => {
+                return input.getAttribute("value")
+            });
+
+            const dtEnd = await page.$eval("#dateEnd", (input) => {
+                return input.getAttribute("value")
+            });
+
+            await page.click(`select [value="TODOS"]`)
+            await page.waitForTimeout(2000)
+
+            await page.click('#button_generar')
+            await page.waitForTimeout(10000)
+
+            await page.click(`#DataTables_Table_0_wrapper > div.top > div.dt-buttons > button`)
+            await page.waitForTimeout(9000)
+            await browser.close()
+
+            const filePath = `prosegur.xlsx`
+
+            const result = excelToJson({
+                sourceFile: filePath
+            });
+
+            var arr = Object.entries(result.prosegur)
+            arr.forEach(obj => {
+                const field = Object.values(obj[1])
+                const car = field.shift()
+                const plate = car.substring(0, car.indexOf(" "))
+                const km = field.pop()
+                if(typeof km === 'number'){
+                    Repositorie.insertDistance(plate, km)
                 }
             })
 
@@ -248,10 +342,10 @@ class WebScraping {
 
                 const tires = chunked.slice(1)
 
-                const lastInsert = await Repositorie.listOffice()
-
                 if (tires.length !== 1) {
                     tires.forEach(async line => {
+
+                        const lastInsert = await Repositorie.listOffice(line[5])
 
                         var date1 = await timeToSecond(line[3])
                         var date2 = await timeToSecond("01:00:00")
@@ -262,8 +356,10 @@ class WebScraping {
                         const newDate = await formatStringDate(line[2])
                         const time = `${newDate} ${timeFinal}`
 
-                        if (time > lastInsert) {
-                            Repositorie.insertOffice(time, line[4], line[5], line[6])
+                        const test = await dateCompare(time, lastInsert)
+                        if (test) {
+                            const date = moment(time).format("YYYY-MM-DD HH:mm")
+                            Repositorie.insertOffice(date, line[4], line[5], line[6])
                         }
                     })
                 }
@@ -389,7 +485,6 @@ class WebScraping {
                             ++i;
                         }
                     }
-                    const lastInsert = await Repositorie.listInviolavel()
 
                     const chunk = (array) =>
                         array.reduce((acc, _, i) => {
@@ -397,12 +492,17 @@ class WebScraping {
                             return acc
                         }, [])
 
-                    const chunked = chunk(objectarray, 3)
+                    const chunked = await chunk(objectarray, 3)
                     chunked.forEach(async line => {
                         const title = line[0].trim()
+                        const dt = moment(line[1]).format("MM-DD-YYYY HH:mm:ss")
 
-                        if (line[1] > lastInsert) {
-                            await Repositorie.insertInviolavel(title, line[1], line[2], login[0])
+                        const lastInsert = await Repositorie.listInviolavel(login[0])
+
+                        const test = await dateCompare(dt, lastInsert)
+                        if (test) {
+                            const date = moment(dt).format("YYYY-MM-DD HH:mm")
+                            await Repositorie.insertInviolavel(title, date, line[2], login[0])
                         }
                     })
                 })

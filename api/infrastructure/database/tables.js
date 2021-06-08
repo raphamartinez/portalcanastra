@@ -4,6 +4,7 @@ class Tables {
   init(connection) {
     this.connection = connection
     this.createTableWebscrapingHistory()
+    this.createTableProsegurDistance()
     this.createTableInviolavelOffice()
     this.createTableProsegurOffice()
     this.createTableProsegurArrest()
@@ -28,7 +29,7 @@ class Tables {
   }
 
   createTableWebscrapingHistory() {
-    const sql = `CREATE TABLE IF NOT EXISTS webscrapinghistory (id_webscraping int NOT NULL AUTO_INCREMENT, dateReg DATETIME NOT NULL, PRIMARY KEY (id_webscraping))`
+    const sql = `CREATE TABLE IF NOT EXISTS webscrapinghistory (id_webscraping int NOT NULL AUTO_INCREMENT, description VARCHAR(150) NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_webscraping))`
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -39,8 +40,8 @@ class Tables {
   }
 
   createTableInviolavelOffice() {
-    const sql = `CREATE TABLE IF NOT EXISTS inviolaveloffice (id_inviolaveloffice int NOT NULL AUTO_INCREMENT, title VARCHAR (150) NOT NULL, date VARCHAR (50)  NOT NULL, 
-     office VARCHAR (100) NOT NULL, description VARCHAR (250) NOT NULL, dateReg DATETIME NOT NULL, PRIMARY KEY (id_inviolaveloffice))`
+    const sql = `CREATE TABLE IF NOT EXISTS inviolaveloffice (id_inviolaveloffice int NOT NULL AUTO_INCREMENT, title VARCHAR (150) NOT NULL, date DATETIME  NOT NULL, 
+     office VARCHAR (100) NOT NULL, description VARCHAR (250) NOT NULL, PRIMARY KEY (id_inviolaveloffice))`
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -75,9 +76,21 @@ class Tables {
     })
   }
 
+  createTableProsegurDistance() {
+    const sql = `CREATE TABLE IF NOT EXISTS prosegurdistance (id_prosegurdistance int NOT NULL AUTO_INCREMENT, plate VARCHAR (10) NOT NULL, km double NOT NULL, dateReg DATETIME,
+     PRIMARY KEY (id_prosegurdistance))`
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+      }
+    })
+  }
+
   createTableProsegurOffice() {
-    const sql = `CREATE TABLE IF NOT EXISTS proseguroffice (id_proseguroffice int NOT NULL AUTO_INCREMENT, time VARCHAR(25), codconnection VARCHAR (20), contract VARCHAR (25),
-    description VARCHAR (250), dateReg DATETIME NOT NULL, PRIMARY KEY (id_proseguroffice))`
+    const sql = `CREATE TABLE IF NOT EXISTS proseguroffice (id_proseguroffice int NOT NULL AUTO_INCREMENT, time DATETIME, codconnection VARCHAR (20), contract VARCHAR (25),
+    description VARCHAR (250), PRIMARY KEY (id_proseguroffice))`
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -89,8 +102,7 @@ class Tables {
 
   createTableProsegurArrest() {
     const sql = `CREATE TABLE IF NOT EXISTS prosegurarrest (id_prosegurarrest int NOT NULL AUTO_INCREMENT, dateStart DATETIME, dateEnd DATETIME, plate VARCHAR (10), office VARCHAR (10), alias VARCHAR (50),
-    stoppedTime VARCHAR(20), direction VARCHAR(250), detentionDistance DOUBLE, coordinates VARCHAR (250),
-        dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegurarrest))`
+    stoppedTime VARCHAR(20), direction VARCHAR(250), detentionDistance DOUBLE, coordinates VARCHAR (250), PRIMARY KEY (id_prosegurarrest))`
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -102,8 +114,7 @@ class Tables {
 
   createTableProsegurPower() {
     const sql = `CREATE TABLE IF NOT EXISTS prosegurpower (id_prosegurpower int NOT NULL AUTO_INCREMENT, dateStart DATETIME, dateEnd DATETIME, plate VARCHAR (10), alias VARCHAR (50),
-    stoppedTime VARCHAR(20), direction VARCHAR(250), detentionDistance double, coordinates VARCHAR (250), type VARCHAR(6),
-        dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegurpower))`
+    stoppedTime VARCHAR(20), direction VARCHAR(250), detentionDistance double, coordinates VARCHAR (250), type VARCHAR(6), PRIMARY KEY (id_prosegurpower))`
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -115,8 +126,8 @@ class Tables {
 
   createTableProsegurMaintenance() {
     const sql = `CREATE TABLE IF NOT EXISTS prosegurmaintenance (id_prosegurmaintenance int NOT NULL AUTO_INCREMENT, car VARCHAR (25), brand VARCHAR (25), kmNow INT, 
-    currentLocation VARCHAR (100), maintenanceDate VARCHAR (25), kmMaintenance INT, typeWarning VARCHAR (25), kmElapsed INT, remaining INT, work VARCHAR (100), state VARCHAR (100), 
-        dateReg DATETIME NOT NULL, PRIMARY KEY (id_prosegurmaintenance))`
+    currentLocation VARCHAR (100), maintenanceDate DATETIME, kmMaintenance INT, typeWarning VARCHAR (25), kmElapsed INT, remaining INT, work VARCHAR (100), state VARCHAR (100), 
+        PRIMARY KEY (id_prosegurmaintenance))`
 
     this.connection.query(sql, (error) => {
       if (error) {
@@ -213,7 +224,8 @@ class Tables {
   }
 
   createTableUser() {
-    const sql = `CREATE TABLE IF NOT EXISTS user (id_user int NOT NULL AUTO_INCREMENT,name VARCHAR (100) NOT NULL, perfil int NOT NULL,
+    const sql = `CREATE TABLE IF NOT EXISTS user (id_user int NOT NULL AUTO_INCREMENT,name VARCHAR (100) NOT NULL, perfil int NOT NULL, phone VARCHAR (45), cod INT, responsibility VARCHAR (75),
+        modalidad VARCHAR (45), startCompany DATE, document VARCHAR (45), officecode INT, officename VARCHAR(45), endCompany DATE, sex VARCHAR(10),
         dateBirthday DATE, status int NOT NULL, dateReg DATETIME NOT NULL, id_login int NOT NULL, id_office int, 
         PRIMARY KEY (id_user), FOREIGN KEY (id_login) REFERENCES login(id_login), FOREIGN KEY (id_office) REFERENCES office(id_office))`
 
