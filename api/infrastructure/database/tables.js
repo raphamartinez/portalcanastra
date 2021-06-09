@@ -89,7 +89,7 @@ class Tables {
   }
 
   createTableProsegurOffice() {
-    const sql = `CREATE TABLE IF NOT EXISTS proseguroffice (id_proseguroffice int NOT NULL AUTO_INCREMENT, time DATETIME, codconnection VARCHAR (20), contract VARCHAR (25),
+    const sql = `CREATE TABLE IF NOT EXISTS proseguroffice (id_proseguroffice int NOT NULL AUTO_INCREMENT, dateTime DATETIME, codconnection VARCHAR (20), contract VARCHAR (25),
     description VARCHAR (250), PRIMARY KEY (id_proseguroffice))`
 
     this.connection.query(sql, (error) => {

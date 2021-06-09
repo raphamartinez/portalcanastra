@@ -161,7 +161,7 @@ class Prosegur {
 
     async insertOffice(time, codconnection, contract, description) {
         try {
-            const sql = 'INSERT INTO ansa.proseguroffice (time, codconnection, contract, description) values (?, ?, ?, ?)'
+            const sql = 'INSERT INTO ansa.proseguroffice (dateTime, codconnection, contract, description) values (?, ?, ?, ?)'
             const result = await query(sql, [time, codconnection, contract, description])
             return result[0]
         } catch (error) {
