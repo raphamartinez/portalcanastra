@@ -14,7 +14,7 @@ class Hbs {
 
     listSalary() {
         try {
-            const sql = ` SELECT sa.SerNr as serNr, sa.TransDate, sa.TransTime, sa.Office as office, sa.BaseRate as baserate, sa.CurrencyRate as currencyrate, sa.Comment as comment, 
+            const sql = ` SELECT sa.SerNr as serNr, sa.TransDate as date, sa.TransTime as time, sa.Office as office, sa.BaseRate as baserate, sa.CurrencyRate as currencyrate, sa.Comment as comment, 
             sa.Reference as reference, sa.Base2CreditSum as usd, sa.EmployeeName as name FROM SalaryPayment sa `
             return queryhbs(sql)
         } catch (error) {
