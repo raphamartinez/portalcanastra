@@ -1,4 +1,5 @@
 const { use } = require('passport');
+const moment = require('moment')
 const Repositorie = require('../repositories/hbs')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('./error')
 
@@ -6,11 +7,9 @@ class Hbs {
 
     async init() {
         try {
-            await this.listUsers()
-            await this.listSalary()
             console.log('list hbs ok');
         } catch (error) {
-            console.log('list hbs error');
+            console.log('list hbs error' - error);
             throw new InternalServerError(error)
         }
     }
