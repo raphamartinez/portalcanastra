@@ -1,9 +1,9 @@
-const query = require('../infrastructure/database/queries')
+const { query } = require('../infrastructure/database/queries')
 
 class Client {
     insert(client) {
         const sql = 'INSERT INTO client set ?'
-        return query(sql,client)
+        return query(sql, client)
     }
 
     delete(id) {
@@ -11,9 +11,9 @@ class Client {
         return query(sql)
     }
 
-    update(client,id) {
+    update(client, id) {
         const sql = 'UPDATE client SET ? WHERE id_client = ?'
-        return query(sql,[client, id])
+        return query(sql, [client, id])
     }
 
     view(id) {

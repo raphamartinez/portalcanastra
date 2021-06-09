@@ -1,18 +1,18 @@
-const query = require('../infrastructure/database/queries')
+const { query } = require('../infrastructure/database/queries')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 class Login {
-    
+
     async insert(login) {
-        try{
+        try {
             const sql = 'INSERT INTO ansa.login (mail, password, mailVerify, status, dateReg ) values (?, ?, ?, ?, now() - interval 4 hour )'
             await query(sql, [login.mail, login.password, login.mailVerify, login.status])
-           
+
             const sqlId = 'select LAST_INSERT_ID() as id_login from ansa.login LIMIT 1'
             const id = await query(sqlId)
-           console.log(id);
+            console.log(id);
             return id[0]
-        }catch (error) {
+        } catch (error) {
             console.log(error);
             throw new InvalidArgumentError(error)
         }
@@ -23,7 +23,7 @@ class Login {
             const sql = `DELETE from login WHERE id_login = ${id_login}`
             const result = await query(sql)
             return result[0]
-        }catch (error) {
+        } catch (error) {
             throw new InternalServerError(error)
         }
     }
@@ -55,7 +55,7 @@ class Login {
             const sql = `SELECT US.name, US.perfil, US.id_login FROM ansa.login LO, ansa.user US where US.id_login = LO.id_login and LO.id_login = ${id_login} and LO.status = 1`
             const result = await query(sql)
 
-            if(!result){
+            if (!result) {
                 throw new InvalidArgumentError(`El nombre de usuario o la contraseña no son válidos`)
             }
 
@@ -79,10 +79,10 @@ class Login {
             const sql = `SELECT mail, password, id_login FROM login where mail = '${mail}' and status = 1`
             const result = await query(sql)
 
-            if(!result[0]){
+            if (!result[0]) {
                 throw new NotFound('Mail not found')
             }
-            
+
             return result[0]
         } catch (error) {
             throw new NotFound(error)
@@ -100,12 +100,12 @@ class Login {
     }
 
 
-    async checkMail(mail){
+    async checkMail(mail) {
         try {
             const sql = `SELECT mail FROM ansa.login WHERE mail = '${mail}'`
             const result = await query(sql, mail)
 
-            if(!result[0]){
+            if (!result[0]) {
                 return true
             }
 

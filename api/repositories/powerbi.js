@@ -1,4 +1,4 @@
-const query = require('../infrastructure/database/queries')
+const { query } = require('../infrastructure/database/queries')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 class PowerBi {
@@ -11,7 +11,7 @@ class PowerBi {
             const sqlId = 'select LAST_INSERT_ID() as id_powerbi from ansa.powerbi LIMIT 1'
             const obj = await query(sqlId)
             const sqlView = 'INSERT INTO ansa.viewpowerbi (id_powerbi, id_login, dateReg) values ( ?, ?, now() - interval 4 hour )'
-            await query(sqlView,[obj[0].id_powerbi, powerbi.id_login])
+            await query(sqlView, [obj[0].id_powerbi, powerbi.id_login])
 
             return true
         } catch (error) {
@@ -48,7 +48,7 @@ class PowerBi {
 
     async delete(id_powerbi) {
         try {
-            
+
             const sqlView = `DELETE from ansa.viewpowerbi WHERE id_powerbi = ${id_powerbi}`
             await query(sqlView)
 
@@ -62,12 +62,12 @@ class PowerBi {
     }
 
     async count(id_login) {
-        try{
+        try {
 
             const sql = `SELECT COUNT(id_viewpowerbi) as count FROM ansa.viewpowerbi WHERE id_login = ${id_login}`
             const result = await query(sql)
             return result[0]
-        }catch(error){
+        } catch (error) {
             throw new InternalServerError(error)
         }
     }

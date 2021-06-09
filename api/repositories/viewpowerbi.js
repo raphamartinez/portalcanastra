@@ -1,22 +1,22 @@
-const query = require('../infrastructure/database/queries')
+const { query } = require('../infrastructure/database/queries')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 class ViewPowerBi {
     async insert(viewpowerbi) {
-        try{
+        try {
             const sql = 'INSERT INTO ansa.viewpowerbi (id_powerbi, id_login, dateReg) values (?, ?, now() - interval 4 hour )'
-            const result = query(sql,[viewpowerbi.id_powerbi, viewpowerbi.id_login])
+            const result = query(sql, [viewpowerbi.id_powerbi, viewpowerbi.id_login])
             return result[0]
-        }catch (error) {
+        } catch (error) {
             throw new InvalidArgumentError(error)
         }
     }
 
     list() {
-        try{
+        try {
             const sql = `SELECT id_viewpowerbi, id_powerbi, id_login, dateReg FROM viewpowerbi `
             return query(sql)
-        }catch (error) {
+        } catch (error) {
             throw new InternalServerError(error)
         }
     }

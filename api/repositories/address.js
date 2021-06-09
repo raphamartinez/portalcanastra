@@ -1,9 +1,9 @@
-const query = require('../infrastructure/database/queries')
+const { query } = require('../infrastructure/database/queries')
 
 class Address {
     insert(address) {
         const sql = 'INSERT INTO address set ?'
-        return query(sql,address)
+        return query(sql, address)
     }
 
     delete(id) {
@@ -11,9 +11,9 @@ class Address {
         return query(sql)
     }
 
-    update(address,id) {
+    update(address, id) {
         const sql = 'UPDATE address SET ? WHERE id_address= ?'
-        return query(sql,[address, id])
+        return query(sql, [address, id])
     }
 
     view(id) {

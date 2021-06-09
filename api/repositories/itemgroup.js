@@ -1,9 +1,9 @@
-const query = require('../infrastructure/database/queries')
+const { query } = require('../infrastructure/database/queries')
 
 class ItemGroup {
     insert(itemgroup) {
         const sql = 'INSERT INTO itemgroup set ?'
-        return query(sql,itemgroup)
+        return query(sql, itemgroup)
     }
 
     delete(id) {
@@ -11,9 +11,9 @@ class ItemGroup {
         return query(sql)
     }
 
-    update(itemgroup,id) {
+    update(itemgroup, id) {
         const sql = 'UPDATE itemgroup SET ? WHERE id_itemgroup = ?'
-        return query(sql,[itemgroup, id])
+        return query(sql, [itemgroup, id])
     }
 
     view(id) {

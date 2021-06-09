@@ -1,9 +1,9 @@
-const query = require('../infrastructure/database/queries')
+const { query } = require('../infrastructure/database/queries')
 
 class Label {
     insert(label) {
         const sql = 'INSERT INTO label set ?'
-        return query(sql,label)
+        return query(sql, label)
     }
 
     delete(id) {
@@ -11,9 +11,9 @@ class Label {
         return query(sql)
     }
 
-    update(label,id) {
+    update(label, id) {
         const sql = 'UPDATE label SET ? WHERE id_label = ?'
-        return query(sql,[label, id])
+        return query(sql, [label, id])
     }
 
     view(id) {

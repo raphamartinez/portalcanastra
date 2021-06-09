@@ -1,4 +1,4 @@
-const query = require('../infrastructure/database/queries')
+const { query } = require('../infrastructure/database/queries')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 class Prosegur {
@@ -14,16 +14,16 @@ class Prosegur {
         }
     }
 
-    async listHistoryWebscraping(){
+    async listHistoryWebscraping() {
         try {
             const sql = `SELECT description, DATE_FORMAT(dateReg, '%m-%d-%Y %H:%i:%s') as date FROM ansa.webscrapinghistory ORDER BY dateReg DESC LIMIT 1 `
             const result = await query(sql)
 
-            if(!result[0]){
-                return '01-01-1999 00:00:00' 
+            if (!result[0]) {
+                return '01-01-1999 00:00:00'
             }
-            
-            return result[0].date 
+
+            return result[0].date
         } catch (error) {
             throw new InvalidArgumentError(error)
         }
@@ -39,16 +39,16 @@ class Prosegur {
         }
     }
 
-    async listDistance(){
+    async listDistance() {
         try {
             const sql = `SELECT DATE_FORMAT(dateReg, '%m-%d-%Y %H:%i:%s') as date FROM ansa.prosegurdistance ORDER BY dateReg DESC LIMIT 1 `
             const result = await query(sql)
 
-            if(!result[0]){
-                return '01-01-1999 00:00:00' 
+            if (!result[0]) {
+                return '01-01-1999 00:00:00'
             }
-            
-            return result[0].date 
+
+            return result[0].date
         } catch (error) {
             throw new InvalidArgumentError(error)
         }
@@ -70,8 +70,8 @@ class Prosegur {
         try {
             const sql = `SELECT DATE_FORMAT(maintenanceDate, '%m-%d-%Y %H:%i:%s') as maintenanceDate FROM ansa.prosegurmaintenance WHERE car='${plate}' ORDER BY maintenanceDate DESC LIMIT 1 `
             const result = await query(sql)
-            if(!result[0]){
-                return '01-01-1999 00:00:00' 
+            if (!result[0]) {
+                return '01-01-1999 00:00:00'
             }
 
             return result[0].maintenanceDate
@@ -96,8 +96,8 @@ class Prosegur {
             const sql = `SELECT DATE_FORMAT(dateEnd, '%m-%d-%Y %H:%i:%s') as dateEnd FROM ansa.prosegurpower WHERE plate='${plate}' ORDER BY dateEnd DESC LIMIT 1 `
             const result = await query(sql)
 
-            if(!result[0]){
-                return '01-01-1999 00:00:00' 
+            if (!result[0]) {
+                return '01-01-1999 00:00:00'
             }
 
             return result[0].dateEnd
@@ -106,11 +106,11 @@ class Prosegur {
         }
     }
 
-    async insertArrest(dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates,office) {
+    async insertArrest(dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates, office) {
 
         try {
             const sql = 'INSERT INTO ansa.prosegurarrest (dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates, office) values (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-            const result = await query(sql, [dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates,office])
+            const result = await query(sql, [dateStart, dateEnd, plate, alias, stoppedTime, direction, detentionDistance, coordinates, office])
             return result[0]
         } catch (error) {
             console.log(error)
@@ -123,8 +123,8 @@ class Prosegur {
             const sql = `SELECT DATE_FORMAT(dateEnd, '%m-%d-%Y %H:%i:%s') as dateEnd FROM ansa.prosegurarrest WHERE plate='${plate}' ORDER BY dateEnd DESC LIMIT 1 `
             const result = await query(sql)
 
-            if(!result[0]){
-                return '01-01-1999 00:00:00' 
+            if (!result[0]) {
+                return '01-01-1999 00:00:00'
             }
 
             return result[0].dateEnd
@@ -133,7 +133,7 @@ class Prosegur {
         }
     }
 
-    async insertInviolavel(title, date, desc, office){
+    async insertInviolavel(title, date, desc, office) {
         try {
             const sql = 'INSERT INTO ansa.inviolaveloffice (title, date, description, office) values (?, ?, ?, ?)'
             const result = await query(sql, [title, date, desc, office])
@@ -149,8 +149,8 @@ class Prosegur {
             const sql = `SELECT DATE_FORMAT(date, '%m-%d-%Y %H:%i:%s') as date FROM ansa.inviolaveloffice WHERE office = '${office}' ORDER BY date DESC LIMIT 1 `
             const result = await query(sql)
 
-            if(!result[0]){
-                return '01-01-1999 00:00:00' 
+            if (!result[0]) {
+                return '01-01-1999 00:00:00'
             }
 
             return result[0].date
@@ -175,8 +175,8 @@ class Prosegur {
             const sql = `SELECT DATE_FORMAT(dateTime, '%m-%d-%Y %H:%i:%s') as dateTime FROM ansa.proseguroffice WHERE contract = '${contract}' ORDER BY dateTime DESC LIMIT 1 `
             const result = await query(sql)
 
-            if(!result[0]){
-                return '01-01-1999 00:00:00' 
+            if (!result[0]) {
+                return '01-01-1999 00:00:00'
             }
 
             return result[0].dateTime
