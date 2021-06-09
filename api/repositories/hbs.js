@@ -25,7 +25,7 @@ class Hbs {
 
         try {
             const sql = `INSERT INTO ansa.salary (serNr, dateTime, office, comment, reference, usd, name) values (?, ?, ?, ?, ?, ?, ?)`
-            await query(sql, [salary.serNr, dateTime, salary.office, salary.comment, salary.reference, usd, salary.name])
+            await queryhbs(sql, [salary.serNr, dateTime, salary.office, salary.comment, salary.reference, usd, salary.name])
 
             return true
         } catch (error) {
@@ -50,7 +50,7 @@ class Hbs {
     async insertUser(user){
         try {
             const sql = `INSERT INTO ansa.user (name, perfil, dateBirthday, phone, cod, responsibility, modalidad, startCompany, document, officecode, officename, endCompany, status, sex, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now() - interval 4 hour)`
-            await query(sql, [user.name, user.perfil, user.dateBirthday, user.phone, user.cod, user.responsibility, user.modalidad, user.startCompany, user.document, user.officecode, user.officename, user.endCompany, user.status, user.sex])
+            await queryhbs(sql, [user.name, user.perfil, user.dateBirthday, user.phone, user.cod, user.responsibility, user.modalidad, user.startCompany, user.document, user.officecode, user.officename, user.endCompany, user.status, user.sex])
 
             return true
         } catch (error) {
