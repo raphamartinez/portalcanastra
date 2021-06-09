@@ -66,7 +66,7 @@ class Hbs {
                 var mes = dt.split("-")[1];
                 var dia = dt.split("-")[2];
             
-                const dt1 = ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2) + '-' + ano;
+                const dt1 = ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2) +'-'+ ano;
 
                 const date1 = new Date(dt1);
                 const date = moment(date1).format("YYYY-MM-DD HH:mm:ss")
