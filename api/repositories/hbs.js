@@ -39,7 +39,7 @@ class Hbs {
     listUsers() {
         try {
             const sql = ` SELECT wk.Name as name,wk.Phone as phone,wk.Mobile as mobile,wk.BirthDate AS dateBirthday,wk.Code AS cod,JobName AS responsibility, wk.modality as modalidad,
-            wk.StartDate AS startCompany, wk.IDNro AS document, wk.Office AS officecode, ofi.Name as officename, wk.EndDate as endCompany, wk.Sex AS sex from Workers as wk 
+            wk.StartDate AS startCompany, wk.IDNro AS document, wk.Office AS officecode, ofi.Name as officename, wk.EndDate as endCompany, wk.Sex AS sex, wk.status from Workers as wk 
             LEFT JOIN City ct ON ct.Code =  wk.BirthPl 
             LEFT JOIN Office ofi ON wk.Office = ofi.Code `
             return queryhbs(sql)
