@@ -22,11 +22,11 @@ class Hbs {
         }
     }
 
-    async insertSalary(salary, dateTime){
+    async insertSalary(salary, date){
 
         try {
             const sql = `INSERT INTO ansa.salary (serNr, dateTime, office, comment, reference, usd, name) values (?, ?, ?, ?, ?, ?, ?)`
-            await query(sql, [salary.serNr, dateTime, salary.office, salary.comment, salary.reference, salary.usd, salary.name])
+            await query(sql, [salary.serNr, date, salary.office, salary.comment, salary.reference, salary.usd, salary.name])
 
             return true
         } catch (error) {
