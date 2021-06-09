@@ -25,7 +25,6 @@ connection.connect((error => {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
 
-            Hbs.listSalary()
             const job = new CronJob('0 01 * * * *', () => {
                 try {
                     console.log('Executed Cron sucessfuly!');
