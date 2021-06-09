@@ -172,14 +172,14 @@ class Prosegur {
 
     async listOffice(contract) {
         try {
-            const sql = `SELECT DATE_FORMAT(time, '%m-%d-%Y %H:%i:%s') as time FROM ansa.proseguroffice WHERE contract = '${contract}' ORDER BY time DESC LIMIT 1 `
+            const sql = `SELECT DATE_FORMAT(dateTime, '%m-%d-%Y %H:%i:%s') as dateTime FROM ansa.proseguroffice WHERE contract = '${contract}' ORDER BY dateTime DESC LIMIT 1 `
             const result = await query(sql)
 
             if(!result[0]){
                 return '01-01-1999 00:00:00' 
             }
 
-            return result[0].time
+            return result[0].dateTime
         } catch (error) {
             throw new InvalidArgumentError(error)
         }
