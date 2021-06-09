@@ -1,4 +1,4 @@
-const { query } = require('../infrastructure/database/queries')
+const query = require('../infrastructure/database/queries')
 
 class ItemGroup {
     insert(itemgroup) {

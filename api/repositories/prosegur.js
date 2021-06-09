@@ -1,4 +1,4 @@
-const { query } = require('../infrastructure/database/queries')
+const query = require('../infrastructure/database/queries')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('../models/error')
 
 class Prosegur {

@@ -1,5 +1,4 @@
-const { query } = require('../infrastructure/database/queries')
-
+const query = require('../infrastructure/database/queries')
 class Item {
     insert(item) {
         const sql = 'INSERT INTO item set ?'
