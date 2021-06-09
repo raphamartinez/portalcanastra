@@ -3,6 +3,14 @@ const moment = require('moment')
 const Repositorie = require('../repositories/hbs')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('./error')
 
+async function formatStringDatetoCompare(data) {
+    var ano = data.split("-")[2];
+    var mes = data.split("-")[1];
+    var dia = data.split("-")[0];
+
+    return ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2) + '-' + ano;
+}
+
 class Hbs {
 
     async init() {
@@ -53,7 +61,10 @@ class Hbs {
             const data = await Repositorie.listSalary()
             data.forEach(obj => {
                 const dt = `${obj.date} ${obj.time}`
-                const dateTime = moment(dt).format("YYYY-MM-DD HH:mm:ss")
+                const dt1 = await formatStringDatetoCompare(dt)
+                const date1 = new Date(dt1);
+
+                const dateTime = moment(date1).format("YYYY-MM-DD HH:mm:ss")
                 Repositorie.insertSalary(obj, dateTime)
             });
 
