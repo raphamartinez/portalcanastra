@@ -14,4 +14,4 @@ FROM JobMovement jm INNER JOIN Workers w on  w.Code = jm.EmployeeCode
 
 #salario
 
-SELECT sa.SerNr, sa.TransDate, sa.TransTime, sa.BaseRate, sa.CurrencyRate, sa.Comment, sa.Reference, sa.Base2CreditSum, sa.EmployeeCode FROM SalaryPayment sa
+SELECT sa.SerNr, sa.TransDate, sa.TransTime, sa.Office, sa.BaseRate, sa.CurrencyRate, sa.Comment, sa.Reference, sa.Base2CreditSum, sa.EmployeeCode, sa.EmployeeName FROM SalaryPayment sa

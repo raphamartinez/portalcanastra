@@ -3,6 +3,7 @@ class Tables {
 
   init(connection) {
     this.connection = connection
+    this.createTableSalary()
     this.createTableWebscrapingHistory()
     this.createTableProsegurDistance()
     this.createTableInviolavelOffice()
@@ -26,6 +27,19 @@ class Tables {
     this.createTableViewPowerBI()
 
     return true
+  }
+
+  createTableSalary() {
+    const sql = `CREATE TABLE IF NOT EXISTS salary (id_salary int NOT NULL AUTO_INCREMENT, serNr double, dateTime DATETIME, 
+     comment VARCHAR (250) NOT NULL, reference VARCHAR (250) NOT NULL, 
+     amount double, employeecode int, PRIMARY KEY (id_salary))`
+
+    this.connection.query(sql, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+      }
+    })
   }
 
   createTableWebscrapingHistory() {
