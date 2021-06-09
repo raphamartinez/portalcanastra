@@ -31,7 +31,7 @@ class Tables {
 
   createTableSalary() {
     const sql = `CREATE TABLE IF NOT EXISTS salary (id_salary int NOT NULL AUTO_INCREMENT, serNr double, dateTime DATETIME, 
-     comment VARCHAR (250), reference VARCHAR (250), usd double, office int, name VARCHAR (250), PRIMARY KEY (id_salary))`
+     comment VARCHAR (250), reference VARCHAR (250), usd double, office VARCHAR (5), name VARCHAR (250), PRIMARY KEY (id_salary))`
 
     this.connection.query(sql, (error) => {
       if (error) {

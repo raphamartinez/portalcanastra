@@ -61,7 +61,8 @@ class Hbs {
             const data = await Repositorie.listSalary()
             data.forEach(obj => {
                 const dt = `${obj.date} ${obj.time}`
-                Repositorie.insertSalary(obj, dt)
+                const date = moment(dt).format("YYYY-MM-DD HH:mm:ss")
+                Repositorie.insertSalary(obj, date)
             });
 
             return true
