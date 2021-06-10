@@ -66,6 +66,9 @@ class Hbs {
         try {
             const data = await Repositorie.listReceive()
             data.forEach(obj => {
+                if (obj.rowNr <= 2) {
+                    obj.rowNr = 1
+                }
                 Repositorie.insertReceive(obj)
             });
 

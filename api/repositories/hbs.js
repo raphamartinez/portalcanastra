@@ -35,6 +35,18 @@ class Hbs {
 
     }
 
+    async dropSalary(user) {
+        try {
+            const sql = `INSERT INTO ansa.user (name, perfil, dateBirthday, phone, cod, responsibility, modalidad, startCompany, document, officecode, officename, endCompany, status, sex, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now() - interval 4 hour)`
+            await query(sql, [user.name, 'user hbs', user.dateBirthday, user.phone, user.cod, user.responsibility, user.modalidad, user.startCompany, user.document, user.officecode, user.officename, user.endCompany, user.status, user.sex])
+
+            return true
+        } catch (error) {
+            console.log(error);
+            throw new InvalidArgumentError(error)
+        }
+    }
+
     listUsers() {
         try {
             const sql = ` SELECT wk.Name as name,wk.Phone as phone,wk.Mobile as mobile,wk.BirthDate AS dateBirthday,wk.Code AS cod,JobName AS responsibility, wk.modality as modalidad,
@@ -47,7 +59,16 @@ class Hbs {
         }
     }
 
-    async insertUser(user) {
+    updateUsers(){
+        try {
+            const sql = `drop table ansa.user`
+            return queryhbs(sql)
+        } catch (error) {
+            throw new InternalServerError(error)
+        }
+    }
+
+    async dropUser(user) {
         try {
             const sql = `INSERT INTO ansa.user (name, perfil, dateBirthday, phone, cod, responsibility, modalidad, startCompany, document, officecode, officename, endCompany, status, sex, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now() - interval 4 hour)`
             await query(sql, [user.name, 'user hbs', user.dateBirthday, user.phone, user.cod, user.responsibility, user.modalidad, user.startCompany, user.document, user.officecode, user.officename, user.endCompany, user.status, user.sex])
@@ -62,7 +83,7 @@ class Hbs {
     listReceive() {
         try {
             const sql = ` SELECT SerNr,SalesMan,nameSalesman,CODE AS code,NAME AS client,CustomerGroup,TransDate,Office,Days,rowNr +1 as rowNr,SUM(d15) AS d15,SUM(d30) AS d30 ,SUM(d60) AS d60,SUM(d90) AS d90,SUM(d120) AS d120,SUM(dm120) AS dm120,SUM(Vencido) AS Vencido,
-            ItemGroup,DueDate,Saldo,itemDesc,Total AS total,LastPayDate AS lastPay,Currency,
+            ItemGroup,DueDate,Saldo,Total AS total,LastPayDate AS lastPay,Currency,
             SUM(d15+ d30+ d60+ d90+ d120+ dm120) AS totalCurrency, 
 			IF(SUM(d15+ d30+ d60+ d90+ d120+ dm120) <> 0, 'S', 'N') AS status,
 			IF(Currency = "GS", SUM(d15+ d30+ d60+ d90+ d120+ dm120)/BaseRate, IF(Currency = "RE", SUM(d15+ d30+ d60+ d90+ d120+ dm120) * FromRate / BaseRate, SUM(d15+ d30+ d60+ d90+ d120+ dm120))) AS totalUsd
@@ -73,7 +94,7 @@ class Hbs {
             ,SUM(IF(DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 > 60 AND DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 <= 90,IF(ir.Saldo > 0,ir.Saldo,i.Saldo ),0)) AS d90 
             ,SUM(IF(DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 > 90 AND DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 <= 120,IF(ir.Saldo > 0,ir.Saldo,i.Saldo ),0)) AS d120
             ,SUM(IF(DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 > 120,IF(ir.Saldo > 0,ir.Saldo,i.Saldo ),0)) AS dm120
-            ,SUM(IF(DATEDIFF(ir.DueDate,NOW()) < 0,ir.Saldo,0)) AS Vencido,IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate) AS DueDate,i.Saldo,iir.Name AS itemDesc,i.Total 
+            ,SUM(IF(DATEDIFF(ir.DueDate,NOW()) < 0,ir.Saldo,0)) AS Vencido,IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate) AS DueDate,i.Saldo,i.Total 
             ,(SELECT MAX(TransDate)  FROM Receipt r INNER JOIN ReceiptInvoiceRow rr ON rr.masterId = r.internalId WHERE rr.InvoiceNr = i.SerNr AND r.Status = 1 AND (r.Invalid = 0 OR r.Invalid IS NULL)) AS LastPayDate   
             ,it.ItemGroup 
             FROM  Invoice i
@@ -99,6 +120,15 @@ class Hbs {
         } catch (error) {
             console.log(error);
             throw new InvalidArgumentError(error)
+        }
+    }
+
+    dropReceive(){
+        try {
+            const sql = `drop table ansa.receive`
+            return queryhbs(sql)
+        } catch (error) {
+            throw new InternalServerError(error)
         }
     }
 }
