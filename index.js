@@ -5,8 +5,8 @@ const customExpress = require('./api/config/customExpress')
 const connection = require('./api/infrastructure/database/connection')
 const tables = require('./api/infrastructure/database/tables')
 const WebScraping = require('./api/models/webscraping')
-const Hbs = require('./api/models/hbs')
 const express = require('express')
+const Hbs = require('./api/models/hbs')
 const CronJob = require('cron').CronJob
 
 connection.connect((error => {
@@ -24,6 +24,8 @@ connection.connect((error => {
             app.all('/', function (req, res) {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
+
+            Hbs.listReceive()
 
             const job = new CronJob('0 01 * * * *', () => {
                 try {

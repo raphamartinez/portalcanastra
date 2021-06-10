@@ -22,10 +22,10 @@ class Hbs {
         }
     }
 
-    async insertSalary(salary, date){
+    async insertSalary(salary, date) {
 
         try {
-            const sql = `INSERT INTO ansa.salary (serNr, dateTime, office, comment, reference, usd, name) values (?, ?, ?, ?, ?, ?, ?)` 
+            const sql = `INSERT INTO ansa.salary (serNr, dateTime, office, comment, reference, usd, name) values (?, ?, ?, ?, ?, ?, ?)`
             await query(sql, [salary.serNr, date, salary.office, salary.comment, salary.reference, salary.usd, salary.name])
             return true
         } catch (error) {
@@ -47,10 +47,53 @@ class Hbs {
         }
     }
 
-    async insertUser(user){
+    async insertUser(user) {
         try {
             const sql = `INSERT INTO ansa.user (name, perfil, dateBirthday, phone, cod, responsibility, modalidad, startCompany, document, officecode, officename, endCompany, status, sex, dateReg) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now() - interval 4 hour)`
             await query(sql, [user.name, 'user hbs', user.dateBirthday, user.phone, user.cod, user.responsibility, user.modalidad, user.startCompany, user.document, user.officecode, user.officename, user.endCompany, user.status, user.sex])
+
+            return true
+        } catch (error) {
+            console.log(error);
+            throw new InvalidArgumentError(error)
+        }
+    }
+
+    listReceive() {
+        try {
+            const sql = ` SELECT SerNr,SalesMan,nameSalesman,CODE AS code,NAME AS client,CustomerGroup,TransDate,Office,Days,rowNr +1 as rowNr,SUM(d15) AS d15,SUM(d30) AS d30 ,SUM(d60) AS d60,SUM(d90) AS d90,SUM(d120) AS d120,SUM(dm120) AS dm120,SUM(Vencido) AS Vencido,
+            ItemGroup,DueDate,Saldo,itemDesc,Total AS total,LastPayDate AS lastPay,Currency,
+            SUM(d15+ d30+ d60+ d90+ d120+ dm120) AS totalCurrency, 
+			IF(SUM(d15+ d30+ d60+ d90+ d120+ dm120) <> 0, 'Vencido', 'Não Vencido') AS status,
+			IF(Currency = "GS", SUM(d15+ d30+ d60+ d90+ d120+ dm120)/BaseRate, IF(Currency = "RE", SUM(d15+ d30+ d60+ d90+ d120+ dm120) * FromRate / BaseRate, SUM(d15+ d30+ d60+ d90+ d120+ dm120))) AS totalUsd
+            FROM (SELECT i.SerNr,u.Name AS nameSalesman, i.Salesman,c.Code,c.GroupCode as CustomerGroup,i.TransDate,i.Office,c.Name,DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW()) AS Days,ir.rowNr,i.Currency,i.CurrencyRate,i.BaseRate, i.FromRate
+            ,SUM(IF(DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 > 0 AND DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 <= 15,IF(ir.Saldo > 0,ir.Saldo,i.Saldo ),0)) AS d15
+            ,SUM(IF(DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 > 15 AND DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 <= 30,IF(ir.Saldo > 0,ir.Saldo,i.Saldo ),0)) AS d30
+            ,SUM(IF(DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 > 30 AND DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 <= 60,IF(ir.Saldo > 0,ir.Saldo,i.Saldo ),0)) AS d60 
+            ,SUM(IF(DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 > 60 AND DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 <= 90,IF(ir.Saldo > 0,ir.Saldo,i.Saldo ),0)) AS d90 
+            ,SUM(IF(DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 > 90 AND DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 <= 120,IF(ir.Saldo > 0,ir.Saldo,i.Saldo ),0)) AS d120
+            ,SUM(IF(DATEDIFF(IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate),NOW())*-1 > 120,IF(ir.Saldo > 0,ir.Saldo,i.Saldo ),0)) AS dm120
+            ,SUM(IF(DATEDIFF(ir.DueDate,NOW()) < 0,ir.Saldo,0)) AS Vencido,IF(ir.DueDate IS NULL,i.DueDate,ir.DueDate) AS DueDate,i.Saldo,iir.Name AS itemDesc,i.Total 
+            ,(SELECT MAX(TransDate)  FROM Receipt r INNER JOIN ReceiptInvoiceRow rr ON rr.masterId = r.internalId WHERE rr.InvoiceNr = i.SerNr AND r.Status = 1 AND (r.Invalid = 0 OR r.Invalid IS NULL)) AS LastPayDate   
+            ,it.ItemGroup 
+            FROM  Invoice i
+            INNER JOIN Customer c ON c.Code = i.CustCode  
+            INNER JOIN User u ON i.SalesMan = u.Code
+            LEFT JOIN InvoiceItemRow AS iir ON (iir.masterId = i.internalId AND iir.rowNr = 0)  
+            LEFT JOIN Item it ON it.Code = iir.ArtCode 
+            LEFT JOIN InvoiceInstallRow AS ir ON (ir.masterId = i.internalId AND ir.Saldo > 0)   
+            WHERE i.Saldo > 10 AND i.STATUS = 1 AND (i.Invalid = 0 OR i.Invalid IS NULL ) GROUP BY i.SerNr,ir.rowNr )
+            AS a GROUP BY SerNr  `
+            return queryhbs(sql)
+        } catch (error) {
+            throw new InternalServerError(error)
+        }
+    }
+
+    async insertReceive(receive) {
+        try {
+            const sql = `INSERT INTO ansa.receive set ?`
+            await query(sql, receive)
 
             return true
         } catch (error) {

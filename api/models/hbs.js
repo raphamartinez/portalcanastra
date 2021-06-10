@@ -1,15 +1,6 @@
-const { use } = require('passport');
 const moment = require('moment')
 const Repositorie = require('../repositories/hbs')
 const { InvalidArgumentError, InternalServerError, NotFound } = require('./error')
-
-async function formatStringDatetoCompare(data) {
-    var ano = data.split("-")[2];
-    var mes = data.split("-")[1];
-    var dia = data.split("-")[0];
-
-    return ("0" + mes).slice(-2) + '-' + ("0" + dia).slice(-2) + '-' + ano;
-}
 
 class Hbs {
 
@@ -71,6 +62,18 @@ class Hbs {
         }
     }
 
+    async listReceive() {
+        try {
+            const data = await Repositorie.listReceive()
+            data.forEach(obj => {
+                Repositorie.insertReceive(obj)
+            });
+
+            return true
+        } catch (error) {
+            throw new InternalServerError('Error')
+        }
+    }
 }
 
 module.exports = new Hbs
