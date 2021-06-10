@@ -27,7 +27,6 @@ class Tables {
     this.createTablePowerBI()
     this.createTableViewPowerBI()
 
-    connection.end();
     return true
   }
 
