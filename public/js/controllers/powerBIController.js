@@ -7,6 +7,7 @@ const btnPunto = document.getElementById('btnPunto')
 const btnVehiculos = document.getElementById('btnVehiculos')
 const btnSucursales = document.getElementById('btnSucursales')
 const cardHistory = document.querySelector('[data-card]')
+const btnProcess = document.getElementById('btnProcess')
 
 window.modalDeleteBi = modalDeleteBi
 window.listBiUser = listBiUser
@@ -134,6 +135,16 @@ btnPunto.addEventListener('click', async (event) => {
 
     } catch (error) {
 
+    }
+})
+
+btnProcess.addEventListener('click', async (event) => {
+    event.preventDefault()
+    try {
+        const url = '../admin/index.html'
+        window.location.href = url
+    } catch (error) {
+        alert(error)
     }
 })
 
