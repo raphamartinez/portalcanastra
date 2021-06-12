@@ -10,7 +10,7 @@ btn.addEventListener('click', async (event) => {
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-<div class="spinner-border text-primary" role="status">
+<div class="spinner-border text-danger" role="status">
   <span class="sr-only">Loading...</span>
 </div>
 `

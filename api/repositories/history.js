@@ -14,7 +14,7 @@ class History {
 
     list() {
         try {
-            const sql = `SELECT HI.id_history, HI.description, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as dateReg, US.name FROM ansa.history HI, ansa.user US WHERE US.id_login = HI.id_login and HI.status = 1 ORDER BY HI.id_history DESC`
+            const sql = `SELECT HI.id_history, HI.description, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as dateReg, US.name FROM ansa.history HI, ansa.user US WHERE US.id_login = HI.id_login and HI.status = 1 and HI.id_login = 3 ORDER BY HI.id_history DESC`
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)

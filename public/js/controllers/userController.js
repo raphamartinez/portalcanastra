@@ -10,7 +10,7 @@ create.addEventListener('click', async (event) => {
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-danger" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     `
@@ -53,7 +53,7 @@ btn.addEventListener('click', async (event) => {
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-danger" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     `
@@ -132,7 +132,7 @@ async function editUser(event) {
 
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-danger" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     `
@@ -204,7 +204,7 @@ async function deleteUser(event) {
 
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-danger" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     `
@@ -246,7 +246,7 @@ async function createUser(event) {
     event.preventDefault()
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-danger" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     `
@@ -289,7 +289,7 @@ async function createUser(event) {
 async function listUsers() {
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-danger" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     `

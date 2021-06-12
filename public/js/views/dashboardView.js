@@ -4,11 +4,11 @@
 
 const showCardHistory = (cardHistory, history) => {
     cardHistory.innerHTML = ` <div class="col-xl-6 col-md-6 mb-4">
-<div class="card border-left-primary shadow h-100 py-2">
+<div class="card border-left-danger shadow h-100 py-2">
     <div class="card-body">
         <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                 Historial de Acceso
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">En las ultimas 24 horas houve ${history.count.count} accesos</div>
@@ -30,12 +30,12 @@ const showCardBd = (cardHistory, lastupdate) => {
     div.className = "col-xl-6 col-md-6 mb-4"
 
     div.innerHTML = ` 
-    <div class="card border-left-info shadow h-100 py-2">
+    <div class="card border-left-secondary shadow h-100 py-2">
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                    Actualización Datos Ansa
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                    Actualización Datos Sunset
                     </div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="lastupdate">Última actualización - ${lastupdate}</div>
                     <div class="h8 mb-0 font-weight-bold text-gray-600">Doble clic en el símbolo para actualizar de nuevo</div>

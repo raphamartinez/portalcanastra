@@ -23,7 +23,7 @@ btnSucursales.addEventListener('click', async (event) => {
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+<div class="d-flex justify-content-center align-items-center spinner-border text-danger" role="status">
   <span class="sr-only">Loading...</span>
 </div>
 `
@@ -63,7 +63,7 @@ btnVehiculos.addEventListener('click', async (event) => {
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+<div class="d-flex justify-content-center align-items-center spinner-border text-danger" role="status">
   <span class="sr-only">Loading...</span>
 </div>
 `
@@ -103,7 +103,7 @@ btnPunto.addEventListener('click', async (event) => {
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+<div class="d-flex justify-content-center align-items-center spinner-border text-danger" role="status">
   <span class="sr-only">Loading...</span>
 </div>
 `
@@ -153,7 +153,7 @@ btnInforme.addEventListener('click', async (event) => {
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+<div class="d-flex justify-content-center align-items-center spinner-border text-danger" role="status">
   <span class="sr-only">Loading...</span>
 </div>
 `
@@ -192,7 +192,7 @@ async function listBiUser(event) {
     event.preventDefault()
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+<div class="d-flex justify-content-center align-items-center spinner-border text-danger" role="status">
   <span class="sr-only">Loading...</span>
 </div>
 `
@@ -235,7 +235,7 @@ function viewBi(event) {
     event.preventDefault()
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-<div class="spinner-border text-primary" role="status">
+<div class="spinner-border text-danger" role="status">
   <span class="sr-only">Loading...</span>
 </div>
 `
@@ -284,7 +284,7 @@ async function addPowerBi(event) {
 
         let loading = document.querySelector('[data-loading]')
         loading.innerHTML = `
-        <div class="spinner-border text-primary" role="status">
+        <div class="spinner-border text-danger" role="status">
           <span class="sr-only">Loading...</span>
         </div>
         `
@@ -334,7 +334,7 @@ async function editPowerBi(event) {
     $('#editpowerbi').modal('hide')
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-danger" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     `
@@ -379,7 +379,7 @@ async function deletePowerBi(event) {
     $('#deletepowerbi').modal('hide')
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
+    <div class="spinner-border text-danger" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     `
