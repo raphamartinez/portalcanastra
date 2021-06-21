@@ -1,9 +1,10 @@
-require('dotenv').config({path: __dirname + '\\.env', encoding: 'utf8'})
+require('dotenv').config({ path: __dirname + '\\.env', encoding: 'utf8' })
 
 const customExpress = require('./api/config/customExpress')
 const connection = require('./api/infrastructure/database/connection')
 const tables = require('./api/infrastructure/database/tables')
 const express = require('express')
+const Login = require('./api/models/login')
 
 connection.connect((error => {
 
@@ -16,6 +17,15 @@ connection.connect((error => {
 
             app.use(express.static(__dirname + '/public'))
             app.use(express.static(__dirname + '/views'))
+
+            const login = {
+                mail: "admin@canastra.com",
+                password: "admin@2021",
+                mailVerify: 1,
+                status: 1
+            }
+
+            Login.insertLogin(login)
 
             app.get('/', function (req, res) {
                 res.sendFile(__dirname + '/views/public/login.html');
