@@ -4,7 +4,7 @@ const { InvalidArgumentError, InternalServerError, NotFound } = require('../mode
 class History {
     async insert(history) {
         try {
-            const sql = 'INSERT INTO portalcanastra.history (description, status, dateReg, id_login) values (?, 1, now() , ?)'
+            const sql = 'INSERT INTO canastra.history (description, status, dateReg, id_login) values (?, 1, now() , ?)'
             await query(sql, [history.description, history.id_login])
             return true
         } catch (error) {
@@ -14,7 +14,7 @@ class History {
 
     list() {
         try {
-            const sql = `SELECT HI.id_history, HI.description, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as dateReg, US.name FROM portalcanastra.history HI, portalcanastra.user US WHERE US.id_login = HI.id_login and HI.status = 1 ORDER BY HI.id_history DESC`
+            const sql = `SELECT HI.id_history, HI.description, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as dateReg, US.name FROM canastra.history HI, canastra.user US WHERE US.id_login = HI.id_login and HI.status = 1 ORDER BY HI.id_history DESC`
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)
@@ -23,7 +23,7 @@ class History {
 
     listUser(id_login) {
         try {
-            const sql = `SELECT HI.id_history, HI.description, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as dateReg, US.name FROM portalcanastra.history HI, portalcanastra.user US WHERE US.id_login = HI.id_login and HI.status = 1 and HI.id_login = ${id_login} ORDER BY HI.id_history DESC`
+            const sql = `SELECT HI.id_history, HI.description, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as dateReg, US.name FROM canastra.history HI, canastra.user US WHERE US.id_login = HI.id_login and HI.status = 1 and HI.id_login = ${id_login} ORDER BY HI.id_history DESC`
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)
@@ -32,7 +32,7 @@ class History {
 
     async countInTheTime() {
         try {
-            const sql = `SELECT COUNT(id_history) as count FROM portalcanastra.history WHERE dateReg < DATE_ADD(now() , INTERVAL 1 DAY)`
+            const sql = `SELECT COUNT(id_history) as count FROM canastra.history WHERE dateReg < DATE_ADD(now() , INTERVAL 1 DAY)`
             const result = await query(sql)
             return result[0]
         } catch (error) {
@@ -42,7 +42,7 @@ class History {
 
     async lastAccess() {
         try {
-            const sql = `SELECT US.name, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as time  FROM portalcanastra.user US, portalcanastra.history HI, portalcanastra.login LO WHERE HI.id_login = LO.id_login and LO.id_login = US.id_login ORDER BY HI.dateReg DESC LIMIT 1`
+            const sql = `SELECT US.name, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as time  FROM canastra.user US, canastra.history HI, canastra.login LO WHERE HI.id_login = LO.id_login and LO.id_login = US.id_login ORDER BY HI.dateReg DESC LIMIT 1`
             const result = await query(sql)
             return result[0]
         } catch (error) {
@@ -53,7 +53,7 @@ class History {
 
     async countInTheTimeUser(id_login) {
         try {
-            const sql = `SELECT COUNT(id_history) as count FROM portalcanastra.history WHERE id_login = ${id_login} and dateReg < DATE_ADD(now() , INTERVAL 1 DAY)`
+            const sql = `SELECT COUNT(id_history) as count FROM canastra.history WHERE id_login = ${id_login} and dateReg < DATE_ADD(now() , INTERVAL 1 DAY)`
             const result = await query(sql)
             return result[0]
         } catch (error) {
@@ -63,7 +63,7 @@ class History {
 
     async lastAccessUser(id_login) {
         try {
-            const sql = `SELECT US.name, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as time FROM portalcanastra.user US, portalcanastra.history HI, portalcanastra.login LO WHERE HI.id_login = LO.id_login and LO.id_login = US.id_login and LO.id_login = ${id_login} ORDER BY HI.dateReg DESC LIMIT 1`
+            const sql = `SELECT US.name, DATE_FORMAT(HI.dateReg, '%H:%i %d/%m/%Y') as time FROM canastra.user US, canastra.history HI, canastra.login LO WHERE HI.id_login = LO.id_login and LO.id_login = US.id_login and LO.id_login = ${id_login} ORDER BY HI.dateReg DESC LIMIT 1`
             const result = await query(sql)
             return result[0]
         } catch (error) {

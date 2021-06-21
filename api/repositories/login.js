@@ -5,10 +5,10 @@ class Login {
 
     async insert(login) {
         try {
-            const sql = 'INSERT INTO portalcanastra.login (mail, password, mailVerify, status, dateReg ) values (?, ?, ?, ?, now() )'
+            const sql = 'INSERT INTO canastra.login (mail, password, mailVerify, status, dateReg ) values (?, ?, ?, ?, now() )'
             await query(sql, [login.mail, login.password, login.mailVerify, login.status])
 
-            const sqlId = 'select LAST_INSERT_ID() as id_login from portalcanastra.login LIMIT 1'
+            const sqlId = 'select LAST_INSERT_ID() as id_login from canastra.login LIMIT 1'
             const id = await query(sqlId)
             console.log(id);
             return id[0]
@@ -52,7 +52,7 @@ class Login {
 
     async view(id_login) {
         try {
-            const sql = `SELECT US.name, US.perfil, US.id_login FROM portalcanastra.login LO, portalcanastra.user US where US.id_login = LO.id_login and LO.id_login = ${id_login} and LO.status = 1`
+            const sql = `SELECT US.name, US.perfil, US.id_login FROM canastra.login LO, canastra.user US where US.id_login = LO.id_login and LO.id_login = ${id_login} and LO.status = 1`
             const result = await query(sql)
 
             if (!result) {
@@ -102,7 +102,7 @@ class Login {
 
     async checkMail(mail) {
         try {
-            const sql = `SELECT mail FROM portalcanastra.login WHERE mail = '${mail}'`
+            const sql = `SELECT mail FROM canastra.login WHERE mail = '${mail}'`
             const result = await query(sql, mail)
 
             if (!result[0]) {

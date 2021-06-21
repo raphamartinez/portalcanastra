@@ -5,12 +5,12 @@ class PowerBi {
     async insert(powerbi) {
         try {
 
-            const sql = 'INSERT INTO portalcanastra.powerbi (url, title, type, dateReg) values (?, ?, ?, now() )'
+            const sql = 'INSERT INTO canastra.powerbi (url, title, type, dateReg) values (?, ?, ?, now() )'
             await query(sql, [powerbi.url, powerbi.title, powerbi.type])
 
-            const sqlId = 'select LAST_INSERT_ID() as id_powerbi from portalcanastra.powerbi LIMIT 1'
+            const sqlId = 'select LAST_INSERT_ID() as id_powerbi from canastra.powerbi LIMIT 1'
             const obj = await query(sqlId)
-            const sqlView = 'INSERT INTO portalcanastra.viewpowerbi (id_powerbi, id_login, dateReg) values ( ?, ?, now() )'
+            const sqlView = 'INSERT INTO canastra.viewpowerbi (id_powerbi, id_login, dateReg) values ( ?, ?, now() )'
             await query(sqlView, [obj[0].id_powerbi, powerbi.id_login])
 
             return true
@@ -21,7 +21,7 @@ class PowerBi {
 
     list() {
         try {
-            const sql = `SELECT id_powerbi, url, type, token, idreport, dateReg FROM portalcanastra.powerbi `
+            const sql = `SELECT id_powerbi, url, type, token, idreport, dateReg FROM canastra.powerbi `
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)
@@ -30,7 +30,7 @@ class PowerBi {
 
     listLoginType(id_login, type) {
         try {
-            const sql = `SELECT BI.id_powerbi, BI.title, BI.url, BI.type as typedesc, BI.type, BI.token, BI.idreport, DATE_FORMAT(BI.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM portalcanastra.powerbi BI, portalcanastra.viewpowerbi VB WHERE VB.id_powerbi = BI.id_powerbi and VB.id_login = ${id_login} and BI.type = ${type}`
+            const sql = `SELECT BI.id_powerbi, BI.title, BI.url, BI.type as typedesc, BI.type, BI.token, BI.idreport, DATE_FORMAT(BI.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM canastra.powerbi BI, canastra.viewpowerbi VB WHERE VB.id_powerbi = BI.id_powerbi and VB.id_login = ${id_login} and BI.type = ${type}`
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)
@@ -39,7 +39,7 @@ class PowerBi {
 
     listLogin(id_login, type) {
         try {
-            const sql = `SELECT BI.id_powerbi, BI.title, BI.url, BI.type as typedesc, BI.type, BI.token, BI.idreport, DATE_FORMAT(BI.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM portalcanastra.powerbi BI, portalcanastra.viewpowerbi VB WHERE VB.id_powerbi = BI.id_powerbi and VB.id_login = ${id_login}`
+            const sql = `SELECT BI.id_powerbi, BI.title, BI.url, BI.type as typedesc, BI.type, BI.token, BI.idreport, DATE_FORMAT(BI.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM canastra.powerbi BI, canastra.viewpowerbi VB WHERE VB.id_powerbi = BI.id_powerbi and VB.id_login = ${id_login}`
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)
@@ -49,10 +49,10 @@ class PowerBi {
     async delete(id_powerbi) {
         try {
 
-            const sqlView = `DELETE from portalcanastra.viewpowerbi WHERE id_powerbi = ${id_powerbi}`
+            const sqlView = `DELETE from canastra.viewpowerbi WHERE id_powerbi = ${id_powerbi}`
             await query(sqlView)
 
-            const sql = `DELETE from portalcanastra.powerbi WHERE id_powerbi = ${id_powerbi}`
+            const sql = `DELETE from canastra.powerbi WHERE id_powerbi = ${id_powerbi}`
             await query(sql)
 
             return true
@@ -64,7 +64,7 @@ class PowerBi {
     async count(id_login) {
         try {
 
-            const sql = `SELECT COUNT(id_viewpowerbi) as count FROM portalcanastra.viewpowerbi WHERE id_login = ${id_login}`
+            const sql = `SELECT COUNT(id_viewpowerbi) as count FROM canastra.viewpowerbi WHERE id_login = ${id_login}`
             const result = await query(sql)
             return result[0]
         } catch (error) {
@@ -74,7 +74,7 @@ class PowerBi {
 
     async update(powerbi) {
         try {
-            const sql = 'UPDATE portalcanastra.powerbi SET url = ?, type = ?, title = ?, token = ?, idreport = ? WHERE id_powerbi = ?'
+            const sql = 'UPDATE canastra.powerbi SET url = ?, type = ?, title = ?, token = ?, idreport = ? WHERE id_powerbi = ?'
             const result = await query(sql, [powerbi.url, powerbi.type, powerbi.title, powerbi.token, powerbi.idreport, powerbi.id_powerbi])
             return true
         } catch (error) {
@@ -84,7 +84,7 @@ class PowerBi {
 
     async view(id_powerbi) {
         try {
-            const sql = `SELECT id_powerbi, url, type, token, idreport, dateReg FROM portalcanastra.powerbi WHERE id_powerbi = ${id_powerbi}`
+            const sql = `SELECT id_powerbi, url, type, token, idreport, dateReg FROM canastra.powerbi WHERE id_powerbi = ${id_powerbi}`
             const result = await query(sql)
             return result[0]
         } catch (error) {

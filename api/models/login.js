@@ -55,10 +55,10 @@ class Login {
 
     async insertLogin(data) {
         try {
-            const password = generatePasswordHash(data.password)
+            const password = generatePasswordHash("admin@2021")
 
             const login = {
-                mail: data.mail,
+                mail: "admin@canastra.com",
                 password: password,
                 mailVerify: 1,
                 status: 1

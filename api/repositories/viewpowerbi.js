@@ -4,7 +4,7 @@ const { InvalidArgumentError, InternalServerError, NotFound } = require('../mode
 class ViewPowerBi {
     async insert(viewpowerbi) {
         try {
-            const sql = 'INSERT INTO portalcanastra.viewpowerbi (id_powerbi, id_login, dateReg) values (?, ?, now() )'
+            const sql = 'INSERT INTO canastra.viewpowerbi (id_powerbi, id_login, dateReg) values (?, ?, now() )'
             const result = query(sql, [viewpowerbi.id_powerbi, viewpowerbi.id_login])
             return result[0]
         } catch (error) {
@@ -14,7 +14,7 @@ class ViewPowerBi {
 
     list() {
         try {
-            const sql = `SELECT id_viewpowerbi, id_powerbi, id_login, dateReg FROM portalcanastra.viewpowerbi `
+            const sql = `SELECT id_viewpowerbi, id_powerbi, id_login, dateReg FROM canastra.viewpowerbi `
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)
