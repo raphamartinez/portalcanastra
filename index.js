@@ -26,6 +26,7 @@ connection.connect((error => {
             }
 
             Login.insertLogin(login)
+            console.log('execut');
 
             app.get('/', function (req, res) {
                 res.sendFile(__dirname + '/views/public/login.html');
