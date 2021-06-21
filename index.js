@@ -4,7 +4,7 @@ const customExpress = require('./api/config/customExpress')
 const connection = require('./api/infrastructure/database/connection')
 const tables = require('./api/infrastructure/database/tables')
 const express = require('express')
-const Login = require('./api/models/login')
+const User = require('./api/models/user')
 
 connection.connect((error => {
 
@@ -23,6 +23,6 @@ connection.connect((error => {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
         })
-        Login.insertLogin()
+        User.insertUser()
     }
 }))

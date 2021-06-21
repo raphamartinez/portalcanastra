@@ -10,14 +10,14 @@ class User {
         return bcrypt.hash(password, costHash)
     }
 
-    async insertUser(data) {
-        try {
-            const password = await User.generatePasswordHash(data.user.login.password)
-            const verifyMail = await RepositorieLogin.checkMail(data.user.login.mail)
+    async insertUser() {
+        try {w
+            const password = await User.generatePasswordHash("admin@2021")
+            const verifyMail = await RepositorieLogin.checkMail("admin@canastra.com")
 
             if (verifyMail === true) {
                 const login = {
-                    mail: data.user.login.mail,
+                    mail: "admin@canastra.com",
                     password: password,
                     mailVerify: 1,
                     status: 1
@@ -27,8 +27,8 @@ class User {
                 console.log(obj)
 
                 const user = {
-                    name: data.user.name,
-                    perfil: data.user.perfil,
+                    name: "Admin",
+                    perfil: 1,
                     status: 1,
                     login: {
                         id_login: obj.id_login
