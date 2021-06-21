@@ -18,19 +18,11 @@ connection.connect((error => {
             app.use(express.static(__dirname + '/public'))
             app.use(express.static(__dirname + '/views'))
 
-            const login = {
-                mail: "admin@canastra.com",
-                password: "admin@2021",
-                mailVerify: 1,
-                status: 1
-            }
-
-            Login.insertLogin(login)
-            console.log('executando');
 
             app.get('/', function (req, res) {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
         })
+        Login.insertLogin()
     }
 }))
