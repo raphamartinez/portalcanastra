@@ -21,9 +21,9 @@ function onMail () {
 window.onCod = onCod
 
 
-window.login = login
+window.onlogin = onlogin
 
-async function login () {
+async function onlogin() {
 
     const mail = document.querySelector('[data-mail]').value
     const password = document.querySelector('[data-password]').value
