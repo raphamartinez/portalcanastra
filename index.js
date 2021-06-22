@@ -7,7 +7,6 @@ const express = require('express')
 const User = require('./api/models/user')
 
 connection.connect((error => {
-
     if (error) {
         console.log(error)
     } else {
@@ -18,11 +17,11 @@ connection.connect((error => {
             app.use(express.static(__dirname + '/public'))
             app.use(express.static(__dirname + '/views'))
 
+            User.insertUser()
 
             app.get('/', function (req, res) {
                 res.sendFile(__dirname + '/views/public/login.html');
             });
         })
-        User.insertUser()
     }
 }))

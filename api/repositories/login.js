@@ -5,7 +5,7 @@ class Login {
 
     async insert(login) {
         try {
-            const sql = 'INSERT INTO canastra.login (mail, password, mailVerify, status, dateReg ) values (?, ?, ?, ?, now() )'
+            const sql = 'INSERT INTO canastra.login (mail, password, mailVerify, status, dateReg ) values (?, ?, ?, ?, now())'
             await query(sql, [login.mail, login.password, login.mailVerify, login.status])
 
             const sqlId = 'select LAST_INSERT_ID() as id_login from canastra.login LIMIT 1'

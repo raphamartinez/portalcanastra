@@ -11,7 +11,8 @@ class User {
     }
 
     async insertUser() {
-        try {w
+        try {
+            console.log(`teste`);
             const password = await User.generatePasswordHash("admin@2021")
             const verifyMail = await RepositorieLogin.checkMail("admin@canastra.com")
 

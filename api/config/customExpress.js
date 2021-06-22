@@ -30,12 +30,6 @@ module.exports = () => {
   })
 
 
-  // app.use((req, res, next) => {
-  //   res.set({
-  //     'Content-Type': 'application/json'
-  //   })
-  //   next()
-  // });
   
   app.use(express.json())
   app.use(express.urlencoded({ extended: false }))
