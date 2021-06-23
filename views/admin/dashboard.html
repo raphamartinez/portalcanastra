@@ -133,6 +133,10 @@
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Histórico
                                 </a>
+                                <a class="dropdown-item" href="#" data-config>
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Gerenciamento
+                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -158,13 +162,13 @@
                                         <div id="collapseReportes" class="collapse" aria-labelledby="headingTwo"
                                         data-parent="#accordionSidebar">
                                         <div class="bg-white collapse-inner rounded">
-                                            <a class="nav-link text-secondary" href="" id="btnInforme" data-toggle="collapse" data-target="#navbarResponsive"
+                                            <a class="nav-link text-secondary" href="" id="btnInforme" data-toggle="collapse" data-target="#navbarResponsive,#collapseReportes"
                                              data-btninforme>Visão de Chão de Fábrica</a>
-                                             <a class="nav-link text-secondary" href="" id="btnInforme" data-toggle="collapse" data-target="#navbarResponsive"
+                                             <a class="nav-link text-secondary" href="" id="btnInforme" data-toggle="collapse" data-target="#navbarResponsive,#collapseReportes"
                                              data-btninforme>Lista de Impressoras</a>
-                                             <a class="nav-link text-secondary" href="" id="btnInforme" data-toggle="collapse" data-target="#navbarResponsive"
+                                             <a class="nav-link text-secondary" href="" id="btnInforme" data-toggle="collapse" data-target="#navbarResponsive,#collapseReportes"
                                              data-btninforme>Lista de Cartucheiras</a>
-                                             <a class="nav-link text-secondary" href="" id="btnInforme" data-toggle="collapse" data-target="#navbarResponsive"
+                                             <a class="nav-link text-secondary" href="" id="btnInforme" data-toggle="collapse" data-target="#navbarResponsive,#collapseReportes"
                                                  data-btninforme>Lista de Corte e vinco</a>
                                         </div>
                                     </li>
@@ -178,7 +182,7 @@
                                         <div id="collapseFinance" class="collapse" aria-labelledby="headingUtilities"
                                             data-parent="#accordionSidebar">
                                             <div class="bg-white collapse-inner rounded">
-                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive"
+                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive,#collapseFinance"
                                                 id="btnPunto">Lista de Relatórios</a>
                                             </div>
                                         </div>
@@ -193,7 +197,7 @@
                                         <div id="collapsePersonas" class="collapse" aria-labelledby="headingUtilities"
                                             data-parent="#accordionSidebar">
                                             <div class="bg-white collapse-inner rounded">
-                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive"
+                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive,#collapsePersonas"
                                                 id="btnPunto">Lista de Relatórios</a>
                                             </div>
                                         </div>
@@ -208,22 +212,22 @@
                                         <div id="collapseOper" class="collapse" aria-labelledby="headingUtilities"
                                             data-parent="#accordionSidebar">
                                             <div class="bg-white collapse-inner rounded">
-                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive"
+                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive,#collapseOper"
                                                 id="btnPunto">Lista de Relatórios</a>
                                             </div>
                                         </div>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link collapsed" href="#" data-toggle="collapse"
-                                            data-target="#collapseOper" aria-expanded="true"
-                                            aria-controls="collapseOper">
+                                            data-target="#collapseRepre" aria-expanded="true"
+                                            aria-controls="collapseRepre">
                                             <i style="padding: 10px;" class="fas fa-users"></i>
                                             <span>Representantes</span>
                                         </a>
-                                        <div id="collapseOper" class="collapse" aria-labelledby="headingUtilities"
+                                        <div id="collapseRepre" class="collapse" aria-labelledby="headingUtilities"
                                             data-parent="#accordionSidebar">
                                             <div class="bg-white collapse-inner rounded">
-                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive"
+                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive,#collapseRepre"
                                                 id="btnPunto">Lista de Relatórios</a>
                                             </div>
                                         </div>
@@ -238,9 +242,9 @@
                                         <div id="collapseAdmin" class="collapse" aria-labelledby="headingPages"
                                             data-parent="#accordionSidebar">
                                             <div class="bg-white collapse-inner rounded">
-                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive" 
+                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive,#collapseAdmin" 
                                                 data-btn-users>Lista de usuários</a>
-                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive"
+                                                <a class="nav-link text-secondary" href="" data-toggle="collapse" data-target="#navbarResponsive,#collapseAdmin"
                                                 data-btn-create>Cadastrar novo usuário</a>
                                             </div>
                                         </div>
@@ -272,7 +276,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>© 2021 Raphael Martinez - Todos os Direitos Reservados.</span>
+                        <span>© 2021 Pagan Consultoria - Todos os Direitos Reservados.</span>
                     </div>
                 </div>
             </footer>

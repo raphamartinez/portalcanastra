@@ -310,3 +310,54 @@ async function listUsers() {
         alert(error)
     }
 }
+
+
+const config = document.querySelector('[data-config]')
+
+
+config.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
+    try {
+        let title = document.querySelector('[data-title]')
+        let table = document.querySelector('[data-table]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+
+        title.innerHTML = "Gerenciamento"
+        table.style.display = ''
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = ""
+
+        const data = await Service.listUsers()
+
+
+        head.appendChild(View.header())
+
+        data.forEach(user => {
+            body.appendChild(View.showTable(user))
+        });
+
+
+        modal.appendChild(View.showModalInsert())
+        modal.appendChild(View.showModalDelete())
+        modal.appendChild(View.showModalEdit())
+        modal.appendChild(View.showModalPbiInsert())
+
+        loading.innerHTML = " "
+    } catch (error) {
+        loading.innerHTML = " "
+        alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
+    }
+})
