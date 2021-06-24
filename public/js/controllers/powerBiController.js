@@ -84,16 +84,17 @@ btnInforme.addEventListener('click', async (event) => {
         body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        card.innerHTML = " "
         const data = await Service.listBiUser(type)
 
+        head.appendChild(View.header())
+
         data.forEach(powerbi => {
+            console.log(powerbi);
             title.appendChild(View.listPowerBi(powerbi))
         });
         loading.innerHTML = " "
-
     } catch (error) {
-
+console.log(error);
     }
 })
 
@@ -118,7 +119,7 @@ async function listBiUser(event) {
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
-        title.innerHTML = `Lista de Informes - ${name}`
+        title.innerHTML = `Lista de Relatórios - ${name}`
         head.innerHTML = " "
         body.innerHTML = " "
         powerbi.innerHTML = " "
@@ -265,6 +266,7 @@ async function editPowerBi(event) {
 
         await Service.updateBi(powerbi, id)
         loading.innerHTML = " "
+        listFunction()
         alert('PowerBi atualizado com sucesso!')
     } catch (error) {
         loading.innerHTML = " "
@@ -300,9 +302,48 @@ async function deletePowerBi(event) {
         await Service.deleteBi(id)
 
         loading.innerHTML = " "
+        listFunction()
         alert('PowerBi excluido com sucesso!')
     } catch (error) {
         loading.innerHTML = " "
         alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
     }
+}
+
+
+
+async function listFunction() {
+
+    try {
+
+        const btn = event.currentTarget
+        const id = btn.getAttribute("data-id")
+        const name = btn.getAttribute("data-name")
+        let title = document.querySelector('[data-title]')
+        let table = document.querySelector('[data-table]')
+        let card = document.querySelector('[data-card]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let modal = document.querySelector('[data-modal]')
+
+        title.innerHTML = `Lista de Relatórios - ${name}`
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listUser(id)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBiAdmin(powerbi))
+        });
+
+        modal.appendChild(View.showModalDelete())
+        modal.appendChild(View.showModalEdit())
+    } catch (error) {
+
+    }
+
 }

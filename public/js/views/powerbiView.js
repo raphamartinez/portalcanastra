@@ -94,17 +94,32 @@ const showModalDelete = () => {
 }
 
 
+// const listPowerBi = (powerbi) => {
+//     const line = document.createElement('div')
+
+//     const content =
+//         `
+//         <iframe class="responsive img-fluid card mh-100" width="450" height="450"  src="${powerbi.url}" frameborder="0" allowFullScreen="true"></iframe>
+//         <a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600; font-size: 1rem;"></i></a>
+//         <a data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32; font-size: 1rem;"></i></a>
+//         <a data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000; font-size: 1rem;"></i></a>
+//     </div>
+//     `
+//     line.innerHTML = content
+
+//     return line
+// }
+
 const listPowerBi = (powerbi) => {
-    const line = document.createElement('div')
+    const line = document.createElement('tr')
 
     const content =
         `
-        <iframe class="responsive img-fluid card mh-100" width="450" height="450"  src="${powerbi.url}" frameborder="0" allowFullScreen="true"></iframe>
-        <a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600; font-size: 1rem;"></i></a>
-        <a data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32; font-size: 1rem;"></i></a>
-        <a data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000; font-size: 1rem;"></i></a>
-    </div>
-    `
+        <td><a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#cbccce;"></i></a></td>
+        <td>${powerbi.title}</td>
+        <td>${powerbi.typeDesc}</td>
+        <td>${powerbi.dateReg}</td>
+      </tr>`
     line.innerHTML = content
 
     return line
@@ -134,11 +149,11 @@ const header = () => {
 
     const content =
         `
-    < th scope = "col" > Opções</th >
+    <th scope = "col"> Opções</th>
         <th scope="col">Nome</th>
         <th scope="col">Tipo</th>
         <th scope="col">Data de Registro</th>
-    </tr`
+    </tr>`
     line.innerHTML = content
 
     return line

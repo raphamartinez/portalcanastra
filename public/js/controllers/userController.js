@@ -123,24 +123,21 @@ async function editUser(event) {
         const id_user = btn.getAttribute("data-id_user")
         const id_login = btn.getAttribute("data-id_login")
         const name = btn.form.name.value
-        const dateBirthday = btn.form.dateBirthday.value
         const perfil = btn.form.perfil.value
-        const office = btn.form.office.value
         const mail = btn.form.mail.value
 
         const user = {
             id_user: id_user,
             id_login: id_login,
             name: name,
-            dateBirthday: dateBirthday,
             perfil: perfil,
-            id_office: office,
             mail: mail
         }
 
         await Service.updateUser(user, id_user)
 
         loading.innerHTML = " "
+         listUsersFunction()
         alert('Usuário atualizado com sucesso!')
     } catch (error) {
         loading.innerHTML = " "
@@ -157,9 +154,7 @@ async function modalEditUser(event) {
         const id_user = btn.getAttribute("data-id_user")
         const id_login = btn.getAttribute("data-id_login")
         const name = btn.getAttribute("data-name")
-        const dateBirthday = btn.getAttribute("data-dateBirthday")
         const perfil = btn.getAttribute("data-perfil")
-        const office = btn.getAttribute("data-office")
         const mail = btn.getAttribute("data-mail")
 
 
@@ -167,9 +162,7 @@ async function modalEditUser(event) {
         $("#iddbtnedituser").attr("data-id_user", id_user);
         $("#iddbtnedituser").attr("data-id_login", id_login);
         $("#nameedit").val(name);
-        $("#dateBirthdayedit").val(dateBirthday);
         $("#perfiledit").val(perfil);
-        $("#officeedit").val(office);
         $("#mailedit").val(mail);
 
     } catch (error) {
@@ -197,7 +190,9 @@ async function deleteUser(event) {
         await Service.deleteUser(id_user)
 
         loading.innerHTML = " "
+         listUsersFunction()
         alert('Usuário excluído com sucesso!')
+
     } catch (error) {
         loading.innerHTML = " "
         alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
@@ -236,19 +231,13 @@ async function createUser(event) {
         const body = document.querySelector('[data-table-body]')
         const btn = event.currentTarget
         const name = btn['name'].value
-        const dateBirthday = btn['dateBirthday'].value
         const perfil = btn['perfil'].value
-        const id_office = btn['office'].value
         const mail = btn['mail'].value
         const password = btn['password'].value
 
         const user = {
             name: name,
-            dateBirthday: dateBirthday,
             perfil: perfil,
-            office: {
-                id_office: id_office
-            },
             login: {
                 mail: mail,
                 password: password
@@ -361,3 +350,40 @@ config.addEventListener('click', async (event) => {
         alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
     }
 })
+
+
+async function listUsersFunction() {
+
+    try {
+        let title = document.querySelector('[data-title]')
+        let table = document.querySelector('[data-table]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+
+        title.innerHTML = "Lista de Usuários"
+        table.style.display = ''
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = ""
+
+        const data = await Service.listUsers()
+
+        head.appendChild(View.header())
+
+        data.forEach(user => {
+            body.appendChild(View.showTable(user))
+        });
+
+        modal.appendChild(View.showModalInsert())
+        modal.appendChild(View.showModalDelete())
+        modal.appendChild(View.showModalEdit())
+        modal.appendChild(View.showModalPbiInsert())
+
+    } catch (error) {
+        alert(error)
+    }
+}

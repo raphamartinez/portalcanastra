@@ -5,12 +5,12 @@ class PowerBi {
     async insert(powerbi) {
         try {
 
-            const sql = 'INSERT INTO canastra.powerbi (url, title, type, dateReg) values (?, ?, ?, now() )'
+            const sql = 'INSERT INTO canastra.powerbi (url, title, type, dateReg) values (?, ?, ?, now() - interval 3 hour )'
             await query(sql, [powerbi.url, powerbi.title, powerbi.type])
 
             const sqlId = 'select LAST_INSERT_ID() as id_powerbi from canastra.powerbi LIMIT 1'
             const obj = await query(sqlId)
-            const sqlView = 'INSERT INTO canastra.viewpowerbi (id_powerbi, id_login, dateReg) values ( ?, ?, now() )'
+            const sqlView = 'INSERT INTO canastra.viewpowerbi (id_powerbi, id_login, dateReg) values ( ?, ?, now() - interval 3 hour )'
             await query(sqlView, [obj[0].id_powerbi, powerbi.id_login])
 
             return true

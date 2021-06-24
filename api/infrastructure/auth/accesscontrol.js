@@ -1,12 +1,10 @@
 const AccessControl = require('accesscontrol')
 const controll = new AccessControl()
 
-// 0 - user
+// 0 - master
 // 1 - admin 
-// 2 - vendedor
-// 3 - depositero
-// 4 - gerente
-// 5 - personal administrativo
+// 2 - usuario
+// 3 - operacional
 
 controll.grant('1')
     .readAny('user', ['*'])

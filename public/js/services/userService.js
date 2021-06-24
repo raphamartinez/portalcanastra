@@ -56,7 +56,7 @@ const updateUser =  async (user,id_user) => {
     })
 
     const result = await data.json()
-
+console.log(result);
     if (result === true) {
         return result
     }
