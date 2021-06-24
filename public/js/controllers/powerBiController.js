@@ -2,10 +2,14 @@ import { View } from "../views/powerbiView.js"
 import { Service } from "../services/powerbiService.js"
 import { ServiceHistory } from "../services/historyService.js"
 
-const btnInforme = document.getElementById('btnInforme')
-const btnPunto = document.getElementById('btnPunto')
-const btnVehiculos = document.getElementById('btnVehiculos')
-const btnSucursales = document.getElementById('btnSucursales')
+const btnChao = document.getElementById('btnChao')
+const btnImpressoras = document.getElementById('btnImpressoras')
+const btnCartuchos = document.getElementById('btnCartuchos')
+const btnCorteVinco = document.getElementById('btnCorteVinco')
+const btnFinanceiro = document.getElementById('btnFinanceiro')
+const btnVendas = document.getElementById('btnVendas')
+const btnOperacional = document.getElementById('btnOperacional')
+const btnRepresentantes = document.getElementById('btnRepresentantes')
 const cardHistory = document.querySelector('[data-card]')
 
 window.modalDeleteBi = modalDeleteBi
@@ -17,7 +21,7 @@ window.editPowerBi = editPowerBi
 window.modalEditBi = modalEditBi
 window.deletePowerBi = deletePowerBi
 
-btnPunto.addEventListener('click', async (event) => {
+btnRepresentantes.addEventListener('click', async (event) => {
     event.preventDefault()
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
@@ -38,7 +42,7 @@ btnPunto.addEventListener('click', async (event) => {
         let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
-        title.innerHTML = "Controle"
+        title.innerHTML = "Representantes"
         table.style.display = '';
         head.innerHTML = " "
         body.innerHTML = " "
@@ -58,7 +62,257 @@ btnPunto.addEventListener('click', async (event) => {
     }
 })
 
-btnInforme.addEventListener('click', async (event) => {
+
+btnOperacional.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 2
+        let table = document.querySelector('[data-table]')
+        let card = document.querySelector('[data-card]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+        title.innerHTML = "Operacional"
+        table.style.display = '';
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(type)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBi(powerbi))
+        });
+        loading.innerHTML = " "
+
+    } catch (error) {
+
+    }
+})
+
+
+btnVendas.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 2
+        let table = document.querySelector('[data-table]')
+        let card = document.querySelector('[data-card]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+        title.innerHTML = "Vendas"
+        table.style.display = '';
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(type)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBi(powerbi))
+        });
+        loading.innerHTML = " "
+
+    } catch (error) {
+
+    }
+})
+
+
+btnFinanceiro.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 2
+        let table = document.querySelector('[data-table]')
+        let card = document.querySelector('[data-card]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+        title.innerHTML = "Financeiro"
+        table.style.display = '';
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(type)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBi(powerbi))
+        });
+        loading.innerHTML = " "
+
+    } catch (error) {
+
+    }
+})
+
+
+btnCorteVinco.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 2
+        let table = document.querySelector('[data-table]')
+        let card = document.querySelector('[data-card]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+        title.innerHTML = "Lista de Corte e Vinco"
+        table.style.display = '';
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(type)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBi(powerbi))
+        });
+        loading.innerHTML = " "
+
+    } catch (error) {
+
+    }
+})
+
+btnCartuchos.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 2
+        let table = document.querySelector('[data-table]')
+        let card = document.querySelector('[data-card]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+        title.innerHTML = "Lista de Cartucheiras"
+        table.style.display = '';
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(type)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBi(powerbi))
+        });
+        loading.innerHTML = " "
+
+    } catch (error) {
+
+    }
+})
+
+btnImpressoras.addEventListener('click', async (event) => {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 2
+        let table = document.querySelector('[data-table]')
+        let card = document.querySelector('[data-card]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let head = document.querySelector('[data-table-head]')
+        let body = document.querySelector('[data-table-body]')
+        let modal = document.querySelector('[data-modal]')
+
+        title.innerHTML = "Lista de Impressoras"
+        table.style.display = '';
+        head.innerHTML = " "
+        body.innerHTML = " "
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+        const data = await Service.listBiUser(type)
+
+        head.appendChild(View.header())
+
+        data.forEach(powerbi => {
+            body.appendChild(View.listPowerBi(powerbi))
+        });
+        loading.innerHTML = " "
+
+    } catch (error) {
+
+    }
+})
+
+btnChao.addEventListener('click', async (event) => {
     event.preventDefault()
     cardHistory.style.display = 'none';
     let loading = document.querySelector('[data-loading]')
@@ -78,7 +332,7 @@ btnInforme.addEventListener('click', async (event) => {
         let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
-        title.innerHTML = "Impressoras"
+        title.innerHTML = "Visão de Chão de Fábrica"
         table.style.display = '';
         head.innerHTML = " "
         body.innerHTML = " "
