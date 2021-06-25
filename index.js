@@ -12,7 +12,7 @@ connection.connect((error => {
     } else {
         const app = customExpress()
         tables.init(connection)
-        app.listen(80, () => {
+        app.listen(3000, () => {
             console.log(`working!`);
 
             app.use(express.static(__dirname + '/public'))
