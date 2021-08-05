@@ -16,21 +16,15 @@ create.addEventListener('click', async (event) => {
     `
     try {
         let title = document.querySelector('[data-title]')
-        let table = document.querySelector('[data-table]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
 
         title.innerHTML = "Criar novo usuário"
-        table.style.display = ''
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
 
-        head.appendChild(View.createUser())
+        title.appendChild(View.createUser())
 
         loading.innerHTML = " "
     } catch (error) {
@@ -51,28 +45,87 @@ btn.addEventListener('click', async (event) => {
     `
     try {
         let title = document.querySelector('[data-title]')
-        let table = document.querySelector('[data-table]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
 
         title.innerHTML = "Lista de Usuários"
-        table.style.display = ''
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = ""
 
         const data = await Service.listUsers()
-
-
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(user => {
-            body.appendChild(View.showTable(user))
+            const field = View.showTable(user)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    destroy: true,
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
 
 
         modal.appendChild(View.showModalInsert())
@@ -265,27 +318,88 @@ async function listUsers() {
     `
     try {
         let title = document.querySelector('[data-title]')
-        let table = document.querySelector('[data-table]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
 
         title.innerHTML = "Lista de Usuários"
-        table.style.display = ''
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = ""
 
         const data = await Service.listUsers()
-
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(user => {
-            body.appendChild(View.showTable(user))
+            const field = View.showTable(user)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    destroy: true,
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
+
 
         modal.appendChild(View.showModalInsert())
         modal.appendChild(View.showModalDelete())
@@ -293,7 +407,7 @@ async function listUsers() {
         modal.appendChild(View.showModalPbiInsert())
 
         loading.innerHTML = " "
-        alert('Usuário adcionado com sucesso!')
+        alert('Usuário adicionado com sucesso!')
     } catch (error) {
         loading.innerHTML = " "
         alert(error)
@@ -315,28 +429,88 @@ config.addEventListener('click', async (event) => {
     `
     try {
         let title = document.querySelector('[data-title]')
-        let table = document.querySelector('[data-table]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
 
         title.innerHTML = "Gerenciamento"
-        table.style.display = ''
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = ""
 
         const data = await Service.listUsers()
-
-
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(user => {
-            body.appendChild(View.showTable(user))
+            const field = View.showTable(user)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    destroy: true,
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
+
 
 
         modal.appendChild(View.showModalInsert())
@@ -356,27 +530,88 @@ async function listUsersFunction() {
 
     try {
         let title = document.querySelector('[data-title]')
-        let table = document.querySelector('[data-table]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
 
         title.innerHTML = "Lista de Usuários"
-        table.style.display = ''
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = ""
 
         const data = await Service.listUsers()
-
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(user => {
-            body.appendChild(View.showTable(user))
+            const field = View.showTable(user)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    destroy: true,
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
+
 
         modal.appendChild(View.showModalInsert())
         modal.appendChild(View.showModalDelete())

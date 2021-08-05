@@ -20,6 +20,121 @@ window.addPowerBi = addPowerBi
 window.editPowerBi = editPowerBi
 window.modalEditBi = modalEditBi
 window.deletePowerBi = deletePowerBi
+window.autocompletesearch = autocompletesearch
+
+async function autocompletesearch(event) {
+    event.preventDefault()
+
+    try {
+
+        const description = document.getElementById('searchcomplete').value
+        let title = document.querySelector('[data-title]')
+        const url = document.getElementById('searchcomplete').dataset.url
+        const type = document.getElementById('searchcomplete').dataset.type
+        let powerbi = document.querySelector('[data-powerbi]')
+
+        if (url) {
+            cardHistory.style.display = 'none';
+            let loading = document.querySelector('[data-loading]')
+            loading.innerHTML = `
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        `
+
+            document.getElementById('searchcomplete').value = ''
+            document.getElementById('searchcomplete').placeholder = "Código da Impressora..."
+
+            title.innerHTML = description
+            loading.innerHTML = " "
+            powerbi.innerHTML = `   
+            <iframe  id="viewbi" width="1140" height="600" src="${url}" frameborder="0" allowFullScreen="true"></iframe>
+            <div class="col-md-12 h3 font-weight-bold text-primary text-center p-3"> Outros Relatórios</div>`
+
+            ServiceHistory.insertHistory(`Acesso ao relatório - ${description}`)
+
+            const data = await Service.listBiUser(type)
+            let dtview = [];
+
+            data.forEach(powerbi => {
+                const field = View.listPowerBi(powerbi)
+                dtview.push(field)
+            });
+
+            if ($.fn.DataTable.isDataTable('#dataTable')) {
+                $('#dataTable').dataTable().fnClearTable();
+                $('#dataTable').dataTable().fnDestroy();
+                $('#dataTable').empty();
+            }
+
+            let user = JSON.parse(sessionStorage.getItem('user'))
+
+            let perfil = user.perfil
+
+            if (perfil !== 1) {
+                $(document).ready(function () {
+                    $("#dataTable").DataTable({
+                        data: dtview,
+                        columns: [
+                            { title: "Opções" },
+                            { title: "Nome" },
+                            { title: "Tipo" },
+                            { title: "Data de Registro" }
+                        ],
+                        paging: true,
+                        ordering: true,
+                        info: true,
+                        scrollY: false,
+                        scrollCollapse: true,
+                        scrollX: true,
+                        autoHeight: true,
+                        pagingType: "numbers",
+                        searchPanes: true,
+                        fixedHeader: false
+                    }
+                    )
+                })
+            } else {
+                $(document).ready(function () {
+                    $("#dataTable").DataTable({
+                        data: dtview,
+                        columns: [
+                            { title: "Opções" },
+                            { title: "Nome" },
+                            { title: "Tipo" },
+                            { title: "Data de Registro" }
+                        ],
+                        paging: true,
+                        ordering: true,
+                        info: true,
+                        scrollY: false,
+                        scrollCollapse: true,
+                        scrollX: true,
+                        autoHeight: true,
+                        pagingType: "numbers",
+                        searchPanes: true,
+                        fixedHeader: false,
+                        dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                            "<'row'<'col-sm-12'B>>",
+                        buttons: [
+                            'copy', 'csv', 'excel', 'pdf', 'print'
+                        ]
+                    }
+                    )
+                })
+                loading.innerHTML = " "
+            }
+
+        } else {
+            alert('Selecione um relatório válido!')
+        }
+
+
+    } catch (error) {
+    }
+}
 
 btnRepresentantes.addEventListener('click', async (event) => {
     event.preventDefault()
@@ -35,26 +150,86 @@ btnRepresentantes.addEventListener('click', async (event) => {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
         let type = 2
-        let table = document.querySelector('[data-table]')
-        let card = document.querySelector('[data-card]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = "Representantes"
-        table.style.display = '';
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Service.listBiUser(type)
 
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(powerbi => {
-            body.appendChild(View.listPowerBi(powerbi))
+            const field = View.listPowerBi(powerbi)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
+
         loading.innerHTML = " "
 
     } catch (error) {
@@ -77,26 +252,85 @@ btnOperacional.addEventListener('click', async (event) => {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
         let type = 2
-        let table = document.querySelector('[data-table]')
-        let card = document.querySelector('[data-card]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = "Operacional"
-        table.style.display = '';
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Service.listBiUser(type)
 
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(powerbi => {
-            body.appendChild(View.listPowerBi(powerbi))
+            const field = View.listPowerBi(powerbi)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
         loading.innerHTML = " "
 
     } catch (error) {
@@ -119,26 +353,86 @@ btnVendas.addEventListener('click', async (event) => {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
         let type = 2
-        let table = document.querySelector('[data-table]')
-        let card = document.querySelector('[data-card]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = "Vendas"
-        table.style.display = '';
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Service.listBiUser(type)
 
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(powerbi => {
-            body.appendChild(View.listPowerBi(powerbi))
+            const field = View.listPowerBi(powerbi)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
+
         loading.innerHTML = " "
 
     } catch (error) {
@@ -161,26 +455,85 @@ btnFinanceiro.addEventListener('click', async (event) => {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
         let type = 2
-        let table = document.querySelector('[data-table]')
-        let card = document.querySelector('[data-card]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = "Financeiro"
-        table.style.display = '';
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Service.listBiUser(type)
 
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(powerbi => {
-            body.appendChild(View.listPowerBi(powerbi))
+            const field = View.listPowerBi(powerbi)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
         loading.innerHTML = " "
 
     } catch (error) {
@@ -203,26 +556,85 @@ btnCorteVinco.addEventListener('click', async (event) => {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
         let type = 2
-        let table = document.querySelector('[data-table]')
-        let card = document.querySelector('[data-card]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = "Lista de Corte e Vinco"
-        table.style.display = '';
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Service.listBiUser(type)
 
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(powerbi => {
-            body.appendChild(View.listPowerBi(powerbi))
+            const field = View.listPowerBi(powerbi)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
         loading.innerHTML = " "
 
     } catch (error) {
@@ -244,26 +656,85 @@ btnCartuchos.addEventListener('click', async (event) => {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
         let type = 2
-        let table = document.querySelector('[data-table]')
-        let card = document.querySelector('[data-card]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = "Lista de Cartucheiras"
-        table.style.display = '';
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Service.listBiUser(type)
 
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(powerbi => {
-            body.appendChild(View.listPowerBi(powerbi))
+            const field = View.listPowerBi(powerbi)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
         loading.innerHTML = " "
 
     } catch (error) {
@@ -285,26 +756,85 @@ btnImpressoras.addEventListener('click', async (event) => {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
         let type = 2
-        let table = document.querySelector('[data-table]')
-        let card = document.querySelector('[data-card]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = "Lista de Impressoras"
-        table.style.display = '';
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Service.listBiUser(type)
 
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(powerbi => {
-            body.appendChild(View.listPowerBi(powerbi))
+            const field = View.listPowerBi(powerbi)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
         loading.innerHTML = " "
 
     } catch (error) {
@@ -326,29 +856,37 @@ btnChao.addEventListener('click', async (event) => {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
         let type = 1
-        let table = document.querySelector('[data-table]')
         let powerbi = document.querySelector('[data-powerbi]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let modal = document.querySelector('[data-modal]')
 
-        title.innerHTML = "Visão de Chão de Fábrica"
-        table.style.display = '';
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
+
+        View.directory(title, powerbi)
+        
+        const filecontent = document.getElementById('filecontent')
+        filecontent.innerHTML = ``
+
+        title.innerHTML = "Visão de Chão de Fábrica"
+   
         const data = await Service.listBiUser(type)
 
-        head.appendChild(View.header())
-
-        data.forEach(powerbi => {
-            console.log(powerbi);
-            title.appendChild(View.listPowerBi(powerbi))
+        data.forEach(obj => {
+            filecontent.appendChild(View.iconBi(obj))
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+        setInterval(function(){ 
+            $('.logoBar').hide() 
+        }, 30000);
+
         loading.innerHTML = " "
     } catch (error) {
-console.log(error);
+        console.log(error);
     }
 })
 
@@ -366,25 +904,85 @@ async function listBiUser(event) {
         const id = btn.getAttribute("data-id")
         const name = btn.getAttribute("data-name")
         let title = document.querySelector('[data-title]')
-        let table = document.querySelector('[data-table]')
-        let card = document.querySelector('[data-card]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = `Lista de Relatórios - ${name}`
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Service.listUser(id)
 
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(powerbi => {
-            body.appendChild(View.listPowerBiAdmin(powerbi))
+            const field = View.listPowerBi(powerbi)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
 
         modal.appendChild(View.showModalDelete())
         modal.appendChild(View.showModalEdit())
@@ -407,16 +1005,10 @@ function viewBi(event) {
     const btn = event.currentTarget
     const url = btn.getAttribute("data-url")
     let title = document.querySelector('[data-title]')
-    let table = document.querySelector('[data-table]')
-    let head = document.querySelector('[data-table-head]')
-    let body = document.querySelector('[data-table-body]')
     let powerbi = document.querySelector('[data-powerbi]')
     let description = btn.getAttribute("data-title")
 
     title.innerHTML = description
-    table.style.display = 'none';
-    head.innerHTML = " "
-    body.innerHTML = " "
     loading.innerHTML = " "
     powerbi.innerHTML = `   
     <iframe width="1140" height="600" src="${url}" frameborder="0" allowFullScreen="true"></iframe>`
@@ -431,10 +1023,7 @@ async function editBi(event) {
     const title = btn.getAttribute("data-title")
     const url = btn.getAttribute("data-url")
     const type = btn.getAttribute("data-type")
-    let table = document.querySelector('[data-table]')
     let modal = document.querySelector('[data-modal]')
-    let body = document.querySelector('[data-table-body]')
-    let powerbi = document.querySelector('[data-powerbi]')
 
     modal.append(View.showModalEdit(title, url, type))
 
@@ -574,25 +1163,86 @@ async function listFunction() {
         const id = btn.getAttribute("data-id")
         const name = btn.getAttribute("data-name")
         let title = document.querySelector('[data-title]')
-        let table = document.querySelector('[data-table]')
-        let card = document.querySelector('[data-card]')
-        let head = document.querySelector('[data-table-head]')
-        let body = document.querySelector('[data-table-body]')
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = `Lista de Relatórios - ${name}`
-        head.innerHTML = " "
-        body.innerHTML = " "
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Service.listUser(id)
 
-        head.appendChild(View.header())
+        let dtview = [];
 
         data.forEach(powerbi => {
-            body.appendChild(View.listPowerBiAdmin(powerbi))
+            const field = View.listPowerBi(powerbi)
+            dtview.push(field)
         });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Tipo" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
+
 
         modal.appendChild(View.showModalDelete())
         modal.appendChild(View.showModalEdit())

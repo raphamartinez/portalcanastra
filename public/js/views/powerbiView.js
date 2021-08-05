@@ -94,54 +94,34 @@ const showModalDelete = () => {
 }
 
 
-// const listPowerBi = (powerbi) => {
-//     const line = document.createElement('div')
-
-//     const content =
-//         `
-//         <iframe class="responsive img-fluid card mh-100" width="450" height="450"  src="${powerbi.url}" frameborder="0" allowFullScreen="true"></iframe>
-//         <a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600; font-size: 1rem;"></i></a>
-//         <a data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32; font-size: 1rem;"></i></a>
-//         <a data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000; font-size: 1rem;"></i></a>
-//     </div>
-//     `
-//     line.innerHTML = content
-
-//     return line
-// }
-
 const listPowerBi = (powerbi) => {
-    const line = document.createElement('tr')
 
-    const content =
-        `
-        <td><a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#cbccce;"></i></a></td>
-        <td>${powerbi.title}</td>
-        <td>${powerbi.typeDesc}</td>
-        <td>${powerbi.dateReg}</td>
-      </tr>`
-    line.innerHTML = content
+    const content =[
+       `<a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#cbccce;"></i></a>
+       <a data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32; font-size: 1rem;"></i></a>
+       <a data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000; font-size: 1rem;"></i></a>`,
+       `${powerbi.title}`,
+       `${powerbi.typedesc}`,
+       `${powerbi.dateReg}`,
+      ]
 
-    return line
+    return content
 }
 
-const listPowerBiAdmin = (powerbi) => {
-    const line = document.createElement('tr')
+const listPowerBiAdmin = (powerbi, id_login) => {
 
-    const content =
+    const content =  [
         `
-        <td>
-        <a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>
-        <a data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32;"></i></a>
-        <a data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
-        </td>
-        <td>${powerbi.title}</td>
-        <td>${powerbi.typedesc}</td>
-        <td>${powerbi.dateReg}</td>
-      </tr>`
-    line.innerHTML = content
+        <a onclick="viewBi(event)" href="" data-id_login="${id_login}" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>
+        <a data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_login="${id_login}" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32;"></i></a>
+        <a data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_login="${id_login}" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
+        `,
+        `${powerbi.title}`,
+        `${powerbi.typedesc}`,
+        `${powerbi.dateReg}`,
+       ]
 
-    return line
+    return content
 }
 
 const header = () => {
@@ -159,13 +139,74 @@ const header = () => {
     return line
 }
 
+const iconBi = (obj) => {
+    const div = document.createElement('div')
+
+    const content = ` <div class="form-row p-4" id="${obj.id_powerbi}div">
+                          <div class="form-group col-md-12">  
+                            <a class="abrir" data-id_powerbi="${obj.id_powerbi}" data-datereg="${obj.dateReg}" data-type="${obj.type}" data-url="${obj.url}" data-title="${obj.title}" ><embed id="embed${obj.id_powerbi}" src="${obj.url}" class="thumbnail img-responsive card" frameborder="0" allowFullScreen="true"/></a>
+                            <a class="p-1" onclick="viewBi(event)" data-title="${obj.title}" data-url="${obj.url}"><h5>${obj.title}</h5><i class="fas fa-eye" style="color:#666600;"></i></a>
+                        </div>
+                        </div>`
+
+    div.innerHTML = content
+
+    return div
+}
+
+const directory = (title, div) => {
+    const divbtn = document.createElement('div')
+
+    const content = `    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="col-md-10 text-left">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Opciones
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a id="btnaddfile" data-toggle="modal" data-search="1" data-target="#modalAddFile" onclick="modalAddFile(event)" class="dropdown-item"><i class="fa fa-plus"></i> Nuevo Archivo</a>
+                <a id="btnaddoffice" data-toggle="modal" data-search="1" data-target="#modalAddOffice" onclick="modalAddOffice(event)" class="dropdown-item"><i class="fab fa-microsoft"></i> Nuevo Office</a>
+            </div>
+        </div>
+        <button id="searchblock" data-search="1" type="button" onclick="modalsearch(event)" class="btn btn-success">
+        Buscar Archivos
+        </button>
+        <button id="searchline" data-search="2" type="button" onclick="modalsearch(event)" class="btn btn-success">
+        Buscar Archivos
+        </button>
+    </div>
+    <div class="col-md-2 text-right">
+    <button id="listblock" onclick="listblock(event)" class="btn btn-info"><i class="fas fa-table"></i></button>
+    <button id="listline" onclick="listLine(event)" class="btn btn-secondary"><i class="fas fa-list"></i></button>
+    </div>
+</div>`
+
+    divbtn.innerHTML = content
+    title.appendChild(divbtn)
+
+    div.innerHTML = ` 
+    <div class="col-md-12">
+    <div class="card shadow mb-3 responsive" >
+        <div class="card-header"><strong>Repositorio</strong></div>
+                        <div class="card-body">
+                                <div id="filecontent" class="form-row col-md-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>`
+
+}
+
 
 export const View = {
+    iconBi,
     showSimplePowerBI,
     showPowerBI,
     listPowerBi,
     listPowerBiAdmin,
     showModalEdit,
     showModalDelete,
-    header
+    header,
+    directory
 }

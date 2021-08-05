@@ -68,4 +68,15 @@ module.exports = app => {
             next(error)
         }
     })
+
+    app.get('/powerbis', Middleware.bearer, async ( req, res, next) => {
+
+        try {
+            const id_login = req.login.id_login
+            const powerbis = await PowerBi.listPowerBis(id_login)
+            res.json(powerbis)
+        } catch (err) {
+            next(err)
+        }
+    })
 }

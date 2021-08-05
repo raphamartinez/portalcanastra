@@ -1,6 +1,7 @@
 import { LoginService } from '../services/loginService.js'
 
-function onCod () {
+function onCod (event) {
+    event.preventDefault()
     try {
         const url = '../public/cod.html'
         window.location.href = url
@@ -23,8 +24,9 @@ window.onCod = onCod
 
 window.onlogin = onlogin
 
-async function onlogin() {
-
+async function onlogin(event) {
+    event.preventDefault()
+    
     const mail = document.querySelector('[data-mail]').value
     const password = document.querySelector('[data-password]').value
 

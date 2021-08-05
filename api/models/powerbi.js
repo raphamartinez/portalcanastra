@@ -47,16 +47,16 @@ class PowerBi {
             data.forEach(powerbi => {
                 
                 switch (powerbi.type) {
-                    case 1: powerbi.typedesc = 'Informe'
+                    case 1: powerbi.typedesc = 'Impressora'
                         break
 
-                    case 2: powerbi.typedesc = 'Personal'
+                    case 2: powerbi.typedesc = 'Manutenção'
                         break
 
-                    case 3: powerbi.typedesc = 'Seguridad - Vehículos'
+                    case 3: powerbi.typedesc = 'Financeiro'
                         break
 
-                    case 4: powerbi.typedesc = 'Seguridad - Sucursales'
+                    case 4: powerbi.typedesc = 'Operacional'
                         break
                 }
             })
@@ -73,9 +73,9 @@ class PowerBi {
 
             data.map(powerbi => {
                 if (powerbi.type = 1) {
-                    powerbi.typeDesc = 'Relatório'
+                    powerbi.typeDesc = 'Relatório de PowerBi'
                 } else {
-                    powerbi.typeDesc = 'Informe Integrado'
+                    powerbi.typeDesc = 'Relatório Integrado'
                 }
             })
             return data
