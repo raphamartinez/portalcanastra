@@ -43,7 +43,7 @@ async function autocompletesearch(event) {
         `
 
             document.getElementById('searchcomplete').value = ''
-            document.getElementById('searchcomplete').placeholder = "Código da Impressora..."
+            document.getElementById('searchcomplete').placeholder = "Pesquisar..."
 
             title.innerHTML = description
             loading.innerHTML = " "
@@ -1008,7 +1008,7 @@ function viewBi(event) {
     let powerbi = document.querySelector('[data-powerbi]')
     let description = btn.getAttribute("data-title")
 
-    title.innerHTML = description
+    title.innerHTML = " "
     loading.innerHTML = " "
     powerbi.innerHTML = `   
     <iframe width="1140" height="600" src="${url}" frameborder="0" allowFullScreen="true"></iframe>`

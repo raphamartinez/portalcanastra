@@ -97,9 +97,7 @@ const showModalDelete = () => {
 const listPowerBi = (powerbi) => {
 
     const content =[
-       `<a onclick="viewBi(event)" href="" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#cbccce;"></i></a>
-       <a data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32; font-size: 1rem;"></i></a>
-       <a data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000; font-size: 1rem;"></i></a>`,
+       `<a onclick="viewBi(event)" href="" data-id_login="${id_login}" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>`,
        `${powerbi.title}`,
        `${powerbi.typedesc}`,
        `${powerbi.dateReg}`,
@@ -145,7 +143,7 @@ const iconBi = (obj) => {
     const content = ` <div class="form-row p-4" id="${obj.id_powerbi}div">
                           <div class="form-group col-md-12">  
                             <a class="abrir" data-id_powerbi="${obj.id_powerbi}" data-datereg="${obj.dateReg}" data-type="${obj.type}" data-url="${obj.url}" data-title="${obj.title}" ><embed id="embed${obj.id_powerbi}" src="${obj.url}" class="thumbnail img-responsive card" frameborder="0" allowFullScreen="true"/></a>
-                            <a class="p-1" onclick="viewBi(event)" data-title="${obj.title}" data-url="${obj.url}"><h5>${obj.title}</h5><i class="fas fa-eye" style="color:#666600;"></i></a>
+                            <a class="p-1" onclick="viewBi(event)" data-title="${obj.title}" data-url="${obj.url}"><h5>${obj.title}</h5>Visualizar</a>
                         </div>
                         </div>`
 

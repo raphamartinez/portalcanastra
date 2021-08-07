@@ -88,19 +88,19 @@ class User {
 
             data.forEach(obj => {
                 switch (obj.perfil) {
-                    case 1: obj.perfilDesc = "master"
+                    case 1: obj.perfilDesc = "Master Admin"
                         break
 
-                    case 2: obj.perfilDesc = "admin"
+                    case 2: obj.perfilDesc = "Admin"
                         break
 
-                    case 3: obj.perfilDesc = "usuario"
+                    case 3: obj.perfilDesc = "Usuário"
                         break
 
-                    case 4: obj.perfilDesc = "operacional"
+                    case 4: obj.perfilDesc = "Operacional"
                         break
 
-                    default: obj.perfilDesc = "operacional"
+                    default: obj.perfilDesc = "Operacional"
                         break
                 }
             })
