@@ -15,7 +15,6 @@ const cardHistory = document.querySelector('[data-card]')
 window.modalDeleteBi = modalDeleteBi
 window.listBiUser = listBiUser
 window.viewBi = viewBi
-window.editBi = editBi
 window.addPowerBi = addPowerBi
 window.editPowerBi = editPowerBi
 window.modalEditBi = modalEditBi
@@ -251,7 +250,7 @@ btnOperacional.addEventListener('click', async (event) => {
     try {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
-        let type = 2
+        let type = 4
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
@@ -352,7 +351,7 @@ btnVendas.addEventListener('click', async (event) => {
     try {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
-        let type = 2
+        let type = 6
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
@@ -454,7 +453,7 @@ btnFinanceiro.addEventListener('click', async (event) => {
     try {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
-        let type = 2
+        let type = 5
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
@@ -555,7 +554,7 @@ btnCorteVinco.addEventListener('click', async (event) => {
     try {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
-        let type = 2
+        let type = 3
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
@@ -755,7 +754,7 @@ btnImpressoras.addEventListener('click', async (event) => {
     try {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
-        let type = 2
+        let type = 1
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
@@ -863,12 +862,12 @@ btnChao.addEventListener('click', async (event) => {
         modal.innerHTML = " "
 
         View.directory(title, powerbi)
-        
+
         const filecontent = document.getElementById('filecontent')
         filecontent.innerHTML = ``
 
         title.innerHTML = "Visão de Chão de Fábrica"
-   
+
         const data = await Service.listBiUser(type)
 
         data.forEach(obj => {
@@ -880,8 +879,8 @@ btnChao.addEventListener('click', async (event) => {
             $('#dataTable').dataTable().fnDestroy();
             $('#dataTable').empty();
         }
-        setInterval(function(){ 
-            $('.logoBar').hide() 
+        setInterval(function () {
+            $('.logoBar').hide()
         }, 30000);
 
         loading.innerHTML = " "
@@ -901,7 +900,7 @@ async function listBiUser(event) {
     try {
 
         const btn = event.currentTarget
-        const id = btn.getAttribute("data-id")
+        const id_login = btn.getAttribute("data-id")
         const name = btn.getAttribute("data-name")
         let title = document.querySelector('[data-title]')
         let powerbi = document.querySelector('[data-powerbi]')
@@ -910,12 +909,13 @@ async function listBiUser(event) {
         title.innerHTML = `Lista de Relatórios - ${name}`
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listUser(id)
+        const data = await Service.listUser(id_login)
+
 
         let dtview = [];
 
         data.forEach(powerbi => {
-            const field = View.listPowerBi(powerbi)
+            const field = View.listPowerBiAdmin(powerbi, id_login)
             dtview.push(field)
         });
 
@@ -1016,21 +1016,6 @@ function viewBi(event) {
     ServiceHistory.insertHistory(`Acesso realizado á impressora - ${description}`)
 }
 
-async function editBi(event) {
-    event.preventDefault()
-
-    const btn = event.currentTarget
-    const title = btn.getAttribute("data-title")
-    const url = btn.getAttribute("data-url")
-    const type = btn.getAttribute("data-type")
-    let modal = document.querySelector('[data-modal]')
-
-    modal.append(View.showModalEdit(title, url, type))
-
-    const modalEdit = document.getElementById('editpowerbi')
-    modalEdit.show()
-}
-
 async function addPowerBi(event) {
     try {
         event.preventDefault()
@@ -1067,19 +1052,27 @@ async function addPowerBi(event) {
 }
 
 async function modalEditBi(event) {
+    event.preventDefault()
     try {
+        let modal = document.querySelector('[data-modal]')
+        modal.append(View.showModalEdit())
+
         const btn = event.currentTarget
-        const id = btn.getAttribute("data-id_powerbi")
+        const id_powerbi = btn.getAttribute("data-id_powerbi")
         const url = btn.getAttribute("data-url")
         const title = btn.getAttribute("data-title")
         const type = btn.getAttribute("data-type")
+        const id_login = btn.getAttribute("data-id_login")
 
-        $("#ideditpowerbi").attr("data-id_powerbi", id);
+
+        $("#ideditpowerbi").attr("data-id_login", id_login);
+        $("#ideditpowerbi").attr("data-id_powerbi", id_powerbi);
         $("#urledit").val(url);
         $("#titleedit").val(title);
         $("#typeedit").val(type);
+        $('#editpowerbi').modal('show')
     } catch (error) {
-
+        $('#editpowerbi').modal('hide')
     }
 }
 
@@ -1095,21 +1088,23 @@ async function editPowerBi(event) {
     try {
 
         const btn = event.currentTarget
-        const id = btn.getAttribute("data-id_powerbi")
+        const id_powerbi = btn.getAttribute("data-id_powerbi")
+        const id_login = btn.getAttribute("data-id_login")
+
         const title = btn.form.title.value
         const url = btn.form.url.value
         const type = btn.form.type.value
 
         const powerbi = {
-            id_powerbi: id,
+            id_powerbi: id_powerbi,
             title: title,
             url: url,
             type: type
         }
 
-        await Service.updateBi(powerbi, id)
+        await Service.updateBi(powerbi, id_powerbi)
         loading.innerHTML = " "
-        listFunction()
+        listBiFunction(id_login)
         alert('PowerBi atualizado com sucesso!')
     } catch (error) {
         loading.innerHTML = " "
@@ -1121,11 +1116,17 @@ async function modalDeleteBi(event) {
     event.preventDefault()
 
     try {
-        const btn = event.currentTarget
-        const id = btn.getAttribute("data-id_powerbi")
-        $("#iddeletepowerbi").attr("data-id_powerbi", id);
+        let modal = document.querySelector('[data-modal]')
+        modal.append(View.showModalDelete())
 
+        const btn = event.currentTarget
+        const id_powerbi = btn.getAttribute("data-id_powerbi")
+        const id_login = btn.getAttribute("data-id_login")
+        $("#iddeletepowerbi").attr("data-id_powerbi", id_powerbi);
+        $("#iddeletepowerbi").attr("data-id_login", id_login);
+        $('#deletepowerbi').modal('show')
     } catch (error) {
+        $('#deletepowerbi').modal('hide')
     }
 }
 
@@ -1140,12 +1141,13 @@ async function deletePowerBi(event) {
     `
     try {
         const btn = event.currentTarget
-        const id = btn.getAttribute("data-id_powerbi")
+        const id_powerbi = btn.getAttribute("data-id_powerbi")
+        const id_login = btn.getAttribute("data-id_login")
 
-        await Service.deleteBi(id)
+        await Service.deleteBi(id_powerbi)
 
         loading.innerHTML = " "
-        listFunction()
+        listBiFunction(id_login)
         alert('PowerBi excluido com sucesso!')
     } catch (error) {
         loading.innerHTML = " "
@@ -1153,28 +1155,13 @@ async function deletePowerBi(event) {
     }
 }
 
-
-
-async function listFunction() {
-
+async function listBiFunction(id_login) {
     try {
-
-        const btn = event.currentTarget
-        const id = btn.getAttribute("data-id")
-        const name = btn.getAttribute("data-name")
-        let title = document.querySelector('[data-title]')
-        let powerbi = document.querySelector('[data-powerbi]')
-        let modal = document.querySelector('[data-modal]')
-
-        title.innerHTML = `Lista de Relatórios - ${name}`
-        powerbi.innerHTML = " "
-        modal.innerHTML = " "
-        const data = await Service.listUser(id)
-
+        const data = await Service.listUser(id_login)
         let dtview = [];
 
         data.forEach(powerbi => {
-            const field = View.listPowerBi(powerbi)
+            const field = View.listPowerBiAdmin(powerbi, id_login)
             dtview.push(field)
         });
 
@@ -1243,9 +1230,6 @@ async function listFunction() {
             })
         }
 
-
-        modal.appendChild(View.showModalDelete())
-        modal.appendChild(View.showModalEdit())
     } catch (error) {
 
     }

@@ -8,13 +8,13 @@ window.onload = async function () {
 </div>
 `
 
-    let divadmin = document.querySelector('[data-adm]')
+    // let divadmin = document.querySelector('[data-adm]')
     let divconfig = document.querySelector('[data-config]')
     let user = JSON.parse(sessionStorage.getItem('user'))
 
     let perfil = user.perfil
     if (perfil !== 1) {
-        divadmin.innerHTML = " "
+        // divadmin.innerHTML = " "
         divconfig.innerHTML = " "
     }
 

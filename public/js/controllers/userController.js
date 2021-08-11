@@ -1,144 +1,144 @@
 import { View } from "../views/userView.js"
 import { Service } from "../services/userService.js"
 
-const btn = document.querySelector('[data-btn-users]')
-const create = document.querySelector('[data-btn-create]')
+// const btn = document.querySelector('[data-btn-users]')
+// const create = document.querySelector('[data-btn-create]')
 const cardHistory = document.querySelector('[data-card]')
 
-create.addEventListener('click', async (event) => {
-    event.preventDefault()
-    cardHistory.style.display = 'none';
-    let loading = document.querySelector('[data-loading]')
-    loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    `
-    try {
-        let title = document.querySelector('[data-title]')
-        let powerbi = document.querySelector('[data-powerbi]')
-        let modal = document.querySelector('[data-modal]')
+// create.addEventListener('click', async (event) => {
+//     event.preventDefault()
+//     cardHistory.style.display = 'none';
+//     let loading = document.querySelector('[data-loading]')
+//     loading.innerHTML = `
+//     <div class="spinner-border text-primary" role="status">
+//       <span class="sr-only">Loading...</span>
+//     </div>
+//     `
+//     try {
+//         let title = document.querySelector('[data-title]')
+//         let powerbi = document.querySelector('[data-powerbi]')
+//         let modal = document.querySelector('[data-modal]')
 
 
-        title.innerHTML = "Criar novo usuário"
-        powerbi.innerHTML = " "
-        modal.innerHTML = " "
+//         title.innerHTML = "Criar novo usuário"
+//         powerbi.innerHTML = " "
+//         modal.innerHTML = " "
 
-        title.appendChild(View.createUser())
+//         title.appendChild(View.createUser())
 
-        loading.innerHTML = " "
-    } catch (error) {
-        loading.innerHTML = " "
-        alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
-    }
-})
-
-
-btn.addEventListener('click', async (event) => {
-    event.preventDefault()
-    cardHistory.style.display = 'none';
-    let loading = document.querySelector('[data-loading]')
-    loading.innerHTML = `
-    <div class="spinner-border text-primary" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    `
-    try {
-        let title = document.querySelector('[data-title]')
-        let powerbi = document.querySelector('[data-powerbi]')
-        let modal = document.querySelector('[data-modal]')
+//         loading.innerHTML = " "
+//     } catch (error) {
+//         loading.innerHTML = " "
+//         alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
+//     }
+// })
 
 
-        title.innerHTML = "Lista de Usuários"
-        powerbi.innerHTML = " "
-        modal.innerHTML = ""
-
-        const data = await Service.listUsers()
-        let dtview = [];
-
-        data.forEach(user => {
-            const field = View.showTable(user)
-            dtview.push(field)
-        });
-
-        if ($.fn.DataTable.isDataTable('#dataTable')) {
-            $('#dataTable').dataTable().fnClearTable();
-            $('#dataTable').dataTable().fnDestroy();
-            $('#dataTable').empty();
-        }
-
-        let user = JSON.parse(sessionStorage.getItem('user'))
-
-        let perfil = user.perfil
-
-        if (perfil !== 1) {
-            $(document).ready(function () {
-                $("#dataTable").DataTable({
-                    data: dtview,
-                    columns: [
-                        { title: "Opções" },
-                        { title: "Nome" },
-                        { title: "Perfil" },
-                        { title: "Data de Registro" }
-                    ],
-                    paging: true,
-                    ordering: true,
-                    info: true,
-                    scrollY: false,
-                    scrollCollapse: true,
-                    scrollX: true,
-                    autoHeight: true,
-                    pagingType: "numbers",
-                    searchPanes: true,
-                    fixedHeader: false
-                }
-                )
-            })
-        } else {
-            $(document).ready(function () {
-                $("#dataTable").DataTable({
-                    destroy: true,
-                    data: dtview,
-                    columns: [
-                        { title: "Opções" },
-                        { title: "Nome" },
-                        { title: "Perfil" },
-                        { title: "Data de Registro" }
-                    ],
-                    paging: true,
-                    ordering: true,
-                    info: true,
-                    scrollY: false,
-                    scrollCollapse: true,
-                    scrollX: true,
-                    autoHeight: true,
-                    pagingType: "numbers",
-                    searchPanes: true,
-                    fixedHeader: false,
-                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
-                        "<'row'<'col-sm-12'B>>",
-                    buttons: [
-                        'copy', 'csv', 'excel', 'pdf', 'print'
-                    ]
-                }
-                )
-            })
-        }
+// btn.addEventListener('click', async (event) => {
+//     event.preventDefault()
+//     cardHistory.style.display = 'none';
+//     let loading = document.querySelector('[data-loading]')
+//     loading.innerHTML = `
+//     <div class="spinner-border text-primary" role="status">
+//       <span class="sr-only">Loading...</span>
+//     </div>
+//     `
+//     try {
+//         let title = document.querySelector('[data-title]')
+//         let powerbi = document.querySelector('[data-powerbi]')
+//         let modal = document.querySelector('[data-modal]')
 
 
-        modal.appendChild(View.showModalInsert())
-        modal.appendChild(View.showModalDelete())
-        modal.appendChild(View.showModalEdit())
-        modal.appendChild(View.showModalPbiInsert())
+//         title.innerHTML = "Gerenciamento"
+//         powerbi.innerHTML = " "
+//         modal.innerHTML = ""
 
-        loading.innerHTML = " "
-    } catch (error) {
-        loading.innerHTML = " "
-        alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
-    }
-})
+//         const data = await Service.listUsers()
+//         let dtview = [];
+
+//         data.forEach(user => {
+//             const field = View.showTable(user)
+//             dtview.push(field)
+//         });
+
+//         if ($.fn.DataTable.isDataTable('#dataTable')) {
+//             $('#dataTable').dataTable().fnClearTable();
+//             $('#dataTable').dataTable().fnDestroy();
+//             $('#dataTable').empty();
+//         }
+
+//         let user = JSON.parse(sessionStorage.getItem('user'))
+
+//         let perfil = user.perfil
+
+//         if (perfil !== 1) {
+//             $(document).ready(function () {
+//                 $("#dataTable").DataTable({
+//                     data: dtview,
+//                     columns: [
+//                         { title: "Opções" },
+//                         { title: "Nome" },
+//                         { title: "Perfil" },
+//                         { title: "Data de Registro" }
+//                     ],
+//                     paging: true,
+//                     ordering: true,
+//                     info: true,
+//                     scrollY: false,
+//                     scrollCollapse: true,
+//                     scrollX: true,
+//                     autoHeight: true,
+//                     pagingType: "numbers",
+//                     searchPanes: true,
+//                     fixedHeader: false
+//                 }
+//                 )
+//             })
+//         } else {
+//             $(document).ready(function () {
+//                 $("#dataTable").DataTable({
+//                     destroy: true,
+//                     data: dtview,
+//                     columns: [
+//                         { title: "Opções" },
+//                         { title: "Nome" },
+//                         { title: "Perfil" },
+//                         { title: "Data de Registro" }
+//                     ],
+//                     paging: true,
+//                     ordering: true,
+//                     info: true,
+//                     scrollY: false,
+//                     scrollCollapse: true,
+//                     scrollX: true,
+//                     autoHeight: true,
+//                     pagingType: "numbers",
+//                     searchPanes: true,
+//                     fixedHeader: false,
+//                     dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+//                         "<'row'<'col-sm-12'tr>>" +
+//                         "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+//                         "<'row'<'col-sm-12'B>>",
+//                     buttons: [
+//                         'copy', 'csv', 'excel', 'pdf', 'print'
+//                     ]
+//                 }
+//                 )
+//             })
+//         }
+
+
+//         modal.appendChild(View.showModalInsert())
+//         modal.appendChild(View.showModalDelete())
+//         modal.appendChild(View.showModalEdit())
+//         modal.appendChild(View.showModalPbiInsert())
+
+//         loading.innerHTML = " "
+//     } catch (error) {
+//         loading.innerHTML = " "
+//         alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
+//     }
+// })
 
 
 window.addModalPowerBi = addModalPowerBi
@@ -147,11 +147,18 @@ async function addModalPowerBi(event) {
     event.preventDefault()
 
     try {
+        let modal = document.querySelector('[data-modal]')
+        modal.innerHTML = ``
+
+        modal.appendChild(View.showModalPbiInsert())
+
         const btn = event.currentTarget
         const id_login = btn.getAttribute("data-id_login")
         $("#idinsertnewbi").attr("data-id_login", id_login)
-    } catch (error) {
 
+        $('#addpowerbi').modal('show')
+    } catch (error) {
+        $('#addpowerbi').modal('hide')
     }
 }
 
@@ -190,8 +197,7 @@ async function editUser(event) {
         await Service.updateUser(user, id_user)
 
         loading.innerHTML = " "
-         listUsersFunction()
-        alert('Usuário atualizado com sucesso!')
+        listUsers()
     } catch (error) {
         loading.innerHTML = " "
         alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
@@ -201,8 +207,13 @@ async function editUser(event) {
 window.modalEditUser = modalEditUser
 
 async function modalEditUser(event) {
-
+    event.preventDefault()
     try {
+        let modal = document.querySelector('[data-modal]')
+        modal.innerHTML = ``
+
+        modal.appendChild(View.showModalEdit())
+
         const btn = event.currentTarget
         const id_user = btn.getAttribute("data-id_user")
         const id_login = btn.getAttribute("data-id_login")
@@ -217,7 +228,7 @@ async function modalEditUser(event) {
         $("#nameedit").val(name);
         $("#perfiledit").val(perfil);
         $("#mailedit").val(mail);
-
+        $('#edituser').modal('show')
     } catch (error) {
         $('#edituser').modal('hide')
     }
@@ -243,7 +254,7 @@ async function deleteUser(event) {
         await Service.deleteUser(id_user)
 
         loading.innerHTML = " "
-         listUsersFunction()
+        listUsersFunction()
         alert('Usuário excluído com sucesso!')
 
     } catch (error) {
@@ -258,12 +269,17 @@ async function deleteUser(event) {
 window.modalDeleteUser = modalDeleteUser
 
 async function modalDeleteUser(event) {
-
+    event.preventDefault()
     try {
+        let modal = document.querySelector('[data-modal]')
+        modal.innerHTML = ``
+
+        modal.appendChild(View.showModalDelete())
+
         const btn = event.currentTarget
         const id = btn.getAttribute("data-id")
         $("#iddbtndeleteuser").attr("data-id_user", id);
-
+        $('#deleteuser').modal('show')
     } catch (error) {
     }
 }
@@ -273,14 +289,19 @@ window.createUser = createUser
 
 async function createUser(event) {
     event.preventDefault()
+    $('#insertuser').modal('hide')
+
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
     <div class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
     </div>
     `
+    let modal = document.querySelector('[data-modal]')
+    modal.innerHTML = ``
 
     try {
+
         const body = document.querySelector('[data-table-body]')
         const btn = event.currentTarget
         const name = btn['name'].value
@@ -322,9 +343,11 @@ async function listUsers() {
         let modal = document.querySelector('[data-modal]')
 
 
-        title.innerHTML = "Lista de Usuários"
+        title.innerHTML = "Gerenciamento"
         powerbi.innerHTML = " "
         modal.innerHTML = ""
+
+        View.headerNewUser(title)
 
         const data = await Service.listUsers()
         let dtview = [];
@@ -440,6 +463,8 @@ config.addEventListener('click', async (event) => {
         const data = await Service.listUsers()
         let dtview = [];
 
+        View.headerNewUser(title)
+
         data.forEach(user => {
             const field = View.showTable(user)
             dtview.push(field)
@@ -534,9 +559,11 @@ async function listUsersFunction() {
         let modal = document.querySelector('[data-modal]')
 
 
-        title.innerHTML = "Lista de Usuários"
+        title.innerHTML = "Gerenciamento"
         powerbi.innerHTML = " "
         modal.innerHTML = ""
+
+        View.headerNewUser(title)
 
         const data = await Service.listUsers()
         let dtview = [];
@@ -620,5 +647,129 @@ async function listUsersFunction() {
 
     } catch (error) {
         alert(error)
+    }
+}
+
+
+window.modalnewuser = modalnewuser
+
+function modalnewuser(event) {
+    event.preventDefault()
+
+    let modal = document.querySelector('[data-modal]')
+    modal.innerHTML = ``
+
+    modal.appendChild(View.showModalInsert())
+
+    $('#insertuser').modal('show')
+}
+
+window.menu = menu
+async function menu(event) {
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
+    try {
+        let title = document.querySelector('[data-title]')
+        let powerbi = document.querySelector('[data-powerbi]')
+        let modal = document.querySelector('[data-modal]')
+
+
+        title.innerHTML = "Gerenciamento"
+        powerbi.innerHTML = " "
+        modal.innerHTML = ""
+
+        const data = await Service.listUsers()
+        let dtview = [];
+
+        View.headerNewUser(title)
+
+        data.forEach(user => {
+            const field = View.showTable(user)
+            dtview.push(field)
+        });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+
+        let user = JSON.parse(sessionStorage.getItem('user'))
+
+        let perfil = user.perfil
+
+        if (perfil !== 1) {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false
+                }
+                )
+            })
+        } else {
+            $(document).ready(function () {
+                $("#dataTable").DataTable({
+                    destroy: true,
+                    data: dtview,
+                    columns: [
+                        { title: "Opções" },
+                        { title: "Nome" },
+                        { title: "Perfil" },
+                        { title: "Data de Registro" }
+                    ],
+                    paging: true,
+                    ordering: true,
+                    info: true,
+                    scrollY: false,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    autoHeight: true,
+                    pagingType: "numbers",
+                    searchPanes: true,
+                    fixedHeader: false,
+                    dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
+                        "<'row'<'col-sm-12'B>>",
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                }
+                )
+            })
+        }
+
+
+
+        modal.appendChild(View.showModalInsert())
+        modal.appendChild(View.showModalDelete())
+        modal.appendChild(View.showModalEdit())
+        modal.appendChild(View.showModalPbiInsert())
+
+        loading.innerHTML = " "
+    } catch (error) {
+        loading.innerHTML = " "
+        alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
     }
 }

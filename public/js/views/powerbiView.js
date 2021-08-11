@@ -10,7 +10,7 @@ const showPowerBI = (url) => {
     <iframe class="full" width="1900" height="700"  src="${url}" frameborder="0" allowFullScreen="true"></iframe>`
 }
 
-const showModalEdit = (title, type, url) => {
+const showModalEdit = () => {
     const div = document.createElement('div')
 
     const content = `
@@ -33,9 +33,11 @@ const showModalEdit = (title, type, url) => {
                     <select class="selectpicker form-control" name="type" id="typeedit" required>
                     <option value="" disabled selected>Tipo</option>
                     <option value="1" >Impressora</option>
-                    <option value="2">Operacional</option>
-                    <option value="3">Financeiro</option>
-                    <option value="4">Segurança</option>
+                    <option value="2">Cartucheira</option>
+                    <option value="3">Corte e Vinco</option>
+                    <option value="4">Operacional</option>
+                    <option value="5">Financeiro</option>
+                    <option value="6">c</option>
                 </select>
                 </div> 
                 <div class="form-group col-md-12">          
@@ -94,10 +96,10 @@ const showModalDelete = () => {
 }
 
 
-const listPowerBi = (powerbi) => {
+const listPowerBi = (powerbi, id_login) => {
 
     const content =[
-       `<a onclick="viewBi(event)" href="" data-id_login="${id_login}" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>`,
+       `<a data-toggle="popover" title="Visualizar o Relatório" onclick="viewBi(event)" href="" data-id_login="${id_login}" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>`,
        `${powerbi.title}`,
        `${powerbi.typedesc}`,
        `${powerbi.dateReg}`,
@@ -110,9 +112,9 @@ const listPowerBiAdmin = (powerbi, id_login) => {
 
     const content =  [
         `
-        <a onclick="viewBi(event)" href="" data-id_login="${id_login}" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>
-        <a data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_login="${id_login}" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32;"></i></a>
-        <a data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_login="${id_login}" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
+        <a data-toggle="popover" title="Visualizar o Relatório" onclick="viewBi(event)" href="" data-id_login="${id_login}" data-title="${powerbi.title}" data-url="${powerbi.url}"><i class="fas fa-eye" style="color:#666600;"></i></a>
+        <a data-toggle="popover" title="Editar o Relatório" data-toggle="modal" data-target="#editpowerbi" onclick="modalEditBi(event)" href="" data-id_login="${id_login}" data-id_powerbi="${powerbi.id_powerbi}" data-title="${powerbi.title}" data-url="${powerbi.url}" data-type="${powerbi.type}"><i class="fas fa-edit" style="color:#32CD32;"></i></a>
+        <a data-toggle="popover" title="Deletar o Relatório" data-toggle="modal" data-target="#deletepowerbi" onclick="modalDeleteBi(event)" href="" data-id_login="${id_login}" data-id_powerbi="${powerbi.id_powerbi}"><i class="fas fa-trash" style="color:#CC0000;"></i></a>
         `,
         `${powerbi.title}`,
         `${powerbi.typedesc}`,
@@ -196,6 +198,21 @@ const directory = (title, div) => {
 
 }
 
+const headerMenu= () => {
+    const divbtn = document.createElement('div')
+
+    const content = `    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="col-md-12 text-left">
+        <button id="newuser" type="button" onclick="menu(event)" class="btn btn-success">
+        Voltar ao Gerenciamento
+        </button>
+    </div>
+</div>`
+
+    divbtn.innerHTML = content
+    title.appendChild(divbtn)
+
+}
 
 export const View = {
     iconBi,
@@ -206,5 +223,6 @@ export const View = {
     showModalEdit,
     showModalDelete,
     header,
-    directory
+    directory,
+    headerMenu
 }

@@ -45,19 +45,26 @@ class PowerBi {
             const data = await Repositorie.listLogin(id_login)
 
             data.forEach(powerbi => {
-                
+
                 switch (powerbi.type) {
                     case 1: powerbi.typedesc = 'Impressora'
                         break
 
-                    case 2: powerbi.typedesc = 'Manutenção'
+                    case 2: powerbi.typedesc = 'Cartucheira'
                         break
 
-                    case 3: powerbi.typedesc = 'Financeiro'
+                    case 3: powerbi.typedesc = 'Corte e Vinco'
                         break
 
                     case 4: powerbi.typedesc = 'Operacional'
                         break
+
+                    case 5: powerbi.typedesc = 'Financeiro'
+                        break
+
+                    case 6: powerbi.typedesc = 'Vendas'
+                        break
+
                 }
             })
 

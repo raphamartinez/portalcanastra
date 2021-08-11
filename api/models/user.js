@@ -14,7 +14,7 @@ class User {
         try {
             const password = await User.generatePasswordHash(data.user.login.password)
             const verifyMail = await RepositorieLogin.checkMail(data.user.login.mail)
-
+console.log(verifyMail);
             if (verifyMail === true) {
                 const login = {
                     mail: data.user.login.mail,
@@ -88,7 +88,7 @@ class User {
 
             data.forEach(obj => {
                 switch (obj.perfil) {
-                    case 1: obj.perfilDesc = "Master Admin"
+                    case 1: obj.perfilDesc = "Master"
                         break
 
                     case 2: obj.perfilDesc = "Admin"
