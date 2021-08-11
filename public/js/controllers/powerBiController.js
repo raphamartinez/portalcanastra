@@ -868,7 +868,7 @@ btnChao.addEventListener('click', async (event) => {
 
         title.innerHTML = "Visão de Chão de Fábrica"
 
-        const data = await Service.listComplete()
+        const data = await Service.listComplete() //
 
         data.forEach(obj => {
             filecontent.appendChild(View.iconBi(obj))
