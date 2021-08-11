@@ -37,7 +37,7 @@ const showModalEdit = () => {
                     <option value="3">Corte e Vinco</option>
                     <option value="4">Operacional</option>
                     <option value="5">Financeiro</option>
-                    <option value="6">c</option>
+                    <option value="6">Vendas</option>
                 </select>
                 </div> 
                 <div class="form-group col-md-12">          
