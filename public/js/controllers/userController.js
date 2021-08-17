@@ -1,144 +1,8 @@
 import { View } from "../views/userView.js"
-import { Service } from "../services/userService.js"
+import { Connection } from '../services/connection.js'
 
-// const btn = document.querySelector('[data-btn-users]')
-// const create = document.querySelector('[data-btn-create]')
 const cardHistory = document.querySelector('[data-card]')
 
-// create.addEventListener('click', async (event) => {
-//     event.preventDefault()
-//     cardHistory.style.display = 'none';
-//     let loading = document.querySelector('[data-loading]')
-//     loading.innerHTML = `
-//     <div class="spinner-border text-primary" role="status">
-//       <span class="sr-only">Loading...</span>
-//     </div>
-//     `
-//     try {
-//         let title = document.querySelector('[data-title]')
-//         let powerbi = document.querySelector('[data-powerbi]')
-//         let modal = document.querySelector('[data-modal]')
-
-
-//         title.innerHTML = "Criar novo usuário"
-//         powerbi.innerHTML = " "
-//         modal.innerHTML = " "
-
-//         title.appendChild(View.createUser())
-
-//         loading.innerHTML = " "
-//     } catch (error) {
-//         loading.innerHTML = " "
-//         alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
-//     }
-// })
-
-
-// btn.addEventListener('click', async (event) => {
-//     event.preventDefault()
-//     cardHistory.style.display = 'none';
-//     let loading = document.querySelector('[data-loading]')
-//     loading.innerHTML = `
-//     <div class="spinner-border text-primary" role="status">
-//       <span class="sr-only">Loading...</span>
-//     </div>
-//     `
-//     try {
-//         let title = document.querySelector('[data-title]')
-//         let powerbi = document.querySelector('[data-powerbi]')
-//         let modal = document.querySelector('[data-modal]')
-
-
-//         title.innerHTML = "Gerenciamento"
-//         powerbi.innerHTML = " "
-//         modal.innerHTML = ""
-
-//         const data = await Service.listUsers()
-//         let dtview = [];
-
-//         data.forEach(user => {
-//             const field = View.showTable(user)
-//             dtview.push(field)
-//         });
-
-//         if ($.fn.DataTable.isDataTable('#dataTable')) {
-//             $('#dataTable').dataTable().fnClearTable();
-//             $('#dataTable').dataTable().fnDestroy();
-//             $('#dataTable').empty();
-//         }
-
-//         let user = JSON.parse(sessionStorage.getItem('user'))
-
-//         let perfil = user.perfil
-
-//         if (perfil !== 1) {
-//             $(document).ready(function () {
-//                 $("#dataTable").DataTable({
-//                     data: dtview,
-//                     columns: [
-//                         { title: "Opções" },
-//                         { title: "Nome" },
-//                         { title: "Perfil" },
-//                         { title: "Data de Registro" }
-//                     ],
-//                     paging: true,
-//                     ordering: true,
-//                     info: true,
-//                     scrollY: false,
-//                     scrollCollapse: true,
-//                     scrollX: true,
-//                     autoHeight: true,
-//                     pagingType: "numbers",
-//                     searchPanes: true,
-//                     fixedHeader: false
-//                 }
-//                 )
-//             })
-//         } else {
-//             $(document).ready(function () {
-//                 $("#dataTable").DataTable({
-//                     destroy: true,
-//                     data: dtview,
-//                     columns: [
-//                         { title: "Opções" },
-//                         { title: "Nome" },
-//                         { title: "Perfil" },
-//                         { title: "Data de Registro" }
-//                     ],
-//                     paging: true,
-//                     ordering: true,
-//                     info: true,
-//                     scrollY: false,
-//                     scrollCollapse: true,
-//                     scrollX: true,
-//                     autoHeight: true,
-//                     pagingType: "numbers",
-//                     searchPanes: true,
-//                     fixedHeader: false,
-//                     dom: "<'row'<'col-md-6'l><'col-md-6'f>>" +
-//                         "<'row'<'col-sm-12'tr>>" +
-//                         "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>" +
-//                         "<'row'<'col-sm-12'B>>",
-//                     buttons: [
-//                         'copy', 'csv', 'excel', 'pdf', 'print'
-//                     ]
-//                 }
-//                 )
-//             })
-//         }
-
-
-//         modal.appendChild(View.showModalInsert())
-//         modal.appendChild(View.showModalDelete())
-//         modal.appendChild(View.showModalEdit())
-//         modal.appendChild(View.showModalPbiInsert())
-
-//         loading.innerHTML = " "
-//     } catch (error) {
-//         loading.innerHTML = " "
-//         alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
-//     }
-// })
 
 
 window.addModalPowerBi = addModalPowerBi
@@ -194,7 +58,7 @@ async function editUser(event) {
             mail: mail
         }
 
-        await Service.updateUser(user, id_user)
+        await Connection.body(`user/${id_user}`, {user: user}, 'PUT')
 
         loading.innerHTML = " "
         listUsers()
@@ -251,7 +115,7 @@ async function deleteUser(event) {
         const form = event.currentTarget
         const id_user = form.getAttribute("data-id_user")
 
-        await Service.deleteUser(id_user)
+        await Connection.noBody(`user/${id_user}`, 'DELETE')
 
         loading.innerHTML = " "
         listUsersFunction()
@@ -319,7 +183,8 @@ async function createUser(event) {
             dateReg: Date.now()
         }
 
-        await Service.insertUser(user)
+        await Connection.body('user', {user: user}, 'POST')
+
         loading.innerHTML = " "
 
         await listUsers()
@@ -349,7 +214,8 @@ async function listUsers() {
 
         View.headerNewUser(title)
 
-        const data = await Service.listUsers()
+        const data = await Connection.noBody('users','GET')
+
         let dtview = [];
 
         data.forEach(user => {
@@ -460,7 +326,8 @@ config.addEventListener('click', async (event) => {
         powerbi.innerHTML = " "
         modal.innerHTML = ""
 
-        const data = await Service.listUsers()
+        const data = await Connection.noBody('users','GET')
+
         let dtview = [];
 
         View.headerNewUser(title)
@@ -565,7 +432,8 @@ async function listUsersFunction() {
 
         View.headerNewUser(title)
 
-        const data = await Service.listUsers()
+        const data = await Connection.noBody('users','GET')
+
         let dtview = [];
 
         data.forEach(user => {
@@ -684,7 +552,8 @@ async function menu(event) {
         powerbi.innerHTML = " "
         modal.innerHTML = ""
 
-        const data = await Service.listUsers()
+        const data = await Connection.noBody('users','GET')
+        
         let dtview = [];
 
         View.headerNewUser(title)

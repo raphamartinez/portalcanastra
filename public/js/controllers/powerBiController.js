@@ -1,6 +1,5 @@
 import { View } from "../views/powerbiView.js"
-import { Service } from "../services/powerbiService.js"
-import { ServiceHistory } from "../services/historyService.js"
+import { Connection } from '../services/connection.js'
 
 const btnChao = document.getElementById('btnChao')
 const btnImpressoras = document.getElementById('btnImpressoras')
@@ -50,9 +49,9 @@ async function autocompletesearch(event) {
             <iframe  id="viewbi" width="1140" height="600" src="${url}" frameborder="0" allowFullScreen="true"></iframe>
             <div class="col-md-12 h3 font-weight-bold text-primary text-center p-3"> Outros Relatórios</div>`
 
-            ServiceHistory.insertHistory(`Acesso ao relatório - ${description}`)
+            Connection.body('history', { description: `Acesso ao relatório - ${description}` }, 'POST')
 
-            const data = await Service.listBiUser(type)
+            const data = await Connection.noBody(`powerbis/${type}`, 'GET')
             let dtview = [];
 
             data.forEach(powerbi => {
@@ -155,7 +154,7 @@ btnRepresentantes.addEventListener('click', async (event) => {
         title.innerHTML = "Representantes"
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listBiUser(type)
+        const data = await Connection.noBody(`powerbis/${type}`, 'GET')
 
         let dtview = [];
 
@@ -257,7 +256,7 @@ btnOperacional.addEventListener('click', async (event) => {
         title.innerHTML = "Operacional"
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listBiUser(type)
+        const data = await Connection.noBody(`powerbis/${type}`, 'GET')
 
         let dtview = [];
 
@@ -358,7 +357,7 @@ btnVendas.addEventListener('click', async (event) => {
         title.innerHTML = "Vendas"
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listBiUser(type)
+        const data = await Connection.noBody(`powerbis/${type}`, 'GET')
 
         let dtview = [];
 
@@ -460,7 +459,7 @@ btnFinanceiro.addEventListener('click', async (event) => {
         title.innerHTML = "Financeiro"
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listBiUser(type)
+        const data = await Connection.noBody(`powerbis/${type}`, 'GET')
 
         let dtview = [];
 
@@ -561,7 +560,7 @@ btnCorteVinco.addEventListener('click', async (event) => {
         title.innerHTML = "Lista de Corte e Vinco"
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listBiUser(type)
+        const data = await Connection.noBody(`powerbis/${type}`, 'GET')
 
         let dtview = [];
 
@@ -661,7 +660,7 @@ btnCartuchos.addEventListener('click', async (event) => {
         title.innerHTML = "Lista de Cartucheiras"
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listBiUser(type)
+        const data = await Connection.noBody(`powerbis/${type}`, 'GET')
 
         let dtview = [];
 
@@ -761,7 +760,8 @@ btnImpressoras.addEventListener('click', async (event) => {
         title.innerHTML = "Lista de Impressoras"
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listBiUser(type)
+
+        const data = await Connection.noBody(`powerbis/${type}`, 'GET')
 
         let dtview = [];
 
@@ -868,7 +868,7 @@ btnChao.addEventListener('click', async (event) => {
 
         title.innerHTML = "Visão de Chão de Fábrica"
 
-        const data = await Service.listComplete() //
+        const data = await Connection.noBody(`powerbis`, 'GET')
 
         data.forEach(obj => {
             filecontent.appendChild(View.iconBi(obj))
@@ -909,8 +909,7 @@ async function listBiUser(event) {
         title.innerHTML = `Lista de Relatórios - ${name}`
         powerbi.innerHTML = " "
         modal.innerHTML = " "
-        const data = await Service.listUser(id_login)
-
+        const data = await Connection.noBody(`powerbisuser/${id_login}`, 'GET')
 
         let dtview = [];
 
@@ -1013,7 +1012,8 @@ function viewBi(event) {
     powerbi.innerHTML = `   
     <iframe width="1140" height="600" src="${url}" frameborder="0" allowFullScreen="true"></iframe>`
 
-    ServiceHistory.insertHistory(`Acesso realizado á impressora - ${description}`)
+    Connection.body(`history`, { description: `Acesso realizado á impressora - ${description}` }, 'POST')
+
 }
 
 async function addPowerBi(event) {
@@ -1041,7 +1041,7 @@ async function addPowerBi(event) {
             id_login: id_login
         }
 
-        await Service.insertBi(powerbi)
+        await Connection.body(`powerbi`, { powerbi: powerbi }, 'POST')
 
         loading.innerHTML = " "
         alert('PowerBI adicionado com sucesso!')
@@ -1102,7 +1102,8 @@ async function editPowerBi(event) {
             type: type
         }
 
-        await Service.updateBi(powerbi, id_powerbi)
+        await Connection.body(`powerbi/${id_powerbi}`, { powerbi: powerbi }, 'PUT')
+
         loading.innerHTML = " "
         listBiFunction(id_login)
         alert('PowerBi atualizado com sucesso!')
@@ -1144,7 +1145,7 @@ async function deletePowerBi(event) {
         const id_powerbi = btn.getAttribute("data-id_powerbi")
         const id_login = btn.getAttribute("data-id_login")
 
-        await Service.deleteBi(id_powerbi)
+        await Connection.noBody(`powerbi/${id_powerbi}`, 'DELETE')
 
         loading.innerHTML = " "
         listBiFunction(id_login)
@@ -1157,7 +1158,7 @@ async function deletePowerBi(event) {
 
 async function listBiFunction(id_login) {
     try {
-        const data = await Service.listUser(id_login)
+        const data = await Connection.noBody(`powerbisuser/${id_login}`, 'GET')
         let dtview = [];
 
         data.forEach(powerbi => {

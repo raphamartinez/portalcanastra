@@ -142,7 +142,7 @@ const header = () => {
 const iconBi = (obj) => {
     const div = document.createElement('div')
 
-    const content = ` <div class="form-row p-4" id="${obj.id_powerbi}div">
+    const content = ` <div class="form-row p-2" id="${obj.id_powerbi}div">
                           <div class="form-group col-md-12">  
                             <a class="abrir" data-id_powerbi="${obj.id_powerbi}" data-datereg="${obj.dateReg}" data-type="${obj.type}" data-url="${obj.url}" data-title="${obj.title}" ><embed id="embed${obj.id_powerbi}" src="${obj.url}" class="thumbnail img-responsive card" frameborder="0" allowFullScreen="true"/></a>
                             <a class="p-1" onclick="viewBi(event)" data-title="${obj.title}" data-url="${obj.url}"><h5>${obj.title}</h5>Visualizar</a>
@@ -187,7 +187,7 @@ const directory = (title, div) => {
     div.innerHTML = ` 
     <div class="col-md-12">
     <div class="card shadow mb-3 responsive" >
-        <div class="card-header"><strong>Repositorio</strong></div>
+        <div class="card-header"></div>
                         <div class="card-body">
                                 <div id="filecontent" class="form-row col-md-12">
                             </div>

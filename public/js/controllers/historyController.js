@@ -1,5 +1,4 @@
-import { View } from "../views/historyView.js"
-import { ServiceHistory } from "../services/historyService.js"
+import { Connection } from '../services/connection.js'
 
 const btn = document.querySelector('[data-history]')
 const cardHistory = document.querySelector('[data-card]')
@@ -21,7 +20,7 @@ btn.addEventListener('click', async (event) => {
         title.innerHTML = "Histórico"
         powerbi.innerHTML = " "
         loading.innerHTML = " "
-        const data = await ServiceHistory.listHistory()
+        const data = await Connection.noBody('historys','GET')
         var dtview = data.map(doc => Object.values(doc));
 
         if ($.fn.DataTable.isDataTable('#dataTable')) {
@@ -94,27 +93,3 @@ btn.addEventListener('click', async (event) => {
 
     }
 })
-
-window.updateWebscraping = updateWebscraping
-
-async function updateWebscraping(el) {
-    el.removeAttribute('ondblclick');
-
-    const icon = document.getElementById('datahistory')
-    const lastupdate = document.getElementById('lastupdate')
-
-    try {
-        icon.classList.add("fa-spin")
-
-        const dateReg = await ServiceHistory.updateWebscraping()
-
-        icon.classList.remove("fa-spin")
-        lastupdate.innerHTML = `Última Atualização - ${dateReg}`
-        console.log('Atualizado com sucesso!')
-        el.setAttribute('ondblclick', 'updateWebscraping(this)')
-    } catch (error) {
-        console.log(error);
-        icon.classList.remove("fa-spin");
-        el.setAttribute('ondblclick', 'updateWebscraping(this)')
-    }
-}

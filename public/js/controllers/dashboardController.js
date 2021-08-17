@@ -1,4 +1,4 @@
-import { Service } from "../services/powerbiService.js"
+import { Connection } from '../services/connection.js'
 
 window.onload = async function () {
     let loading = document.querySelector('[data-loading]')
@@ -117,6 +117,6 @@ function autocomplete(inp, arr) {
     });
 }
 
-const powerbis = await Service.listComplete()
+const powerbis = await Connection.noBody('powerbis','GET')
 
 autocomplete(document.getElementById("searchcomplete"), powerbis);

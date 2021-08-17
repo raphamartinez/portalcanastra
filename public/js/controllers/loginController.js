@@ -1,4 +1,4 @@
-import { LoginService } from '../services/loginService.js'
+import { Connection } from '../services/connection.js'
 
 function onCod (event) {
     event.preventDefault()
@@ -32,7 +32,9 @@ async function onlogin(event) {
 
     try{
 
-        const data = await LoginService.login(mail, password)
+        const body = {mail, password}
+
+        const data = await Connection.noBearer('login',body,'POST')
 
         const accessToken = data.accessToken
         const refreshToken = data.refreshToken
@@ -58,7 +60,7 @@ async function onSubmitCod () {
 
     try{
 
-        const data = await LoginService.login(mail, password)
+        const data = Connection.body('accesscod', {accesscod: cod}, 'POST')
 
         const accessToken = data.accessToken
         const refreshToken = data.refreshToken
@@ -81,7 +83,9 @@ window.onLogout = onLogout
 async function onLogout () {
 
     try{
-        const data = await LoginService.logout()
+        const refreshToken = JSON.parse(localStorage.getItem('refreshToken'))
+
+        const data = await Connection.body('logout',{refreshToken: refreshToken},'POST')
 
         sessionStorage.clear()
         localStorage.clear()
