@@ -147,7 +147,7 @@ btnRepresentantes.addEventListener('click', async (event) => {
     try {
         const btn = event.currentTarget
         let title = document.querySelector('[data-title]')
-        let type = 2
+        let type = 5
         let powerbi = document.querySelector('[data-powerbi]')
         let modal = document.querySelector('[data-modal]')
 
@@ -907,6 +907,7 @@ async function listBiUser(event) {
         let modal = document.querySelector('[data-modal]')
 
         title.innerHTML = `Lista de Relatórios - ${name}`
+        title.appendChild(View.backAdmin())
         powerbi.innerHTML = " "
         modal.innerHTML = " "
         const data = await Connection.noBody(`powerbisuser/${id_login}`, 'GET')
@@ -993,6 +994,55 @@ async function listBiUser(event) {
 
 }
 
+window.listChao = listChao
+async function listChao(event){
+    event.preventDefault()
+    cardHistory.style.display = 'none';
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+<div class="d-flex justify-content-center align-items-center spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+`
+
+    try {
+        const btn = event.currentTarget
+        let title = document.querySelector('[data-title]')
+        let type = 1
+        let powerbi = document.querySelector('[data-powerbi]')
+        let modal = document.querySelector('[data-modal]')
+
+        powerbi.innerHTML = " "
+        modal.innerHTML = " "
+
+        View.directory(title, powerbi)
+
+        const filecontent = document.getElementById('filecontent')
+        filecontent.innerHTML = ``
+
+        title.innerHTML = "Visão de Chão de Fábrica"
+
+        const data = await Connection.noBody(`powerbis`, 'GET')
+
+        data.forEach(obj => {
+            filecontent.appendChild(View.iconBi(obj))
+        });
+
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').dataTable().fnClearTable();
+            $('#dataTable').dataTable().fnDestroy();
+            $('#dataTable').empty();
+        }
+        setInterval(function () {
+            $('.logoBar').hide()
+        }, 30000);
+
+        loading.innerHTML = " "
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 function viewBi(event) {
     event.preventDefault()
     let loading = document.querySelector('[data-loading]')
@@ -1006,8 +1056,20 @@ function viewBi(event) {
     let title = document.querySelector('[data-title]')
     let powerbi = document.querySelector('[data-powerbi]')
     let description = btn.getAttribute("data-title")
+    const div = document.createElement('div')
 
-    title.innerHTML = " "
+    title.innerHTML = ``
+    const content = `<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="col-md-12 text-left">
+    <button onclick="listChao(event)" type="button" class="btn btn-secondary">
+    <i class="fas fa-chevron-left"> Voltar</i>
+    </button>
+    </div>
+    </div>`
+
+    div.innerHTML = content
+    title.appendChild(div)
+    
     loading.innerHTML = " "
     powerbi.innerHTML = `   
     <iframe width="1140" height="600" src="${url}" frameborder="0" allowFullScreen="true"></iframe>`

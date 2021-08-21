@@ -108,6 +108,22 @@ const listPowerBi = (powerbi, id_login) => {
     return content
 }
 
+const backAdmin = () => {
+    const div = document.createElement('div')
+
+    const content =  `<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="col-md-12 text-left">
+    <button onclick="listUsers(event)" type="button" class="btn btn-secondary">
+    <i class="fas fa-chevron-left"></i> Voltar
+    </button>
+    </div>
+    </div>`
+
+    div.innerHTML = content
+
+    return div
+}
+
 const listPowerBiAdmin = (powerbi, id_login) => {
 
     const content =  [
@@ -224,5 +240,6 @@ export const View = {
     showModalDelete,
     header,
     directory,
-    headerMenu
+    headerMenu,
+    backAdmin
 }

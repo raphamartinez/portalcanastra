@@ -186,6 +186,7 @@ async function createUser(event) {
         await Connection.body('user', {user: user}, 'POST')
 
         loading.innerHTML = " "
+        alert('Usuário adicionado com sucesso!')
 
         await listUsers()
     } catch (error) {
@@ -194,7 +195,7 @@ async function createUser(event) {
     }
 }
 
-
+window.listUsers = listUsers
 async function listUsers() {
     let loading = document.querySelector('[data-loading]')
     loading.innerHTML = `
@@ -296,7 +297,6 @@ async function listUsers() {
         modal.appendChild(View.showModalPbiInsert())
 
         loading.innerHTML = " "
-        alert('Usuário adicionado com sucesso!')
     } catch (error) {
         loading.innerHTML = " "
         alert(error)

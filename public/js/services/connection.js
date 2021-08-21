@@ -35,7 +35,6 @@ const noBody = async (url, method) => {
                         if (newresult.ok) {
                             return newresult.json()
                         } else {
-                            alert('Erro no servidor.')
                             return result.json()
                         }
                     } catch (error) {
@@ -47,12 +46,10 @@ const noBody = async (url, method) => {
             }
 
             if (result.status === 404) {
-                alert('Não foi encontrado.')
                 return result.json()
             }
 
             if (result.status === 500) {
-                alert('Erro no servidor.')
                 return result.json()
             }
         }
@@ -91,13 +88,13 @@ const body = async (url, data, method) => {
                             headers: {
                                 'Content-Type': 'application/json',
                                 'Authorization': `Bearer ${newAccessToken}`
-                            }
+                            },
+                            body: JSON.stringify(data)
                         })
 
                         if (newresult.ok) {
                             return newresult.json()
                         } else {
-                            alert('Erro no servidor.')
                             return result.json()
                         }
                     } catch (error) {
@@ -109,12 +106,10 @@ const body = async (url, data, method) => {
             }
 
             if (result.status === 404) {
-                alert('Não foi encontrado.')
                 return result.json()
             }
 
             if (result.status === 500) {
-                alert('Erro no servidor.')
                 return result.json()
             }
         }
@@ -134,45 +129,6 @@ const noBearer = async (url, data, method) => {
 
     if (result.ok) {
         return result.json()
-    } else {
-        if (result.status === 401) {
-            const valid = await refresh()
-
-            if (valid === true) {
-                try {
-                    const newAccessToken = JSON.parse(localStorage.getItem('accessToken'))
-
-                    const newresult = await fetch(`${protocol}//${host}/${url}`, {
-                        method: method,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${newAccessToken}`
-                        }
-                    })
-
-                    if (newresult.ok) {
-                        return newresult.json()
-                    } else {
-                        alert('Erro no servidor.')
-                        return result.json()
-                    }
-                } catch (error) {
-                    throw new Error(error)
-                }
-            } else {
-                return false
-            }
-        }
-
-        if (result.status === 404) {
-            alert('Não foi encontrado.')
-            return result.json()
-        }
-
-        if (result.status === 500) {
-            alert('Erro no servidor.')
-            return result.json()
-        }
     }
 
     throw new Error('Usuário e/ou senha inválido!')
