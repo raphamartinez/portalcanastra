@@ -38,9 +38,8 @@
                                                 placeholder="Código da Máquina" data-cod>
                                             </div>
                                             <div class="form-group">
-                                                <button class="g-recaptcha btn btn-primary btn-user btn-block
-                                                "data-sitekey="6LeJV9UaAAAAAF0VrDRlauTB4KcbVcLSIJYWYAeF"
-                                                    data-callback='onSubmitCod' data-action='submit' id="btnLogin">
+                                                <button class="btn btn-primary btn-user btn-block
+                                                " onclick="onSubmitCod(event)" id="btnLogin">
                                                     Acessar
                                                 </button>
                                             </div>
@@ -62,7 +61,6 @@
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="../js/libs/sb-admin-2.min.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script type="module" src="../js/controllers/loginController.js"></script>
 </body>
 
