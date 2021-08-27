@@ -5,13 +5,8 @@ class PowerBi {
     async insert(powerbi) {
         try {
 
-            const sql = 'INSERT INTO canastra.powerbi (url, title, type, dateReg) values (?, ?, ?, now() - interval 3 hour )'
-            await query(sql, [powerbi.url, powerbi.title, powerbi.type])
-
-            const sqlId = 'select LAST_INSERT_ID() as id_powerbi from canastra.powerbi LIMIT 1'
-            const obj = await query(sqlId)
-            const sqlView = 'INSERT INTO canastra.viewpowerbi (id_powerbi, id_login, dateReg) values ( ?, ?, now() - interval 3 hour )'
-            await query(sqlView, [obj[0].id_powerbi, powerbi.id_login])
+            const sql = 'INSERT INTO canastra.powerbi (url, title, type, cod, dateReg) values (?, ?, ?, ?, now() - interval 3 hour )'
+            await query(sql, [powerbi.url, powerbi.title, powerbi.type, powerbi.cod])
 
             return true
         } catch (error) {
@@ -21,7 +16,7 @@ class PowerBi {
 
     list() {
         try {
-            const sql = `SELECT id_powerbi, url, type, token, idreport, dateReg FROM canastra.powerbi `
+            const sql = `SELECT id_powerbi, title, url, type, cod, idreport, dateReg FROM canastra.powerbi `
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)
@@ -30,7 +25,7 @@ class PowerBi {
 
     listLoginType(id_login, type) {
         try {
-            const sql = `SELECT BI.id_powerbi, BI.title, BI.url, BI.type as typedesc, BI.type, BI.token, BI.idreport, DATE_FORMAT(BI.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM canastra.powerbi BI, canastra.viewpowerbi VB WHERE VB.id_powerbi = BI.id_powerbi and VB.id_login = ${id_login} and BI.type = ${type}`
+            const sql = `SELECT BI.id_powerbi, BI.title, BI.url, BI.type as typedesc, BI.type, BI.cod, BI.idreport, DATE_FORMAT(BI.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM canastra.powerbi BI, canastra.viewpowerbi VB WHERE VB.id_powerbi = BI.id_powerbi and VB.id_login = ${id_login} and BI.type = ${type}`
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)
@@ -39,7 +34,7 @@ class PowerBi {
 
     listLogin(id_login, type) {
         try {
-            const sql = `SELECT BI.id_powerbi, BI.title, BI.url, BI.type as typedesc, BI.type, BI.token, BI.idreport, DATE_FORMAT(BI.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM canastra.powerbi BI, canastra.viewpowerbi VB WHERE VB.id_powerbi = BI.id_powerbi and VB.id_login = ${id_login}`
+            const sql = `SELECT BI.id_powerbi, BI.title, BI.url, BI.type as typedesc, BI.type, BI.cod, BI.idreport, DATE_FORMAT(BI.dateReg, '%H:%i %d/%m/%Y') as dateReg FROM canastra.powerbi BI, canastra.viewpowerbi VB WHERE VB.id_powerbi = BI.id_powerbi and VB.id_login = ${id_login}`
             return query(sql)
         } catch (error) {
             throw new InternalServerError(error)
@@ -74,8 +69,8 @@ class PowerBi {
 
     async update(powerbi) {
         try {
-            const sql = 'UPDATE canastra.powerbi SET url = ?, type = ?, title = ?, token = ?, idreport = ? WHERE id_powerbi = ?'
-            const result = await query(sql, [powerbi.url, powerbi.type, powerbi.title, powerbi.token, powerbi.idreport, powerbi.id_powerbi])
+            const sql = 'UPDATE canastra.powerbi SET url = ?, type = ?, title = ?, cod = ?, idreport = ? WHERE id_powerbi = ?'
+            const result = await query(sql, [powerbi.url, powerbi.type, powerbi.title, powerbi.cod, powerbi.idreport, powerbi.id_powerbi])
             return true
         } catch (error) {
             throw new InvalidArgumentError(error)

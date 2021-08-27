@@ -4,6 +4,62 @@ import { Connection } from '../services/connection.js'
 const cardHistory = document.querySelector('[data-card]')
 
 
+window.modalChangePass = modalChangePass
+
+async function modalChangePass(event) {
+    event.preventDefault()
+    try {
+        let modal = document.querySelector('[data-modal]')
+        modal.innerHTML = " "
+
+        const btn = event.currentTarget
+        const name = btn.getAttribute("data-name")
+        const id_login = btn.getAttribute("data-id_login")
+
+        modal.appendChild(View.showModalChangePass(name, id_login))
+        $('#changepass').modal('show')
+    } catch (error) {
+    }
+}
+
+
+window.changePassword = changePassword
+
+async function changePassword(event) {
+    event.preventDefault()
+    $('#changepass').modal('hide')
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
+
+    try {
+
+        const btn = event.currentTarget
+        const id_login = btn.getAttribute("data-id_login")
+        const name = btn.getAttribute("data-name")
+        const password = btn.form.password.value
+        const passwordconf = btn.form.passwordconf.value
+
+        const user = {
+            password: password,
+            passwordconf: passwordconf,
+            id_login: id_login,
+            name: name
+        }
+
+        const data = await Connection.body('changepass', { user }, 'POST')
+        loading.innerHTML = " "
+        alert(data)
+    } catch (error) {
+        loading.innerHTML = " "
+        alert(error)
+    }
+}
+
+
 
 window.addModalPowerBi = addModalPowerBi
 
@@ -640,5 +696,74 @@ async function menu(event) {
     } catch (error) {
         loading.innerHTML = " "
         alert('Ops, algo de errado aconteceu :/ \nCaso o erro persista comunique o T.I!')
+    }
+}
+
+window.modalAddPowerbi = modalAddPowerbi
+
+async function modalAddPowerbi(event) {
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
+    event.preventDefault()
+
+    try {
+        let modal = document.querySelector('[data-modal]')
+
+        const btn = event.currentTarget
+        const id_login = btn.getAttribute("data-id_login")
+
+        modal.innerHTML = ''
+        modal.appendChild(View.modalAddPowerbitoUser(id_login))
+
+        const powerbiselect = document.getElementById('powerbiselect')
+        const powerbis = await Connection.noBody('powerbisadm', 'GET')
+
+        powerbis.forEach(powerbi => {
+            powerbiselect.appendChild(View.optionPowerbi(powerbi))
+        })
+
+        loading.innerHTML = " "
+
+        $('#modalpowerbi').modal('show')
+    } catch (error) {
+        loading.innerHTML = " "
+        alert(error)
+    }
+}
+
+window.addPowerBiView = addPowerBiView
+
+async function addPowerBiView(event) {
+    event.preventDefault()
+    $('#modalpowerbi').modal('hide')
+
+    let loading = document.querySelector('[data-loading]')
+    loading.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    `
+
+    try {
+        const btn = event.currentTarget
+        const id_login = btn.getAttribute("data-id_login")
+
+        const arrpowerbiselect = document.querySelectorAll('#powerbiselect option:checked')
+        const powerbis = Array.from(arrpowerbiselect).map(el => `${el.value}`);
+
+        await Connection.body('powerbiview', { powerbis, id_login }, 'POST')
+
+        salesmanList(event)
+
+        loading.innerHTML = " "
+        alert('Acesso ao powerbi adicionado com êxito!')
+
+    } catch (error) {
+        loading.innerHTML = " "
+        alert(error)
     }
 }

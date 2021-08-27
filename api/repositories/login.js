@@ -65,6 +65,21 @@ class Login {
         }
     }
 
+    async checkCod(cod) {
+        try {
+            const sql = `SELECT title, url FROM canastra.powerbi WHERE cod = ?`
+            const result = await query(sql, cod)
+
+            if (!result) {
+                throw new InvalidArgumentError(`Error`)
+            }
+
+            return result[0]
+        } catch (error) {
+            throw new InvalidArgumentError(error)
+        }
+    }
+
     list() {
         try {
             const sql = 'SELECT * FROM canastra.login'

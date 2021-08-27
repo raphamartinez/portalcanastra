@@ -1,5 +1,5 @@
 const Repositorie = require('../repositories/login')
-const { InvalidArgumentError, NotFound } = require('./error')
+const { InvalidArgumentError, InternalServerError, NotFound } = require('./error')
 const bcrypt = require('bcrypt')
 const Token = require('./token')
 const Mail = require('./mail')
@@ -10,6 +10,14 @@ class Login {
         try {
             const login = await Repositorie.view(id_login)
             return login
+        } catch (error) {
+            throw new NotFound('Login not found')
+        }
+    }
+
+    async checkCod(cod) {
+        try {
+            return Repositorie.checkCod(cod)
         } catch (error) {
             throw new NotFound('Login not found')
         }
@@ -99,13 +107,16 @@ class Login {
         }
     }
 
-    async updatePassword(password, id_login) {
+    async updatePassword(data, id_login) {
         try {
-            const passwordHash = generatePasswordHash(password)
+            const passwordHash = await Login.generatePasswordHash(data.password)
 
-            password = passwordHash
+            const passwordValid = await bcrypt.compare(data.passwordconf, passwordHash)
+            if (!passwordValid) {
+                throw new NotAuthorized()
+            }
 
-            const result = await Repositorie.updatePassword(password, id_login)
+            const result = await Repositorie.updatePassword(passwordHash, id_login)
 
             return result
         } catch (error) {

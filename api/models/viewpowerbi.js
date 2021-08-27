@@ -3,16 +3,18 @@ const { InvalidArgumentError, InternalServerError, NotFound } = require('./error
 
 class ViewPowerBi {
 
-    async insertPowerBi(data) {
+    async insertPowerBi(powerbis, id_login) {
         try {
+            powerbis.forEach(obj => {
+                const viewpowerbi = {
+                    id_powerbi: obj,
+                    id_login: id_login
+                }
 
-            const id_viewpowerbi = {
-                id_powerbi:  data.id_powerbi,
-                id_login: data.id_login
-            }
-            
-            const result = await Repositorie.insert(id_viewpowerbi)
-            return result
+                Repositorie.insert(viewpowerbi)
+            })
+
+            return true
         } catch (error) {
             throw new InvalidArgumentError('Error')
         }

@@ -61,15 +61,8 @@ async function onSubmitCod () {
     try{
 
         const data = Connection.body('accesscod', {accesscod: cod}, 'POST')
-
-        const accessToken = data.accessToken
-        const refreshToken = data.refreshToken
     
-        const user = data.user
-    
-        sessionStorage.setItem('user', JSON.stringify(user))
-        localStorage.setItem('accessToken', JSON.stringify(accessToken))
-        localStorage.setItem('refreshToken', JSON.stringify(refreshToken))
+        sessionStorage.setItem('relatorio', JSON.stringify(powerbi))
     
         window.location.href = data.url
         

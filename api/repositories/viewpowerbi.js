@@ -23,7 +23,7 @@ class ViewPowerBi {
 
     async delete(id_viewpowerbi) {
         try {
-            const sql = `DELETE from viewpowerbi WHERE id_viewpowerbi = ${id_viewpowerbi}`
+            const sql = `DELETE from canastra.viewpowerbi WHERE id_viewpowerbi = ${id_viewpowerbi}`
             const result = await query(sql)
             return result[0]
         } catch (error) {

@@ -1095,11 +1095,14 @@ async function addPowerBi(event) {
         const title = btn.form.title.value
         const url = btn.form.url.value
         const type = btn.form.type.value
+        const cod = btn.form.cod.value
+
 
         const powerbi = {
             title: title,
             url: url,
             type: type,
+            cod: cod,
             id_login: id_login
         }
 

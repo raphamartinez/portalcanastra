@@ -1,4 +1,6 @@
 const PowerBi = require('../models/powerbi')
+const ViewPowerBi = require('../models/viewpowerbi')
+
 const Middleware = require('../infrastructure/auth/middleware')
 
 module.exports = app => {
@@ -47,6 +49,18 @@ module.exports = app => {
         }
     })
 
+    app.post('/powerbiview', Middleware.bearer, async (req, res, next) => {
+        try {
+            const powerbis = req.body.powerbis
+            const id_login = req.body.id_login
+
+            await ViewPowerBi.insertPowerBi(powerbis, id_login)
+            res.status(200).json({ok: true})
+        } catch (error) {
+            next(error)
+        }
+    })
+
     app.put('/powerbi/:id', Middleware.bearer, async (req, res, next) => {
 
         try {
@@ -69,11 +83,21 @@ module.exports = app => {
         }
     })
 
-    app.get('/powerbis', Middleware.bearer, async ( req, res, next) => {
+    app.get('/powerbis', Middleware.bearer, async (req, res, next) => {
 
         try {
             const id_login = req.login.id_login
             const powerbis = await PowerBi.listPowerBis(id_login)
+            res.json(powerbis)
+        } catch (err) {
+            next(err)
+        }
+    })
+
+    app.get('/powerbisadm', Middleware.bearer, async (req, res, next) => {
+
+        try {
+            const powerbis = await PowerBi.listPowerBiAdm()
             res.json(powerbis)
         } catch (err) {
             next(err)

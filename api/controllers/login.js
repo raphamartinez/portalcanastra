@@ -18,6 +18,18 @@ module.exports = app => {
         }
     })
 
+    app.post('/accesscod', Middleware.local, async function (req, res, next) {
+        try {
+            const cod = req.body.accesscod
+            const powerbi = Login.checkCod(cod)
+
+            History.insertHistory(`Acesso via código ${cod} ao relatório`, 1)
+            res.status(200).json({ powerbi: powerbi, url: '../admin/maquina.html' })
+        } catch (error) {
+            next(error)
+        }
+    })
+
     app.post('/logout', [Middleware.refresh, Middleware.bearer], async function (req, res, next) {
         try {
             const token = req.token
@@ -79,6 +91,19 @@ module.exports = app => {
             next(error)
         }
     });
+
+    app.post('/changepass', Middleware.bearer, async ( req, res, next) => {
+        try {
+            const data = req.body.user
+            const result = await Login.updatePassword(data,data.id_login)
+
+            History.insertHistory(`Senha do usuário ${data.name} alterada!`, req.login.id_login)
+
+            res.json(result)
+        } catch (err) {
+            next(err)
+        }
+    })
 
     // app.get('/login/mailVerify/:token', Middleware.verifyMail, async function (req, res, next) {
     //     const { token } = req.params

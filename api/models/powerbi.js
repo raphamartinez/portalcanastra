@@ -74,6 +74,15 @@ class PowerBi {
         }
     }
 
+     listPowerBiAdm() {
+        try {
+            return Repositorie.list()
+
+        } catch (error) {
+            throw new InternalServerError('Error')
+        }
+    }
+
     async listPowerBi(id_login, type) {
         try {
             const data = await Repositorie.listLoginType(id_login, type)
