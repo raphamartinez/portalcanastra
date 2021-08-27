@@ -26,96 +26,17 @@
             <header>
                 <nav class="navbar navbar-expand navbar-dark bg-gradient-primary sticky-top topbar shadow "
                     id="mainNav">
-                    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.html">
+
+                    <a class="sidebar-brand d-flex align-items-center justify-content-center">
                         <div class="mb-2 sidebar-brand-icon mx-auto">
                             <img src="../img/logo.png" width="130" alt="Ansa Logo">
                         </div>
                     </a>
-                    <hr class="sidebar-divider my-0">
-                    <a class="menuPrincipal navbar-toggler-icon" type="button" data-toggle="collapse"
-                        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"></a>
 
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" id="searchcomplete"
-                                placeholder="Pesquisar..." aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" onclick="autocompletesearch(event)">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <hr class="sidebar-divider my-0">
 
                     <ul class="navbar-nav ml-auto">
-
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Pesquisar..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                            </a>
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Central de Alertas
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-bell-slash text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <span class="font-weight">Não há novos alertas.</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                            </a>
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Central de Mensagens
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-envelope text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Não há novas mensagens</div>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
-
+ 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -130,14 +51,6 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" data-history>
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Histórico
-                                </a>
-                                <a class="dropdown-item" href="#" data-config>
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Gerenciamento
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -148,111 +61,15 @@
                     </ul>
                 </nav>
             </header>
-            <div class="col-md-12 mb-4">
-            <div class="container-fluid bg-gradient-primary fixed-menu responsive " style="background-color: #4e73df;
-            background-image: linear-gradient(
-        180deg
-        , #224abe 10%, #4e73df 100%);">
-                <div class="collapse text-center responsive" id="navbarResponsive">
-                    <ul class="text-uppercase ml-auto" id="accordionSidebar">
-                        <div class="text-center">
-                            <a class="menuPrincipal navbar-toggler-icon fixed-top-menu text-center"
-                                type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                                aria-controls="navbarResponsive" aria-expanded="false"></a>
-                        </div>
-                        <li class="list-group nav-item text-left">
-                            <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                                data-target="#collapseReportes" aria-expanded="true"
-                                aria-controls="collapseReportes">
-                                <i style="padding: 10px;" class="fas fa-print"></i>
-                                <span>Máquinas</span>
-                            </a>
-                            <div id="collapseReportes" class="collapse" aria-labelledby="headingTwo"
-                            data-parent="#accordionSidebar">
-                            <div class="bg-white collapse-inner rounded">
-                                <a class="nav-link text-secondary" href="" id="btnChao" data-toggle="collapse" data-target="#navbarResponsive,#collapseReportes"
-                                 data-btninforme>Visão de Chão de Fábrica</a>
-                                 <a class="nav-link text-secondary" href="" id="btnImpressoras" data-toggle="collapse" data-target="#navbarResponsive,#collapseReportes"
-                                 data-btninforme>Lista de Impressoras</a>
-                                 <a class="nav-link text-secondary" href="" id="btnCartuchos" data-toggle="collapse" data-target="#navbarResponsive,#collapseReportes"
-                                 data-btninforme>Lista de Cartucheiras</a>
-                                 <a class="nav-link text-secondary" href="" id="btnCorteVinco" data-toggle="collapse" data-target="#navbarResponsive,#collapseReportes"
-                                     data-btninforme>Lista de Corte e vinco</a>
-                            </div>
-                        </li>
-                        <li class="list-group nav-item text-left">
-                            <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                                data-target="#collapseFinance" aria-expanded="true"
-                                aria-controls="collapseFinance">
-                                <i style="padding: 10px;" class="fas fa-money-bill"></i>
-                                <span>Financeiro</span>
-                            </a>
-                            <div id="collapseFinance" class="collapse" aria-labelledby="headingUtilities"
-                                data-parent="#accordionSidebar">
-                                <div class="bg-white collapse-inner rounded">
-                                    <a class="nav-link text-secondary" href="" id="btnFinanceiro" data-toggle="collapse" data-target="#navbarResponsive,#collapseFinance"
-                                    id="btnPunto">Lista de Relatórios</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group nav-item text-left">
-                            <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                                data-target="#collapsePersonas" aria-expanded="true"
-                                aria-controls="collapsePersonas">
-                                <i style="padding: 10px;" class="fas fa-chart-line"></i>
-                                <span>Vendas</span>
-                            </a>
-                            <div id="collapsePersonas" class="collapse" aria-labelledby="headingUtilities"
-                                data-parent="#accordionSidebar">
-                                <div class="bg-white collapse-inner rounded">
-                                    <a class="nav-link text-secondary" href="" id="btnVendas" data-toggle="collapse" data-target="#navbarResponsive,#collapsePersonas"
-                                    id="btnPunto">Lista de Relatórios</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group nav-item text-left">
-                            <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                                data-target="#collapseOper" aria-expanded="true"
-                                aria-controls="collapseOper">
-                                <i style="padding: 10px;" class="fas fa-cogs"></i>
-                                <span>Operacional</span>
-                            </a>
-                            <div id="collapseOper" class="collapse" aria-labelledby="headingUtilities"
-                                data-parent="#accordionSidebar">
-                                <div class="bg-white collapse-inner rounded">
-                                    <a class="nav-link text-secondary" href="" id="btnOperacional" data-toggle="collapse" data-target="#navbarResponsive,#collapseOper"
-                                    id="btnPunto">Lista de Relatórios</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group nav-item text-left">
-                            <a class="nav-link collapsed text-white" href="#" data-toggle="collapse"
-                                data-target="#collapseRepre" aria-expanded="true"
-                                aria-controls="collapseRepre">
-                                <i style="padding: 10px;" class="fas fa-users"></i>
-                                <span>Representantes</span>
-                            </a>
-                            <div id="collapseRepre" class="collapse" aria-labelledby="headingUtilities"
-                                data-parent="#accordionSidebar">
-                                <div class="bg-white collapse-inner rounded">
-                                    <a class="nav-link text-secondary" href="" id="btnRepresentantes" data-toggle="collapse" data-target="#navbarResponsive,#collapseRepre"
-                                    id="btnPunto">Lista de Relatórios</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            </div>
+
 
             <div id="content">
                 <div class="container-fluid">
                     <div class="col-lg-12 text-center">
                         <h1 class="h3 mb-2 font-weight-bold text-primary" data-title></h1>
                     </div>
-                    <div class="row" data-card></div>
                     <div class="col-lg-12 text-center">
-                        <div class="row" data-powerbi></div>
+                        <div class="row-fluid text-center" data-powerbi></div>
                     </div>
                     <div class="d-flex justify-content-center align-items-center" data-loading></div>
                     <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0"></table>
@@ -286,7 +103,7 @@
                 <div class="modal-body">Selecione sair para finalizar a sessão.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="#" onclick="onLogout()">Sair</a>
+                    <a class="btn btn-primary" href="#" onclick="onLogoutCod()">Sair</a>
                 </div>
             </div>
         </div>
@@ -298,11 +115,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.6.8-fix/jquery.nicescroll.min.js"></script>
     <script src="../js/libs/sb-admin-2.min.js"></script>
-    <script type="module" src="../js/controllers/dashboardController.js"></script>
-    <script type="module" src="../js/controllers/powerBiController.js"></script>
-    <script type="module" src="../js/controllers/userController.js"></script>
-    <script type="module" src="../js/controllers/historyController.js"></script>
     <script type="module" src="../js/controllers/loginController.js"></script>
+    <script type="module" src="../js/controllers/codController.js"></script>
     <script src="../js/services/force.js"></script>
     <script src="../js/libs/jquery.dataTables.min.js"></script>
     <script src="../js/libs/dataTables.bootstrap4.min.js"></script>

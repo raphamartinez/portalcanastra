@@ -21,10 +21,15 @@ module.exports = app => {
     app.post('/accesscod', Middleware.local, async function (req, res, next) {
         try {
             const cod = req.body.accesscod
-            const powerbi = Login.checkCod(cod)
+            const powerbi = await Login.checkCod(cod)
 
             History.insertHistory(`Acesso via código ${cod} ao relatório`, 1)
-            res.status(200).json({ powerbi: powerbi, url: '../admin/maquina.html' })
+
+            if (powerbi) {
+                res.status(200).json({ powerbi: powerbi, url: '../admin/maquina.html' })
+            } else {
+                res.status(404).json({ url: '../admin/cod.html' })
+            }
         } catch (error) {
             next(error)
         }
@@ -40,7 +45,7 @@ module.exports = app => {
         }
 
     });
-    
+
 
 
     app.all('/admin/*', Middleware.bearer, async function (req, res, next) {
@@ -92,10 +97,10 @@ module.exports = app => {
         }
     });
 
-    app.post('/changepass', Middleware.bearer, async ( req, res, next) => {
+    app.post('/changepass', Middleware.bearer, async (req, res, next) => {
         try {
             const data = req.body.user
-            const result = await Login.updatePassword(data,data.id_login)
+            const result = await Login.updatePassword(data, data.id_login)
 
             History.insertHistory(`Senha do usuário ${data.name} alterada!`, req.login.id_login)
 

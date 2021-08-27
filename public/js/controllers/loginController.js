@@ -1,14 +1,6 @@
 import { Connection } from '../services/connection.js'
 
-function onCod (event) {
-    event.preventDefault()
-    try {
-        const url = '../public/cod.html'
-        window.location.href = url
-    } catch (error) {
-        alert(error)
-    }
-}
+
 window.onMail = onMail
 
 function onMail () {
@@ -20,6 +12,16 @@ function onMail () {
     }
 }
 window.onCod = onCod
+
+function onCod (event) {
+    event.preventDefault()
+    try {
+        const url = '../public/cod.html'
+        window.location.href = url
+    } catch (error) {
+        alert(error)
+    }
+}
 
 
 window.onlogin = onlogin
@@ -60,11 +62,16 @@ async function onSubmitCod () {
 
     try{
 
-        const data = Connection.body('accesscod', {accesscod: cod}, 'POST')
+        const data = await Connection.body('accesscod', {accesscod: cod}, 'POST')
     
-        sessionStorage.setItem('relatorio', JSON.stringify(powerbi))
+        if(data.powerbi){
+            sessionStorage.setItem('relatorio', JSON.stringify(data.powerbi))
     
-        window.location.href = data.url
+            window.location.href = data.url
+        }else{
+            alert('Código de acesso inválido!')
+        }
+
         
     }catch(error){
         alert(error)
@@ -84,6 +91,21 @@ async function onLogout () {
         localStorage.clear()
 
         window.location.href = data.url
+    }catch(error){
+        alert(error)
+    }
+}
+
+window.onLogoutCod = onLogoutCod
+
+async function onLogoutCod () {
+
+    try{
+
+        sessionStorage.clear()
+        localStorage.clear()
+
+        window.location.href = '../public/cod.html'
     }catch(error){
         alert(error)
     }
