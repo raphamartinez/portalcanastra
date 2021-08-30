@@ -27,39 +27,39 @@ connection.connect((error => {
                 res.render('login');
             });
 
-            // app.use((err, req, res, next) => {
+            app.use((err, req, res, next) => {
 
-            //     let status = 500
-            //     const body = {
-            //         message: err.message
-            //     }
+                let status = 500
+                const body = {
+                    message: err.message
+                }
 
-            //     if (err instanceof NotFound) {
-            //         status = 404
-            //         body.dateExp = err.dateExp
-            //     }
+                if (err instanceof NotFound) {
+                    status = 404
+                    body.dateExp = err.dateExp
+                }
 
-            //     if (err instanceof NotAuthorized) {
-            //         status = 401
-            //         body.dateExp = err.dateExp
-            //     }
+                if (err instanceof NotAuthorized) {
+                    status = 401
+                    body.dateExp = err.dateExp
+                }
 
-            //     if (err instanceof InvalidArgumentError) {
-            //         status = 400
-            //     }
+                if (err instanceof InvalidArgumentError) {
+                    status = 400
+                }
 
-            //     if (err instanceof jwt.JsonWebTokenError) {
-            //         status = 401
-            //     }
+                if (err instanceof jwt.JsonWebTokenError) {
+                    status = 401
+                }
 
-            //     if (err instanceof jwt.TokenExpiredError) {
-            //         status = 401
-            //         body.dateExp = err.dateExp
-            //     }
+                if (err instanceof jwt.TokenExpiredError) {
+                    status = 401
+                    body.dateExp = err.dateExp
+                }
 
-            //     res.status(status)
-            //     res.json(body)
-            // })
+                res.status(status)
+                res.json(body)
+            })
         })
     }
 }))
