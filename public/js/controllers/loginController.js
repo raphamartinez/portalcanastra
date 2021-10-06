@@ -1,4 +1,4 @@
-import { LoginService } from '../services/loginService.js'
+import { Connection } from '../services/connection.js'
 
 window.login = login
 
@@ -10,7 +10,7 @@ async function login(event) {
 
     try{
 
-        const data = await LoginService.login(mail, password)
+        const data = await Connection.noBearer('login', { mail, password }, 'POST')
 
         const accessToken = data.accessToken
         const refreshToken = data.refreshToken
@@ -33,7 +33,9 @@ window.onLogout = onLogout
 async function onLogout () {
 
     try{
-        const data = await LoginService.logout()
+        const refreshToken = JSON.parse(localStorage.getItem('refreshToken'))
+
+        const data = await Connection.body('logout', { refreshToken: refreshToken }, 'POST')
 
         sessionStorage.clear()
         localStorage.clear()

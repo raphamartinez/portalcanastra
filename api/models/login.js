@@ -1,8 +1,9 @@
 const Repositorie = require('../repositories/login')
-const { InvalidArgumentError, NotFound } = require('./error')
 const bcrypt = require('bcrypt')
 const Token = require('./token')
-const Mail = require('./mail')
+const { ResetPasswordMail } = require('./mail')
+const nodemailer = require('nodemailer')
+const { InvalidArgumentError, InternalServerError, NotFound } = require('./error')
 
 class Login {
 
@@ -11,7 +12,7 @@ class Login {
             const login = await Repositorie.view(id_login)
             return login
         } catch (error) {
-            throw new NotFound('Login not found')
+            throw new NotFound('Login.')
         }
     }
 
@@ -23,7 +24,7 @@ class Login {
 
             return token
         } catch (error) {
-            throw new InternalServerError('Error on generated Tokens')
+            throw new InternalServerError('Error al generar tokens.')
         }
     }
 
@@ -31,7 +32,7 @@ class Login {
         try {
             await Token.access.invalid(token)
         } catch (error) {
-            throw new InternalServerError('Error')
+            throw new InternalServerError('No se pudo invalidar la sesión.')
         }
     }
 
@@ -40,7 +41,7 @@ class Login {
             const login = await Repositorie.viewMail(mail)
             return login
         } catch (error) {
-            throw new NotFound('Mail not found')
+            return error
         }
     }
 
@@ -49,7 +50,7 @@ class Login {
             return Repositorie.list()
 
         } catch (error) {
-            throw new InternalServerError('Error on list')
+            throw new InternalServerError('No se pudieron enumerar los inicios de sesión.')
         }
     }
 
@@ -68,45 +69,70 @@ class Login {
 
             return result
         } catch (error) {
-            throw new InvalidArgumentError('Error')
+            throw new InvalidArgumentError('No se pudo registrar un nuevo inicio de sesión.')
         }
     }
 
-    async forgotPassword(mail) {
+    async forgotPassword(mailenterprise) {
         try {
-            const login = await Repositorie.viewMail(mail)
-            const token = await Token.resetPassword.create(login.id_login)
-            Mail.ResetPasswordMail(login, token)
+            const login = await Repositorie.viewMailEnterprise(mailenterprise)
+
+            if (login) {
+                const token = await Token.resetPassword.create(login.id_login)
+
+                const send = new ResetPasswordMail(login.mailenterprise, token)
+
+                const transport = nodemailer.createTransport({
+                    host: process.env.MAIL_HOST,
+                    port: process.env.MAIL_PORT,
+                    secure: false,
+                    auth: {
+                        user: process.env.MAIL_USER,
+                        pass: process.env.MAIL_PASSWORD
+                    }
+                })
+                
+                await transport.sendMail(send)
+            }
+
+            return login
         } catch (error) {
-            throw new NotFound('Mail not found')
+            throw new InvalidArgumentError('No se pudo solicitar la recuperación de la contraseña.')
         }
     }
 
     async changePassword(token, password) {
         try {
+
             if (typeof token !== 'string' || token.lenght === 0) {
                 throw new InvalidArgumentError('O token está inválido')
             }
 
-            const id = await Token.resetPassword.verify(token)
-            await Login.viewLogin(id)
-            await Login.updatePassword(password, id)
+            const id_login = await Token.resetPassword.verify(token)
+            const passwordHash = await Login.generatePasswordHash(password)
+
+            await Repositorie.updatePassword(passwordHash, id_login)
+
+            return id_login
         } catch (error) {
-            throw new InvalidArgumentError('Error')
+            throw new InvalidArgumentError('No se pudo actualizar la contraseña.')
         }
     }
 
-    async updatePassword(password, id_login) {
+    async updatePassword(data, id_login) {
         try {
-            const passwordHash = generatePasswordHash(password)
+            const passwordHash = await Login.generatePasswordHash(data.password)
 
-            password = passwordHash
+            const passwordValid = await bcrypt.compare(data.passwordconf, passwordHash)
+            if (!passwordValid) {
+                throw new NotAuthorized()
+            }
 
-            const result = await Repositorie.updatePassword(password, id_login)
+            const result = await Repositorie.updatePassword(passwordHash, id_login)
 
             return result
         } catch (error) {
-            throw new InvalidArgumentError('Error')
+            throw new InvalidArgumentError('No se pudo actualizar la contraseña.')
         }
 
     }
@@ -119,7 +145,7 @@ class Login {
 
             return result
         } catch (error) {
-            throw new NotFound('Not Found')
+            throw new InvalidArgumentError('No se pudo verificar el correo electrónico.')
         }
     }
 

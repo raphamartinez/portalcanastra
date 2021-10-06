@@ -3,27 +3,33 @@ const controll = new AccessControl()
 
 // 0 - user
 // 1 - admin 
-// 2 - vendedor
-// 3 - depositero
-// 4 - gerente
-// 5 - personal administrativo
 
-controll.grant('1')
-    .readAny('user', ['*'])
-    .createAny('user')
-    .deleteAny('user')
-    .updateAny('user', ['*'])
+controll
+    .grant('1')
+    .readAny('car')
+    .createAny('car')
+    .deleteAny('car')
+    .updateAny('car') 
+    .readAny('stock')
+    .createAny('stock')
+    .deleteAny('stock')
+    .updateAny('stock')
+    .readAny('provider')
+    .createAny('provider')
+    .deleteAny('provider')
+    .updateAny('provider')
+    .readAny('file')
+    .createAny('file')
+    .deleteAny('file')
+    .updateAny('file')
+    .readAny('item')
+    .createAny('item')
+    .deleteAny('item')
+    .updateAny('item')
+    .readAny('quotation')
+    .createAny('quotation')
+    .deleteAny('quotation')
+    .updateAny('quotation')
 
-controll.grant('2')
-    .readOwn('user', ['*'])
-
-controll.grant('3')
-    .readOwn('user', ['*'])
-
-controll.grant('4')
-    .readAny('user', ['*'])
-
-controll.grant('5')
-    .readOwn('user', ['*'])
 
 module.exports = controll

@@ -30,15 +30,7 @@ module.exports = () => {
   })
 
 
-  // app.use((req, res, next) => {
-  //   res.set({
-  //     'Content-Type': 'application/json'
-  //   })
-  //   next()
-  // });
-  
   app.use(express.json())
-  app.use(express.urlencoded({ extended: false }))
   app.use(express.urlencoded({ extended: true }))
 
   app.use(express.static(__dirname + '/public'))
@@ -53,12 +45,6 @@ module.exports = () => {
     app.use(cors())
     next();
   });
-
-  // Resposta Fake para o coockie X-Powered-By
-  // app.use((req, res, next) => {
-  //   res.setHeader('X-Powered-By', 'PHP/7.1.7')
-  //   next()
-  // });
 
   passport.use(
     new BearerStrategy(
@@ -77,39 +63,6 @@ module.exports = () => {
     .include('models')
     .then('controllers')
     .into(app)
-
-  app.use((error, req, res, next) => {
-    let status = 500
-    const body = {
-      message: error.message
-    }
-
-    if (error instanceof NotFound) {
-      status = 404
-      body.dateExp = error.dateExp
-    }
-
-    if (error instanceof NotAuthorized) {
-      status = 401
-      body.dateExp = error.dateExp
-    }
-
-    if (error instanceof InvalidArgumentError) {
-      status = 400
-    }
-
-    if (error instanceof jwt.JsonWebTokenError) {
-      status = 401
-    }
-
-    if (error instanceof jwt.TokenExpiredError) {
-      status = 401
-      body.dateExp = error.dateExp
-    }
-
-    res.status(status)
-    res.json(body)
-  })
-
+    
   return app
 }

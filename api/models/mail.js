@@ -2,11 +2,12 @@ const nodemailer = require('nodemailer')
 
 const configMailProduct = () => ({
     host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    secure: false,
     auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASSWORD
-    },
-    secure: true
+    }
 })
 
 const configMailTest = (accountTest) => ({
@@ -15,7 +16,7 @@ const configMailTest = (accountTest) => ({
 })
 
 async function createConfigMail() {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== 'production') {
         return configMailProduct
     } else {
         const accountTest = await nodemailer.createTestAccount()
@@ -24,13 +25,12 @@ async function createConfigMail() {
 }
 
 class Mail {
-
     async sendMail() {
         const configMail = await createConfigMail();
         const transport = nodemailer.createTransport(configMail)
         const info = await transport.sendMail(this)
 
-        if(process.env.NODE_ENV !== 'production'){
+        if (process.env.NODE_ENV !== 'production') {
             console.log('URL: ' + nodemailer.getTestMessageUrl(info));
         }
     }
@@ -40,25 +40,26 @@ class VerifyMail extends Mail {
 
     constructor(login) {
         super()
-        this.from = '"Ansa" noreply@ansa.com.br'
-        this.to = login.mail
-        this.subject = 'Prosegur'
-        this.text = `Hello, placa: ${veiculo} na data ${data}`
-        this.html = `<h1>Hello<h1>, click the link below to verify: <a href="${address}">${address}</a>`
+       
     }
 }
 
 class ResetPasswordMail extends Mail {
 
-    constructor(user, token) {
+    constructor(mailenterprise, token) {
         super()
-        this.from = '"Ansa" noreply@ansa.com.br'
-        this.to = login.mail
-        this.subject = 'Password Reset'
-        this.text = `Hello you asked to reset your password, click the link below to reset: ${token}`
-        this.html = `<h1>Hello you asked to reset your password<h1>, click the link below to reset: <a href="${token}">${token}</a>`
+        
     }
 }
 
 
-module.exports = { VerifyMail, ResetPasswordMail }
+class AttachmentBi extends Mail {
+
+    constructor(title, body, recipients, cc, bcc, attachment) {
+        super()
+        
+    }
+}
+
+
+module.exports = { VerifyMail, ResetPasswordMail, AttachmentBi }

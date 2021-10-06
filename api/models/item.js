@@ -1,37 +1,49 @@
-const repositorie = require('../repositories/item')
+const RepositorieItem = require('../repositories/item')
+const RepositorieFile = require('../repositories/file')
+
+const { InvalidArgumentError, InternalServerError, NotFound } = require('./error')
 
 class Item {
 
-    createItem(item){
-        return repositorie.insert(item)
-            .then(result => {
-                return result
-            })
+    async insert(files, item, id_login) {
+        try {
+
+            const id_item = await RepositorieItem.insert(item)
+
+            for(const file of files){
+                await RepositorieFile.insert(file, id_item, id_login)
+            }
+
+            return true
+        } catch (error) {
+            console.log(error);
+            throw new InternalServerError('Error.')
+        }
     }
 
-    updateItem(item, id){
-        return repositorie.update(item, id)
-            .then(result => {
-                return result
-            })
+    list(plate) {
+        try {
+            return RepositorieItem.list(plate)
+        } catch (error) {
+            throw new InternalServerError('Error.')
+        }
     }
 
-    deleteItem(id){
-        return repositorie.delete(id)
-            .then(result => {
-                return result
-            })
+    update(data, id) {
+        try {
+            return RepositorieItem.update(data, id)
+        } catch (error) {
+            throw new InternalServerError('Error.')
+        }
     }
 
-    viewItem(id){
-        return repositorie.view(id)
-            .then(result => {
-                return result
-            })
-    }
+    delete(id) {
+        try {
+            return RepositorieItem.delete(id)
 
-    listItem(){
-        return repositorie.list()
+        } catch (error) {
+            throw new InternalServerError('Error.')
+        }
     }
 }
 

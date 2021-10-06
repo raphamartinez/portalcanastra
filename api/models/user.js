@@ -17,23 +17,18 @@ class User {
 
             if (verifyMail === true) {
                 const login = {
-                    mail: data.user.login.mail,
+                    access: data.user.login.access,
                     password: password,
                     mailVerify: 1,
                     status: 1
                 }
 
                 const obj = await RepositorieLogin.insert(login)
-                console.log(obj)
 
                 const user = {
                     name: data.user.name,
                     perfil: data.user.perfil,
-                    dateBirthday: data.user.dateBirthday,
                     status: 1,
-                    office: {
-                        id_office: data.user.office.id_office
-                    },
                     login: {
                         id_login: obj.id_login
                     }
@@ -43,10 +38,10 @@ class User {
 
                 return result
             } else {
-                throw new InvalidArgumentError('Error, ya existe este email!')
+                throw new InvalidArgumentError('Ya existe un usuario con este acceso, cámbielo.')
             }
         } catch (error) {
-            throw new InvalidArgumentError('Error')
+            throw new InvalidArgumentError('No se pudo registrar un nuevo usuario.')
         }
     }
 
@@ -56,19 +51,20 @@ class User {
             const result = await Repositorie.deleteStatus(status, id_user)
             return result
         } catch (error) {
-            throw new NotFound('Error')
+            throw new InternalServerError('No se pudo borrar el usuario.')
         }
     }
 
     async updateUser(data, id_user) {
-        try {
 
+        try {
             const verifyMail = await RepositorieLogin.checkMail(data.user.mail)
 
-            if (verifyMail === true) {
+            if (verifyMail !== true) {
                 const user = {
                     id_user: id_user,
                     name: data.user.name,
+                    mailenterprise: data.user.mailenterprise,
                     perfil: data.user.perfil,
                     dateBirthday: data.user.dateBirthday,
                     office: {
@@ -85,10 +81,10 @@ class User {
                 await RepositorieLogin.update(login)
                 return true
             } else {
-                throw new InvalidArgumentError('Ya existe Este email!')
+                throw new InvalidArgumentError('Ya existe un usuario con este acceso, cámbielo.')
             }
         } catch (error) {
-            throw new InvalidArgumentError('Error')
+            throw new InvalidArgumentError('No se pudo actualizar el usuario.')
         }
     }
 
@@ -98,39 +94,87 @@ class User {
 
             data.forEach(obj => {
                 switch (obj.perfil) {
-                    case 1: obj.perfilDesc = "admin"
+                    case 1: obj.perfilDesc = "Admin"
                         break
 
-                    case 2: obj.perfilDesc = "vendedor"
+                    case 2: obj.perfilDesc = "Vendedor"
                         break
 
-                    case 3: obj.perfilDesc = "depositero"
+                    case 3: obj.perfilDesc = "Depositero"
                         break
 
-                    case 4: obj.perfilDesc = "gerente"
+                    case 4: obj.perfilDesc = "Gerente"
                         break
 
-                    case 5: obj.perfilDesc = "personal administrativo"
+                    case 5: obj.perfilDesc = "Personal administrativo"
                         break
 
-                    default: obj.perfilDesc = "usuario"
+                    default: obj.perfilDesc = "Usuario"
                         break
                 }
+
+                if (!obj.mailenterprise) obj.mailenterprise = "" 
+                if(obj.dateBirthday === '00/00/0000') obj.dateBirthday = ""
             })
 
             return data
 
         } catch (error) {
-            throw new InternalServerError('Error')
+            throw new InternalServerError('No se pudieron enumerar los usuarios.')
         }
     }
 
     async viewUser(id_user) {
         try {
             const user = await Repositorie.view(id_user)
+
             return user
         } catch (error) {
-            throw new NotFound('Error')
+            throw new NotFound('Usuario.')
+        }
+    }
+
+    async viewUserAdm(id_login) {
+        try {
+            const user = await Repositorie.viewAdm(id_login)
+
+            switch (user.perfil) {
+                case 1: user.perfilDesc = "Admin"
+                    break
+
+                case 2: user.perfilDesc = "Vendedor"
+                    break
+
+                case 3: user.perfilDesc = "Depositero"
+                    break
+
+                case 4: user.perfilDesc = "Gerente"
+                    break
+
+                case 5: user.perfilDesc = "Personal administrativo"
+                    break
+
+                default: user.perfilDesc = "Usuario"
+                    break
+            }
+
+            if (!user.mailenterprise) {
+                user.mailenterpriseDesc = "No informado" 
+                user.mailenterprise = " "
+            } else{
+                user.mailenterpriseDesc = user.mailenterprise
+            }
+            if(user.dateBirthday === '00/00/0000'){
+                user.dateBirthdayDesc = "No informado"
+                user.dateBirthday = " "
+            } else{
+                user.dateBirthdayDesc = user.dateBirthday
+            }
+
+            
+            return user
+        } catch (error) {
+            throw new NotFound('Usuario.')
         }
     }
 }
