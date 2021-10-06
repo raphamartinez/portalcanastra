@@ -7,16 +7,8 @@
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/raphamartinez/sunsetnode.git"
-  },
   "author": "raphael martinez batista",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/raphamartinez/Site-Sunset/issues"
-  },
-  "homepage": "https://github.com/raphamartinez/Site-Sunset#readme",
   "dependencies": {
     "accesscontrol": "^2.2.1",
     "aws-sdk": "^2.903.0",
